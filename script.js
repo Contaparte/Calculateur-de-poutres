@@ -116,7 +116,7 @@ function updateLargeursEtages() {
     let html = '<label>Largeurs tributaires par étage</label>';
     
     for (let i = 1; i <= nbEtages; i++) {
-        const etageLabel = i === 1 ? 'Rez-de-chaussée' : `Étage ${i-1}`;
+        const etageLabel = `Étage ${i}`;
         const defaultValue = i === 1 ? '13.1' : '9.17';
         
         html += `
