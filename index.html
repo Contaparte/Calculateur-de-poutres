@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #fef7f2;
             min-height: 100vh;
             padding: 20px;
         }
@@ -22,13 +22,13 @@
             max-width: 1200px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
+            border-radius: 12px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
+            background: #8B4513;
             color: white;
             padding: 30px;
             text-align: center;
@@ -40,11 +40,6 @@
             font-weight: 300;
         }
 
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1em;
-        }
-
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -54,7 +49,7 @@
 
         .input-section {
             padding: 40px;
-            background: #f8f9fa;
+            background: #f5f5f0;
             border-right: 1px solid #e9ecef;
         }
 
@@ -65,10 +60,10 @@
 
         .section-title {
             font-size: 1.5em;
-            color: #2c3e50;
+            color: #8B4513;
             margin-bottom: 25px;
             font-weight: 600;
-            border-bottom: 3px solid #3498db;
+            border-bottom: 3px solid #D2691E;
             padding-bottom: 10px;
         }
 
@@ -86,11 +81,27 @@
             flex: 1;
         }
 
+        .dimension-input {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .dimension-input input {
+            flex: 1;
+        }
+
+        .dimension-input span {
+            font-size: 0.9em;
+            color: #666;
+            min-width: 20px;
+        }
+
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #2c3e50;
+            color: #8B4513;
             font-size: 0.95em;
         }
 
@@ -98,7 +109,7 @@
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e9ecef;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 1em;
             transition: all 0.3s ease;
             background: white;
@@ -106,17 +117,17 @@
 
         input:focus, select:focus {
             outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            border-color: #D2691E;
+            box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1);
         }
 
         .calculate-btn {
             width: 100%;
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #D2691E, #A0522D);
             color: white;
             border: none;
             padding: 15px 30px;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 1.1em;
             font-weight: 600;
             cursor: pointer;
@@ -126,7 +137,7 @@
 
         .calculate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 10px 20px rgba(210, 105, 30, 0.3);
         }
 
         .results-grid {
@@ -137,38 +148,38 @@
         }
 
         .result-card {
-            background: #f8f9fa;
-            border-radius: 15px;
+            background: #f5f5f0;
+            border-radius: 10px;
             padding: 20px;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid #D2691E;
         }
 
         .result-label {
             font-size: 0.9em;
-            color: #7f8c8d;
+            color: #8B4513;
             margin-bottom: 5px;
             font-weight: 600;
         }
 
         .result-value {
             font-size: 1.3em;
-            color: #2c3e50;
+            color: #8B4513;
             font-weight: 700;
         }
 
         .poutre-options {
-            background: #e8f6f3;
-            border-radius: 15px;
+            background: #f9f6f3;
+            border-radius: 10px;
             padding: 25px;
             margin-top: 20px;
         }
 
         .poutre-option {
             background: white;
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
-            border-left: 4px solid #27ae60;
+            border-left: 4px solid #D2691E;
             transition: all 0.3s ease;
             cursor: pointer;
         }
@@ -179,19 +190,19 @@
         }
 
         .poutre-option.selected {
-            border-left-color: #e74c3c;
-            background: #fdf2f2;
+            border-left-color: #fef7f2;
+            background: #fef7f2;
         }
 
         .poutre-title {
             font-weight: 700;
-            color: #2c3e50;
+            color: #8B4513;
             margin-bottom: 8px;
         }
 
         .poutre-specs {
             font-size: 0.9em;
-            color: #7f8c8d;
+            color: #A0522D;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
@@ -200,11 +211,19 @@
         .no-solution {
             background: #fdf2f2;
             border: 2px solid #e74c3c;
-            border-radius: 15px;
+            border-radius: 10px;
             padding: 20px;
             text-align: center;
             color: #c0392b;
             font-weight: 600;
+        }
+
+        .largeurs-container {
+            margin-top: 15px;
+        }
+
+        .largeur-etage {
+            margin-bottom: 10px;
         }
 
         @media (max-width: 768px) {
@@ -235,43 +254,41 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Calculateur Poutres Versa-Lam® 2.0E</h1>
-            <p>Dimensionnement selon les normes canadiennes</p>
+            <h1>Calculateur Poutres Versa-LamÂ® 2.0E</h1>
         </div>
 
         <div class="main-content">
             <div class="input-section">
-                <h2 class="section-title">Paramètres de conception</h2>
+                <h2 class="section-title">ParamÃ¨tres de conception</h2>
                 
                 <div class="input-group">
                     <div class="input-row">
                         <div class="input-field">
-                            <label for="portee">Portée de la poutre (pi)</label>
-                            <input type="number" id="portee" step="0.5" min="6" max="30" value="15">
-                        </div>
-                        <div class="input-field">
-                            <label for="nbPlis">Nombre de plis</label>
-                            <select id="nbPlis">
-                                <option value="1">1 pli</option>
-                                <option value="2" selected>2 plis</option>
-                                <option value="3">3 plis</option>
-                                <option value="4">4 plis</option>
-                            </select>
+                            <label for="portee">PortÃ©e de la poutre</label>
+                            <div class="dimension-input">
+                                <input type="number" id="porteePieds" min="6" max="30" value="15">
+                                <span>pi</span>
+                                <input type="number" id="porteePouces" min="0" max="11" step="0.5" value="0">
+                                <span>po</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label>Largeurs tributaires</label>
                     <div class="input-row">
                         <div class="input-field">
-                            <label for="ltRc">L.T. Rez-de-chaussée (pi)</label>
-                            <input type="number" id="ltRc" step="0.1" min="0" value="13.1">
+                            <label for="nbEtages">Nombre d'Ã©tages supportÃ©s</label>
+                            <select id="nbEtages" onchange="updateLargeursEtages()">
+                                <option value="1">1 Ã©tage</option>
+                                <option value="2" selected>2 Ã©tages</option>
+                                <option value="3">3 Ã©tages</option>
+                                <option value="4">4 Ã©tages</option>
+                            </select>
                         </div>
-                        <div class="input-field">
-                            <label for="ltEtage">L.T. Étage (pi)</label>
-                            <input type="number" id="ltEtage" step="0.1" min="0" value="9.17">
-                        </div>
+                    </div>
+                    <div class="largeurs-container" id="largeursContainer">
+                        <!-- Sera rempli dynamiquement -->
                     </div>
                 </div>
 
@@ -283,8 +300,43 @@
                             <input type="number" id="chargeMorte" step="1" min="0" value="15">
                         </div>
                         <div class="input-field">
-                            <label for="chargeVive">Charge vive (CV)</label>
+                            <label for="chargeVive">Charge vive (CV) (occupation)</label>
                             <input type="number" id="chargeVive" step="1" min="0" value="40">
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="chargeViveNeige">Charge vive (CV) (neige)</label>
+                            <input type="number" id="chargeViveNeige" step="1" min="0" value="0">
+                        </div>
+                        <div class="input-field">
+                            <!-- Vide pour garder l'alignement -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Contraintes dimensionnelles</label>
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="largeurMax">Largeur max (po)</label>
+                            <input type="number" id="largeurMax" step="0.25" min="0" placeholder="Aucune contrainte">
+                        </div>
+                        <div class="input-field">
+                            <label for="hauteurMax">Hauteur max (po)</label>
+                            <input type="number" id="hauteurMax" step="0.25" min="0" placeholder="Aucune contrainte">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-row">
+                        <div class="input-field">
+                            <label for="optimisation">Optimisation</label>
+                            <select id="optimisation">
+                                <option value="plis">Favoriser moins de plis</option>
+                                <option value="hauteur">Favoriser hauteur moindre</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -295,30 +347,30 @@
             </div>
 
             <div class="results-section">
-                <h2 class="section-title">Résultats de calcul</h2>
+                <h2 class="section-title">RÃ©sultats de calcul</h2>
                 
                 <div class="results-grid">
                     <div class="result-card">
-                        <div class="result-label">Charge vive répartie (Wv)</div>
+                        <div class="result-label">Charge vive rÃ©partie (Wv)</div>
                         <div class="result-value" id="resultWv">-</div>
                     </div>
                     <div class="result-card">
-                        <div class="result-label">Charge morte répartie (Wm)</div>
+                        <div class="result-label">Charge morte rÃ©partie (Wm)</div>
                         <div class="result-value" id="resultWm">-</div>
                     </div>
                     <div class="result-card">
-                        <div class="result-label">Charge totale non pondérée (Wt)</div>
+                        <div class="result-label">Charge totale non pondÃ©rÃ©e (Wt)</div>
                         <div class="result-value" id="resultWt">-</div>
                     </div>
                     <div class="result-card">
-                        <div class="result-label">Charge totale pondérée (Wf)</div>
+                        <div class="result-label">Charge totale pondÃ©rÃ©e (Wf)</div>
                         <div class="result-value" id="resultWf">-</div>
                     </div>
                 </div>
 
                 <div id="poutreResults">
-                    <p style="text-align: center; color: #7f8c8d; margin-top: 50px;">
-                        Entrez les paramètres et cliquez sur "Calculer" pour voir les options de poutres.
+                    <p style="text-align: center; color: #A0522D; margin-top: 50px;">
+                        Entrez les paramÃ¨tres et cliquez sur "Calculer" pour voir les options de poutres.
                     </p>
                 </div>
             </div>
