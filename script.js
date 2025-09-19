@@ -2,122 +2,82 @@
 const TABLES_VERSALAM = {
     // Table pour poutre de plancher (deux étages) - Charge vive 40 lb/pi², Charge morte 15 lb/pi²
     plancher_2_etages: {
-        // Hauteur 5.5" - 2 plis et 3 plis
+        // Hauteur en pouces : { plis : { largeur_tributaire : capacité_lb_pi }}
         "5.5": {
-            "2": { 20: 450, 24: 350, 28: 300, 32: 250, 36: 220, 40: 200 },
-            "3": { 20: 650, 24: 500, 28: 425, 32: 375, 36: 325, 40: 290 }
+            "2": { 6: 825, 8: 665, 10: 555, 12: 475, 14: 415, 16: 370, 18: 330, 20: 300 },
+            "3": { 6: 1225, 8: 985, 10: 825, 12: 705, 14: 615, 16: 550, 18: 490, 20: 445 }
         },
-        // Hauteur 7.25" - 2 plis et 3 plis  
         "7.25": {
-            "2": { 20: 750, 24: 600, 28: 500, 32: 425, 36: 375, 40: 325 },
-            "3": { 20: 1050, 24: 850, 28: 725, 32: 625, 36: 550, 40: 490 }
+            "2": { 6: 1375, 8: 1105, 10: 925, 12: 790, 14: 690, 16: 615, 18: 550, 20: 500 },
+            "3": { 6: 2040, 8: 1640, 10: 1375, 12: 1175, 14: 1025, 16: 915, 18: 820, 20: 740 }
         },
-        // Hauteur 9.25" - 2 plis et 3 plis
         "9.25": {
-            "2": { 20: 1100, 24: 875, 28: 750, 32: 650, 36: 575, 40: 515 },
-            "3": { 20: 1525, 24: 1225, 28: 1050, 32: 925, 36: 825, 40: 740 }
+            "2": { 6: 2015, 8: 1620, 10: 1355, 12: 1155, 14: 1010, 16: 900, 18: 805, 20: 730 },
+            "3": { 6: 2990, 8: 2405, 10: 2015, 12: 1720, 14: 1500, 16: 1340, 18: 1200, 20: 1085 }
         },
-        // Hauteur 9.5" - 2 plis et 3 plis
         "9.5": {
-            "2": { 20: 1125, 24: 900, 28: 775, 32: 675, 36: 600, 40: 535 },
-            "3": { 20: 1575, 24: 1275, 28: 1100, 32: 950, 36: 850, 40: 765 }
+            "2": { 6: 2075, 8: 1670, 10: 1395, 12: 1190, 14: 1040, 16: 925, 18: 830, 20: 750 },
+            "3": { 6: 3080, 8: 2475, 10: 2075, 12: 1770, 14: 1545, 16: 1380, 18: 1235, 20: 1115 }
         },
-        // Hauteur 11.25" - 2 plis et 3 plis
         "11.25": {
-            "2": { 20: 1550, 24: 1250, 28: 1075, 32: 925, 36: 825, 40: 740 },
-            "3": { 20: 2175, 24: 1750, 28: 1500, 32: 1300, 36: 1150, 40: 1040 }
+            "2": { 6: 2860, 8: 2300, 10: 1925, 12: 1645, 14: 1435, 16: 1280, 18: 1150, 20: 1040 },
+            "3": { 6: 4245, 8: 3415, 10: 2860, 12: 2440, 14: 2135, 16: 1905, 18: 1710, 20: 1545 }
         },
-        // Hauteur 11.875" - 2 plis et 3 plis
         "11.875": {
-            "2": { 20: 1725, 24: 1400, 28: 1200, 32: 1050, 36: 925, 40: 835 },
-            "3": { 20: 2425, 24: 1950, 28: 1675, 32: 1450, 36: 1300, 40: 1175 }
+            "2": { 6: 3185, 8: 2560, 10: 2145, 12: 1830, 14: 1600, 16: 1425, 18: 1280, 20: 1155 },
+            "3": { 6: 4730, 8: 3805, 10: 3185, 12: 2720, 14: 2375, 16: 2120, 18: 1900, 20: 1715 }
         },
-        // Hauteur 14" - 2 plis et 3 plis
         "14": {
-            "2": { 20: 2375, 24: 1925, 28: 1650, 32: 1425, 36: 1275, 40: 1150 },
-            "3": { 20: 3350, 24: 2700, 28: 2325, 32: 2025, 36: 1800, 40: 1625 }
+            "2": { 6: 4390, 8: 3530, 10: 2955, 12: 2525, 14: 2205, 16: 1965, 18: 1765, 20: 1595 },
+            "3": { 6: 6520, 8: 5240, 10: 4390, 12: 3745, 14: 3275, 16: 2925, 18: 2625, 20: 2370 }
         },
-        // Hauteur 16" - 2 plis et 3 plis
         "16": {
-            "2": { 20: 3175, 24: 2575, 28: 2200, 32: 1925, 36: 1725, 40: 1550 },
-            "3": { 20: 4475, 24: 3625, 28: 3100, 32: 2700, 36: 2425, 40: 2175 }
+            "2": { 6: 5870, 8: 4720, 10: 3950, 12: 3375, 14: 2950, 16: 2630, 18: 2360, 20: 2135 },
+            "3": { 6: 8720, 8: 7010, 10: 5870, 12: 5010, 14: 4375, 16: 3905, 18: 3505, 20: 3165 }
         },
-        // Hauteur 18" - 2 plis et 3 plis
         "18": {
-            "2": { 20: 4225, 24: 3425, 28: 2925, 32: 2550, 36: 2275, 40: 2050 },
-            "3": { 20: 5950, 24: 4825, 28: 4125, 32: 3600, 36: 3225, 40: 2900 }
+            "2": { 6: 7810, 8: 6280, 10: 5255, 12: 4490, 14: 3925, 16: 3500, 18: 3140, 20: 2840 },
+            "3": { 6: 11600, 8: 9325, 10: 7810, 12: 6670, 14: 5830, 16: 5205, 18: 4670, 20: 4220 }
         }
     },
 
     // Table pour poutre de plancher (un étage) - Charge vive 40 lb/pi², Charge morte 15 lb/pi²
     plancher_1_etage: {
         "5.5": {
-            "2": { 20: 675, 24: 540, 28: 460, 32: 400, 36: 355, 40: 320 },
-            "3": { 20: 950, 24: 760, 28: 650, 32: 565, 36: 505, 40: 455 }
+            "2": { 6: 1245, 8: 1000, 10: 835, 12: 715, 14: 625, 16: 555, 18: 500, 20: 450 },
+            "3": { 6: 1845, 8: 1485, 10: 1245, 12: 1060, 14: 930, 16: 830, 18: 745, 20: 675 }
         },
         "7.25": {
-            "2": { 20: 1125, 24: 900, 28: 775, 32: 675, 36: 600, 40: 540 },
-            "3": { 20: 1575, 24: 1275, 28: 1100, 32: 950, 36: 850, 40: 765 }
+            "2": { 6: 2075, 8: 1665, 10: 1395, 12: 1190, 14: 1040, 16: 925, 18: 830, 20: 750 },
+            "3": { 6: 3080, 8: 2475, 10: 2075, 12: 1770, 14: 1545, 16: 1380, 18: 1235, 20: 1115 }
         },
         "9.25": {
-            "2": { 20: 1650, 24: 1325, 28: 1125, 32: 985, 36: 875, 40: 790 },
-            "3": { 20: 2300, 24: 1850, 28: 1575, 32: 1375, 36: 1225, 40: 1100 }
+            "2": { 6: 3040, 8: 2445, 10: 2045, 12: 1745, 14: 1525, 16: 1360, 18: 1220, 20: 1100 },
+            "3": { 6: 4510, 8: 3625, 10: 3040, 12: 2595, 14: 2270, 16: 2025, 18: 1815, 20: 1640 }
         },
         "9.5": {
-            "2": { 20: 1700, 24: 1375, 28: 1175, 32: 1025, 36: 915, 40: 825 },
-            "3": { 20: 2375, 24: 1925, 28: 1650, 32: 1425, 36: 1275, 40: 1150 }
+            "2": { 6: 3140, 8: 2525, 10: 2115, 12: 1805, 14: 1575, 16: 1405, 18: 1260, 20: 1140 },
+            "3": { 6: 4660, 8: 3745, 10: 3140, 12: 2680, 14: 2340, 16: 2090, 18: 1875, 20: 1695 }
         },
         "11.25": {
-            "2": { 20: 2350, 24: 1900, 28: 1625, 32: 1425, 36: 1275, 40: 1150 },
-            "3": { 20: 3300, 24: 2675, 28: 2300, 32: 2000, 36: 1800, 40: 1625 }
+            "2": { 6: 4325, 8: 3475, 10: 2910, 12: 2485, 14: 2170, 16: 1935, 18: 1735, 20: 1570 },
+            "3": { 6: 6420, 8: 5160, 10: 4325, 12: 3690, 14: 3225, 16: 2880, 18: 2585, 20: 2335 }
         },
         "11.875": {
-            "2": { 20: 2625, 24: 2125, 28: 1825, 32: 1600, 36: 1425, 40: 1285 },
-            "3": { 20: 3675, 24: 2975, 28: 2550, 32: 2225, 36: 1975, 40: 1785 }
+            "2": { 6: 4820, 8: 3875, 10: 3245, 12: 2770, 14: 2420, 16: 2160, 18: 1940, 20: 1750 },
+            "3": { 6: 7160, 8: 5755, 10: 4820, 12: 4115, 14: 3595, 16: 3210, 18: 2880, 20: 2605 }
         },
         "14": {
-            "2": { 20: 3625, 24: 2925, 28: 2500, 32: 2200, 36: 1950, 40: 1775 },
-            "3": { 20: 5075, 24: 4100, 28: 3525, 32: 3075, 36: 2750, 40: 2475 }
+            "2": { 6: 6655, 8: 5345, 10: 4475, 12: 3820, 14: 3340, 16: 2980, 18: 2675, 20: 2415 },
+            "3": { 6: 9880, 8: 7940, 10: 6655, 12: 5680, 14: 4965, 16: 4430, 18: 3975, 20: 3590 }
         },
         "16": {
-            "2": { 20: 4850, 24: 3925, 28: 3375, 32: 2950, 36: 2625, 40: 2375 },
-            "3": { 20: 6800, 24: 5500, 28: 4725, 32: 4125, 36: 3675, 40: 3325 }
+            "2": { 6: 8900, 8: 7155, 10: 5995, 12: 5115, 14: 4470, 16: 3990, 18: 3580, 20: 3235 },
+            "3": { 6: 13210, 8: 10620, 10: 8900, 12: 7595, 14: 6640, 16: 5925, 18: 5315, 20: 4805 }
         },
         "18": {
-            "2": { 20: 6450, 24: 5225, 28: 4475, 32: 3925, 36: 3500, 40: 3150 },
-            "3": { 20: 9050, 24: 7325, 28: 6275, 32: 5500, 36: 4900, 40: 4425 }
-        }
-    },
-
-    // Table pour linteau (toit seulement) - Charge neige 20 lb/pi², Charge morte 15 lb/pi²
-    linteau_toit_neige20: {
-        "5.5": {
-            "2": { 20: 825, 24: 715, 28: 635, 32: 575, 36: 525, 40: 485 },
-            "3": { 20: 975, 24: 845, 28: 750, 32: 680, 36: 620, 40: 575 }
-        },
-        "7.25": {
-            "2": { 20: 1325, 24: 1150, 28: 1025, 32: 925, 36: 845, 40: 775 },
-            "3": { 20: 1565, 24: 1355, 28: 1205, 32: 1090, 36: 995, 40: 915 }
-        },
-        "9.25": {
-            "2": { 20: 1950, 24: 1695, 28: 1505, 32: 1360, 36: 1245, 40: 1145 },
-            "3": { 20: 2305, 24: 2000, 28: 1775, 32: 1605, 36: 1465, 40: 1350 }
-        }
-    },
-
-    // Table pour linteau (toit seulement) - Charge neige 40 lb/pi², Charge morte 15 lb/pi²
-    linteau_toit_neige40: {
-        "5.5": {
-            "2": { 20: 675, 24: 585, 28: 520, 32: 470, 36: 430, 40: 395 },
-            "3": { 20: 800, 24: 695, 28: 615, 32: 560, 36: 510, 40: 470 }
-        },
-        "7.25": {
-            "2": { 20: 1090, 24: 945, 28: 840, 32: 760, 36: 695, 40: 640 },
-            "3": { 20: 1290, 24: 1120, 28: 995, 32: 900, 36: 820, 40: 755 }
-        },
-        "9.25": {
-            "2": { 20: 1600, 24: 1390, 28: 1235, 32: 1115, 36: 1020, 40: 940 },
-            "3": { 20: 1895, 24: 1645, 28: 1460, 32: 1320, 36: 1205, 40: 1110 }
+            "2": { 6: 11840, 8: 9515, 10: 7975, 12: 6810, 14: 5950, 16: 5310, 18: 4765, 20: 4305 },
+            "3": { 6: 17580, 8: 14130, 10: 11840, 12: 10105, 14: 8835, 16: 7885, 18: 7075, 20: 6395 }
         }
     }
 };
@@ -128,10 +88,10 @@ let resultatsCalcul = {
     wm: 0,
     wt: 0,
     wf: 0,
-    chargeEtage: 0,
-    chargeRC: 0,
-    totalLineaire: 0,
-    totalLinearePond: 0
+    wvEtage: 0,
+    wmEtage: 0,
+    wvRC: 0,
+    wmRC: 0
 };
 
 // Initialisation
@@ -139,20 +99,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Écouteurs d'événements
     document.getElementById('portee').addEventListener('input', updatePorteeDecimal);
     document.getElementById('porteeInches').addEventListener('input', updatePorteeDecimal);
-    document.getElementById('ltEtage').addEventListener('input', calculerCharges);
-    document.getElementById('ltRC').addEventListener('input', calculerCharges);
-    document.getElementById('chargeMorte').addEventListener('input', calculerCharges);
-    document.getElementById('chargeVive').addEventListener('input', calculerCharges);
-    document.getElementById('chargeNeige').addEventListener('input', calculerCharges);
-    document.getElementById('typePoutre').addEventListener('change', calculerStructure);
-    document.getElementById('typeUsage').addEventListener('change', calculerStructure);
-    document.getElementById('etages').addEventListener('change', calculerStructure);
-    document.getElementById('typePortee').addEventListener('change', calculerStructure);
-    document.getElementById('optimiser').addEventListener('change', calculerStructure);
+    document.getElementById('etages').addEventListener('change', toggleLargeurTributaire);
+    document.getElementById('contrainteLargeur').addEventListener('change', toggleLargeurMax);
+    document.getElementById('contrainteHauteur').addEventListener('change', toggleHauteurMax);
+    document.getElementById('typePoutre').addEventListener('change', updateSourceInfo);
+    
+    // Écouteurs pour les calculs
+    ['ltUnique', 'ltEtage', 'ltRC', 'chargeMorte', 'chargeVive', 'chargeNeige'].forEach(id => {
+        document.getElementById(id).addEventListener('input', calculerCharges);
+    });
 
-    // Calcul initial
+    ['typePoutre', 'typeUsage', 'etages', 'typePortee', 'optimiser'].forEach(id => {
+        document.getElementById(id).addEventListener('change', calculerStructure);
+    });
+
+    // Initialisation
+    toggleLargeurTributaire();
+    updateSourceInfo();
     calculerCharges();
-    calculerStructure();
 });
 
 function updatePorteeDecimal() {
@@ -164,21 +128,72 @@ function updatePorteeDecimal() {
     calculerStructure();
 }
 
+function toggleLargeurTributaire() {
+    const etages = document.getElementById('etages').value;
+    const ltUnEtage = document.getElementById('ltUnEtage');
+    const ltDeuxEtages = document.getElementById('ltDeuxEtages');
+    
+    if (etages === '2') {
+        ltUnEtage.style.display = 'none';
+        ltDeuxEtages.style.display = 'block';
+    } else {
+        ltUnEtage.style.display = 'block';
+        ltDeuxEtages.style.display = 'none';
+    }
+    calculerCharges();
+}
+
+function toggleLargeurMax() {
+    const checked = document.getElementById('contrainteLargeur').checked;
+    document.getElementById('largeurMaxContainer').style.display = checked ? 'block' : 'none';
+}
+
+function toggleHauteurMax() {
+    const checked = document.getElementById('contrainteHauteur').checked;
+    document.getElementById('hauteurMaxContainer').style.display = checked ? 'block' : 'none';
+}
+
+function updateSourceInfo() {
+    const typePoutre = document.getElementById('typePoutre').value;
+    const sourceInfo = document.getElementById('sourceInfo');
+    
+    if (typePoutre === 'versalam-poutre') {
+        sourceInfo.textContent = 'Calculs basés sur les tableaux VERSALAM 2.0E';
+    } else {
+        sourceInfo.textContent = 'Calculs basés sur les tableaux CECOBOIS';
+    }
+}
+
 function calculerCharges() {
-    const ltEtage = parseFloat(document.getElementById('ltEtage').value) || 0;
-    const ltRC = parseFloat(document.getElementById('ltRC').value) || 0;
+    const etages = document.getElementById('etages').value;
     const cm = parseFloat(document.getElementById('chargeMorte').value) || 0;
     const cv = parseFloat(document.getElementById('chargeVive').value) || 0;
     const neige = parseFloat(document.getElementById('chargeNeige').value) || 0;
 
-    // Calculs selon la démarche CECOBOIS
-    const wvEtage = cv * ltEtage;
-    const wvRC = cv * ltRC;
-    const wv = wvEtage + wvRC;
+    let wv = 0, wm = 0, wvEtage = 0, wmEtage = 0, wvRC = 0, wmRC = 0;
 
-    const wmEtage = cm * ltEtage;
-    const wmRC = cm * ltRC;
-    const wm = wmEtage + wmRC;
+    if (etages === '2') {
+        // Deux étages - selon exemple P2a
+        const ltEtage = parseFloat(document.getElementById('ltEtage').value) || 0;
+        const ltRC = parseFloat(document.getElementById('ltRC').value) || 0;
+        
+        // WV1 = CV × LT (RC), WV2 = CV × LT (Étage)
+        wvRC = cv * ltRC;
+        wvEtage = cv * ltEtage;
+        wv = wvRC + wvEtage;
+        
+        // WM1 = CM × LT (RC), WM2 = CM × LT (Étage)  
+        wmRC = cm * ltRC;
+        wmEtage = cm * ltEtage;
+        wm = wmRC + wmEtage;
+    } else {
+        // Un étage
+        const ltUnique = parseFloat(document.getElementById('ltUnique').value) || 0;
+        wv = cv * ltUnique;
+        wm = cm * ltUnique;
+        wvEtage = wv;
+        wmEtage = wm;
+    }
 
     const wt = wv + wm;
     const wf = wv * 1.5 + wm * 1.25;
@@ -189,17 +204,17 @@ function calculerCharges() {
         wm: wm,
         wt: wt,
         wf: wf,
-        chargeEtage: wvEtage + wmEtage,
-        chargeRC: wvRC + wmRC,
-        totalLineaire: wt,
-        totalLinearePond: wf
+        wvEtage: wvEtage,
+        wmEtage: wmEtage,
+        wvRC: wvRC,
+        wmRC: wmRC
     };
 
-    // Affichage
+    // Affichage - selon format exemple P2a
     document.getElementById('totalLineaire').textContent = Math.round(wt);
     document.getElementById('totalLinearePond').textContent = Math.round(wf);
-    document.getElementById('chargeEtage').textContent = Math.round(resultatsCalcul.chargeEtage);
-    document.getElementById('chargeRC').textContent = Math.round(resultatsCalcul.chargeRC);
+    document.getElementById('chargeEtage').textContent = Math.round(wvEtage + wmEtage);
+    document.getElementById('chargeRC').textContent = Math.round(wvRC + wmRC);
 
     calculerStructure();
 }
@@ -207,11 +222,11 @@ function calculerCharges() {
 function calculerStructure() {
     const typePoutre = document.getElementById('typePoutre').value;
     
-    if (typePoutre === 'versalam') {
+    if (typePoutre === 'versalam-poutre') {
         calculerVersaLam();
     } else {
-        // Pour les poutrelles ajourées, afficher un message
-        afficherResultat('Configuration non supportée', 'Les poutrelles ajourées nécessitent une analyse spécialisée avec logiciel.', false);
+        // Pour les poutrelles CECOBOIS
+        afficherResultat('Poutrelles CECOBOIS', 'Les poutrelles ajourées nécessitent une analyse spécialisée avec logiciel CECOBOIS.', false);
     }
 }
 
@@ -221,16 +236,25 @@ function calculerVersaLam() {
     const inches = parseInt(document.getElementById('porteeInches').value) || 0;
     const porteeTotal = portee + (inches / 12);
     const optimiser = document.getElementById('optimiser').value;
+    const etages = document.getElementById('etages').value;
 
     if (porteeTotal <= 0 || resultatsCalcul.wf <= 0) {
         afficherResultat('Données incomplètes', 'Veuillez remplir tous les champs requis.', false);
         return;
     }
 
+    // Déterminer la largeur tributaire effective
+    let largeurTributaireEffective;
+    if (etages === '2') {
+        const ltEtage = parseFloat(document.getElementById('ltEtage').value) || 0;
+        const ltRC = parseFloat(document.getElementById('ltRC').value) || 0;
+        largeurTributaireEffective = Math.max(ltEtage, ltRC);
+    } else {
+        largeurTributaireEffective = parseFloat(document.getElementById('ltUnique').value) || 0;
+    }
+
     // Sélection de la table appropriée
     let tableData = null;
-    const neige = parseFloat(document.getElementById('chargeNeige').value) || 0;
-
     switch(typeUsage) {
         case 'plancher-1-etage':
             tableData = TABLES_VERSALAM.plancher_1_etage;
@@ -238,15 +262,8 @@ function calculerVersaLam() {
         case 'plancher-2-etages':
             tableData = TABLES_VERSALAM.plancher_2_etages;
             break;
-        case 'linteau-toit':
-            if (neige <= 25) {
-                tableData = TABLES_VERSALAM.linteau_toit_neige20;
-            } else {
-                tableData = TABLES_VERSALAM.linteau_toit_neige40;
-            }
-            break;
         default:
-            afficherResultat('Type d\'usage non supporté', 'Veuillez sélectionner un type d\'usage valide.', false);
+            afficherResultat('Type d\'usage non supporté', 'Seules les poutres de plancher sont supportées actuellement.', false);
             return;
     }
 
@@ -256,7 +273,7 @@ function calculerVersaLam() {
     }
 
     // Recherche de solutions
-    const solutions = trouverSolutions(tableData, porteeTotal, resultatsCalcul.wf, optimiser);
+    const solutions = trouverSolutions(tableData, largeurTributaireEffective, resultatsCalcul.wf, optimiser);
     
     if (solutions.length > 0) {
         const meilleureSolution = solutions[0];
@@ -269,31 +286,39 @@ function calculerVersaLam() {
     } else {
         afficherResultat(
             'Aucune solution trouvée',
-            'Les charges sont trop élevées pour la portée demandée. Considérez réduire la portée ou les charges.',
+            'Les charges sont trop élevées pour la largeur tributaire demandée. Considérez réduire les charges ou la largeur tributaire.',
             false
         );
     }
 }
 
-function trouverSolutions(tableData, portee, chargeAppliquee, optimiser) {
+function trouverSolutions(tableData, largeurTributaire, chargeAppliquee, optimiser) {
     const solutions = [];
     const hauteurs = Object.keys(tableData);
     
+    // Trouver la largeur tributaire la plus proche dans les tables
+    const largeursPossibles = [6, 8, 10, 12, 14, 16, 18, 20];
+    const largeurTable = largeursPossibles.reduce((prev, curr) => 
+        Math.abs(curr - largeurTributaire) < Math.abs(prev - largeurTributaire) ? curr : prev
+    );
+    
     for (const hauteur of hauteurs) {
         for (const plis of ['2', '3']) {
-            if (!tableData[hauteur] || !tableData[hauteur][plis]) continue;
+            if (!tableData[hauteur] || !tableData[hauteur][plis] || !tableData[hauteur][plis][largeurTable]) {
+                continue;
+            }
             
-            // Interpolation pour la portée exacte
-            const capacite = interpolerCapacite(tableData[hauteur][plis], portee);
+            const capacite = tableData[hauteur][plis][largeurTable];
             
-            if (capacite && capacite >= chargeAppliquee) {
+            if (capacite >= chargeAppliquee) {
                 solutions.push({
                     hauteur: hauteur,
                     plis: plis,
-                    capacite: Math.round(capacite),
+                    capacite: capacite,
                     chargeAppliquee: Math.round(chargeAppliquee),
                     marge: Math.round(capacite - chargeAppliquee),
-                    ratio: capacite / chargeAppliquee
+                    ratio: capacite / chargeAppliquee,
+                    largeurTable: largeurTable
                 });
             }
         }
@@ -319,41 +344,6 @@ function trouverSolutions(tableData, portee, chargeAppliquee, optimiser) {
     return solutions;
 }
 
-function interpolerCapacite(donnees, portee) {
-    const largeurs = Object.keys(donnees).map(Number).sort((a, b) => a - b);
-    
-    // Si la portée correspond exactement à une largeur
-    for (const largeur of largeurs) {
-        if (Math.abs(portee - largeur) < 0.01) {
-            return donnees[largeur];
-        }
-    }
-    
-    // Interpolation linéaire
-    for (let i = 0; i < largeurs.length - 1; i++) {
-        const l1 = largeurs[i];
-        const l2 = largeurs[i + 1];
-        
-        if (portee >= l1 && portee <= l2) {
-            const c1 = donnees[l1];
-            const c2 = donnees[l2];
-            const ratio = (portee - l1) / (l2 - l1);
-            return c1 + (c2 - c1) * ratio;
-        }
-    }
-    
-    // Extrapolation au-delà des limites (avec prudence)
-    if (portee < largeurs[0]) {
-        // Portée trop courte - utiliser la première valeur
-        return donnees[largeurs[0]];
-    } else if (portee > largeurs[largeurs.length - 1]) {
-        // Portée trop longue - pas de solution
-        return null;
-    }
-    
-    return null;
-}
-
 function afficherResultat(titre, description, valide) {
     const resultatDiv = document.getElementById('resultatStructure');
     resultatDiv.className = valide ? 'result-valid p-2 rounded text-sm' : 'result-invalid p-2 rounded text-sm';
@@ -371,7 +361,8 @@ function afficherSolutions(solutions) {
             <div class="font-medium">${solution.plis} plis × ${solution.hauteur}"</div>
             <div class="text-gray-600">
                 Capacité: ${solution.capacite} lb/pi<br>
-                Marge: ${solution.marge} lb/pi (${(((solution.ratio - 1) * 100)).toFixed(1)}%)
+                Marge: ${solution.marge} lb/pi (${(((solution.ratio - 1) * 100)).toFixed(1)}%)<br>
+                <span class="text-xs">LT table: ${solution.largeurTable} pi.</span>
             </div>
         `;
         
