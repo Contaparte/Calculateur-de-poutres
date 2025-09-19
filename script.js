@@ -388,7 +388,4 @@ document.addEventListener('DOMContentLoaded', function() {
             this.timer = setTimeout(calculerPoutre, 500);
         }
     });
-    
-    // Calcul initial
-    calculerPoutre();
 });
