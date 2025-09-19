@@ -113,24 +113,24 @@ function calculerVersaLam() {
 
     const tables = tablesVersaLam.unEtage;
     let solutionOptimale = null;
+    const hauteursPossibles = ['7.25', '9.5', '11.875', '14', '16', '18'];
 
-    // Tester chaque hauteur et nombre de plis
-    Object.keys(tables).forEach(hauteur => {
+    // Tester chaque hauteur
+    hauteursPossibles.forEach(hauteur => {
         const tableHauteur = tables[hauteur];
-        if (!tableHauteur.portees[largeurTable]) return;
+        if (!tableHauteur || !tableHauteur.portees[largeurTable]) return;
 
+        const porteeMax = tableHauteur.portees[largeurTable];
+        if (porteeDecimale > porteeMax) return;
+
+        // Tester chaque nombre de plis pour cette hauteur
         [2, 3, 4].forEach(plis => {
-            const porteeMax = tableHauteur.portees[largeurTable];
-            
-            // Vérifier si la portée est acceptable
-            if (porteeDecimale > porteeMax) return;
-
             // Calculer les valeurs à comparer (divisées par nombre de plis)
             const WV_compare = charges.WV / plis;
-            const WT_compare = charges.WT / plis;
+            const WT_compare = charges.WT / plis;  
             const WF_compare = charges.WF / plis;
 
-            // Vérifier si les charges sont dans les limites
+            // Vérifier si les charges sont dans les limites pour ce nombre de plis
             const limites = tableHauteur.limites;
             const chargesValides = 
                 WV_compare <= limites.WV && 
@@ -139,8 +139,8 @@ function calculerVersaLam() {
 
             if (!chargesValides) return;
 
-            // Score pour optimisation (plus petit = mieux)
-            const score = parseFloat(hauteur) * plis;
+            // Score pour optimisation : favoriser moins de plis, puis moins de hauteur
+            const score = plis * 1000 + parseFloat(hauteur);
             
             if (!solutionOptimale || score < solutionOptimale.score) {
                 solutionOptimale = {
@@ -151,6 +151,7 @@ function calculerVersaLam() {
                     valide: true,
                     type: 'Versa-Lam',
                     score: score,
+                    plis: plis,
                     details: {
                         WV_compare: WV_compare.toFixed(1),
                         WT_compare: WT_compare.toFixed(1),
@@ -171,7 +172,9 @@ function calculerVersaLam() {
             details: {
                 WV: charges.WV.toFixed(1),
                 WT: charges.WT.toFixed(1),  
-                WF: charges.WF.toFixed(1)
+                WF: charges.WF.toFixed(1),
+                portee: porteeDecimale.toFixed(1),
+                largeurTrib: largeurTable
             }
         };
     }
