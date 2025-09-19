@@ -9,10 +9,10 @@ const tablesVersaLam = {
             8: { 2: 9.5, 3: 10.92, 4: 12.0 },
             10: { 2: 8.83, 3: 10.08, 4: 11.08 },
             12: { 2: 8.25, 3: 9.42, 4: 10.33 },
-            14: { 2: 7.75, 3: 8.83, 4: 9.67 },
-            16: { 2: 7.33, 3: 8.33, 4: 9.17 },
-            18: { 2: 6.92, 3: 7.92, 4: 8.67 },
-            20: { 2: 6.58, 3: 7.58, 4: 8.25 }
+            14: { 2: 8.5, 3: 9.5, 4: 10.5 },
+            16: { 2: 7.75, 3: 8.75, 4: 9.5 },
+            18: { 2: 7.25, 3: 8.25, 4: 9.0 },
+            20: { 2: 6.75, 3: 7.75, 4: 8.5 }
         },
         '11.875': {
             6: { 2: 13.08, 3: 15.0, 4: 16.5 },
@@ -136,18 +136,20 @@ const tablesPoutrelliesAjourees = {
 
 let calculateurData = {
     typePoutre: 'versalam',
-    portee: { pieds: 7, pouces: 6 },
-    largeurTributaire: 9.17,
-    largeurTributaireEtage: 9.17,
-    largeurTributaireRC: 13.1,
-    chargeMorte: 15,
-    chargeVive: 40,
+    portee: { pieds: 0, pouces: 0 },
+    largeurTributaire: 0,
+    largeurTributaireEtage: 0,
+    largeurTributaireRC: 0,
+    chargeMorte: 0,
+    chargeVive: 0,
     chargeNeige: 0,
     typePortee: 'simple',
     typeEtage: 'un',
     espacementPoutrelles: 16,
-    largeurMax: 5.5,
+    largeurMax: 0,
+    hauteurMax: 0,
     activerLargeurMax: false,
+    activerHauteurMax: false,
     typeOptimisation: 'plis'
 };
 
@@ -238,13 +240,13 @@ function calculerVersaLam() {
     let solutionOptimale = null;
     const hauteursPossibles = ['9.5', '11.875', '14', '16', '18'];
 
-    // Limites approximatives par hauteur (ajustées pour deux étages)
+    // Limites approximatives par hauteur (corrigées selon les vraies tables)
     const limitesParHauteur = {
-        '9.5': { WV: 262, WT: 360, WF: 516 },
-        '11.875': { WV: 445, WT: 636, WF: 877 },
-        '14': { WV: 650, WT: 900, WF: 1250 },
-        '16': { WV: 850, WT: 1180, WF: 1600 },
-        '18': { WV: 1050, WT: 1450, WF: 1950 }
+        '9.5': { WV: 350, WT: 480, WF: 650 },
+        '11.875': { WV: 500, WT: 700, WF: 950 },
+        '14': { WV: 700, WT: 980, WF: 1350 },
+        '16': { WV: 900, WT: 1250, WF: 1700 },
+        '18': { WV: 1100, WT: 1550, WF: 2100 }
     };
 
     hauteursPossibles.forEach(hauteur => {
@@ -256,21 +258,19 @@ function calculerVersaLam() {
             const largeurPoutre = plis * 1.75;
             if (calculateurData.activerLargeurMax && largeurPoutre > calculateurData.largeurMax) return;
 
+            // Vérifier contrainte de hauteur SEULEMENT si activée
+            if (calculateurData.activerHauteurMax && parseFloat(hauteur) > calculateurData.hauteurMax) return;
+
             // Vérifier portée dans les tables
             const porteeTableMax = tableHauteur[largeurTable][plis];
             if (!porteeTableMax || porteeDecimale > porteeTableMax) return;
 
-            // DIVISION par nombre de plis pour comparer aux limites
-            const WV_parPli = charges.WV / plis;
-            const WT_parPli = charges.WT / plis;  
-            const WF_parPli = charges.WF / plis;
-
-            // Vérifier si les charges divisées sont dans les limites
+            // Vérifier les charges totales (sans division par plis)
             const limites = limitesParHauteur[hauteur];
             const chargesValides = 
-                WV_parPli <= limites.WV && 
-                WT_parPli <= limites.WT && 
-                WF_parPli <= limites.WF;
+                charges.WV <= limites.WV && 
+                charges.WT <= limites.WT && 
+                charges.WF <= limites.WF;
 
             if (!chargesValides) return;
 
@@ -292,10 +292,10 @@ function calculerVersaLam() {
                     type: 'Versa-Lam',
                     score: score,
                     plis: plis,
-                    chargesParPli: {
-                        WV: WV_parPli.toFixed(0),
-                        WT: WT_parPli.toFixed(0),
-                        WF: WF_parPli.toFixed(0)
+                    chargesUtilisees: {
+                        WV: charges.WV.toFixed(0),
+                        WT: charges.WT.toFixed(0),
+                        WF: charges.WF.toFixed(0)
                     }
                 };
             }
@@ -480,6 +480,11 @@ function afficherLargeurMax() {
     largeurMaxContainer.style.display = calculateurData.activerLargeurMax ? 'block' : 'none';
 }
 
+function afficherHauteurMax() {
+    const hauteurMaxContainer = document.getElementById('hauteurMaxContainer');
+    hauteurMaxContainer.style.display = calculateurData.activerHauteurMax ? 'block' : 'none';
+}
+
 function afficherEspacement() {
     const espacementContainer = document.getElementById('espacementContainer');
     espacementContainer.style.display = calculateurData.typePoutre.startsWith('ajouree') ? 'block' : 'none';
@@ -577,6 +582,7 @@ function mettreAJourInterface() {
     afficherEspacement();
     afficherTypeEtage();
     afficherLargeurMax();
+    afficherHauteurMax();
     mettreAJourResultats();
 }
 
@@ -655,6 +661,17 @@ function configurerEvenements() {
 
     document.getElementById('largeurMax').addEventListener('input', (e) => {
         calculateurData.largeurMax = parseFloat(e.target.value) || 0;
+        mettreAJourInterface();
+    });
+
+    document.getElementById('activerHauteurMax').addEventListener('change', (e) => {
+        calculateurData.activerHauteurMax = e.target.checked;
+        afficherHauteurMax();
+        mettreAJourInterface();
+    });
+
+    document.getElementById('hauteurMax').addEventListener('input', (e) => {
+        calculateurData.hauteurMax = parseFloat(e.target.value) || 0;
         mettreAJourInterface();
     });
 
