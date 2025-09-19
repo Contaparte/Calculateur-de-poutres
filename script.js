@@ -5,32 +5,58 @@
 // DONNÉES ET TABLES AVEC LIMITES DE CHARGES
 // =============================================================================
 
-// Tables Versa-Lam avec limites de charges (WV, WT, WF par pli)
+// Tables Versa-Lam corrigées selon documentation officielle
 const tablesVersaLam = {
     unEtage: {
-        '7.25': {
-            limites: { WV: 183, WT: 252, WF: 361 }, // Limites par pli
-            portees: { 6: 16.75, 8: 16.33, 10: 15.75, 12: 15.0, 14: 14.25 }
-        },
         '9.5': {
-            limites: { WV: 262, WT: 360, WF: 516 },
-            portees: { 6: 18.25, 8: 17.75, 10: 17.0, 12: 16.25, 14: 15.5, 16: 14.75, 18: 14.0, 20: 13.25 }
+            6: { 2: 11.33, 3: 13.0, 4: 14.25 },
+            8: { 2: 10.42, 3: 11.92, 4: 13.08 },
+            10: { 2: 9.67, 3: 11.08, 4: 12.25 },
+            12: { 2: 9.0, 3: 10.33, 4: 11.42 },
+            14: { 2: 8.42, 3: 9.67, 4: 10.67 },
+            16: { 2: 7.92, 3: 9.08, 4: 10.0 },
+            18: { 2: 7.5, 3: 8.58, 4: 9.42 },
+            20: { 2: 7.08, 3: 8.08, 4: 8.92 }
         },
         '11.875': {
-            limites: { WV: 445, WT: 636, WF: 877 },
-            portees: { 6: 23.5, 8: 22.75, 10: 22.0, 12: 21.25, 14: 20.5, 16: 19.75, 18: 19.0, 20: 18.25 }
+            6: { 2: 14.17, 3: 16.25, 4: 17.83 },
+            8: { 2: 13.0, 3: 14.92, 4: 16.33 },
+            10: { 2: 12.17, 3: 13.92, 4: 15.33 },
+            12: { 2: 11.33, 3: 13.0, 4: 14.33 },
+            14: { 2: 10.67, 3: 12.25, 4: 13.5 },
+            16: { 2: 10.08, 3: 11.58, 4: 12.75 },
+            18: { 2: 9.58, 3: 10.92, 4: 12.08 },
+            20: { 2: 9.08, 3: 10.42, 4: 11.42 }
         },
         '14': {
-            limites: { WV: 650, WT: 900, WF: 1250 },
-            portees: { 6: 29.0, 8: 28.0, 10: 27.0, 12: 26.0, 14: 25.0, 16: 24.0, 18: 23.0, 20: 22.0 }
+            6: { 2: 16.75, 3: 19.08, 4: 21.0 },
+            8: { 2: 15.33, 3: 17.58, 4: 19.25 },
+            10: { 2: 14.33, 3: 16.42, 4: 18.0 },
+            12: { 2: 13.42, 3: 15.42, 4: 16.92 },
+            14: { 2: 12.67, 3: 14.5, 4: 15.92 },
+            16: { 2: 11.92, 3: 13.67, 4: 15.0 },
+            18: { 2: 11.33, 3: 13.0, 4: 14.25 },
+            20: { 2: 10.75, 3: 12.33, 4: 13.58 }
         },
         '16': {
-            limites: { WV: 850, WT: 1180, WF: 1600 },
-            portees: { 6: 31.75, 8: 30.5, 10: 29.25, 12: 28.0, 14: 26.75, 16: 25.5, 18: 24.25, 20: 23.0 }
+            6: { 2: 19.08, 3: 21.83, 4: 23.92 },
+            8: { 2: 17.58, 3: 20.0, 4: 22.0 },
+            10: { 2: 16.33, 3: 18.75, 4: 20.58 },
+            12: { 2: 15.33, 3: 17.67, 4: 19.42 },
+            14: { 2: 14.5, 3: 16.67, 4: 18.33 },
+            16: { 2: 13.75, 3: 15.75, 4: 17.33 },
+            18: { 2: 13.08, 3: 15.0, 4: 16.5 },
+            20: { 2: 12.5, 3: 14.33, 4: 15.75 }
         },
         '18': {
-            limites: { WV: 1050, WT: 1450, WF: 1950 },
-            portees: { 6: 35.0, 8: 34.0, 10: 33.0, 12: 32.0, 14: 31.0, 16: 30.0, 18: 29.0, 20: 28.0 }
+            6: { 2: 21.5, 3: 24.5, 4: 26.83 },
+            8: { 2: 19.75, 3: 22.5, 4: 24.75 },
+            10: { 2: 18.42, 3: 21.08, 4: 23.08 },
+            12: { 2: 17.33, 3: 19.83, 4: 21.75 },
+            14: { 2: 16.42, 3: 18.75, 4: 20.58 },
+            16: { 2: 15.58, 3: 17.83, 4: 19.58 },
+            18: { 2: 14.83, 3: 17.0, 4: 18.67 },
+            20: { 2: 14.17, 3: 16.25, 4: 17.83 }
         }
     }
 };
@@ -70,7 +96,9 @@ let calculateurData = {
     chargeNeige: 0,
     typePortee: 'simple',
     typeEtage: 'un',
-    espacementPoutrelles: 16
+    espacementPoutrelles: 16,
+    largeurMax: 5.5,
+    typeOptimisation: 'plis'
 };
 
 // =============================================================================
@@ -105,7 +133,7 @@ function calculerVersaLam() {
     const porteeDecimale = obtenirPorteeDecimale();
     const largeurTributaire = obtenirLargeurTributaireAjustee();
     
-    // Trouver largeur tributaire la plus proche
+    // Trouver largeur tributaire la plus proche dans les tables
     const largeursPossibles = [6, 8, 10, 12, 14, 16, 18, 20];
     const largeurTable = largeursPossibles.reduce((prev, curr) => 
         Math.abs(curr - largeurTributaire) < Math.abs(prev - largeurTributaire) ? curr : prev
@@ -113,52 +141,66 @@ function calculerVersaLam() {
 
     const tables = tablesVersaLam.unEtage;
     let solutionOptimale = null;
-    const hauteursPossibles = ['7.25', '9.5', '11.875', '14', '16', '18'];
+    const hauteursPossibles = ['9.5', '11.875', '14', '16', '18'];
 
-    // Tester chaque hauteur
+    // Limites approximatives par hauteur (à ajuster selon vraies tables)
+    const limitesParHauteur = {
+        '9.5': { WV: 262, WT: 360, WF: 516 },
+        '11.875': { WV: 445, WT: 636, WF: 877 },
+        '14': { WV: 650, WT: 900, WF: 1250 },
+        '16': { WV: 850, WT: 1180, WF: 1600 },
+        '18': { WV: 1050, WT: 1450, WF: 1950 }
+    };
+
     hauteursPossibles.forEach(hauteur => {
         const tableHauteur = tables[hauteur];
-        if (!tableHauteur || !tableHauteur.portees[largeurTable]) return;
+        if (!tableHauteur || !tableHauteur[largeurTable]) return;
 
-        const porteeMax = tableHauteur.portees[largeurTable];
-        if (porteeDecimale > porteeMax) return;
-
-        // Tester chaque nombre de plis pour cette hauteur
         [2, 3, 4].forEach(plis => {
-            // Calculer les valeurs à comparer (divisées par nombre de plis)
-            const WV_compare = charges.WV / plis;
-            const WT_compare = charges.WT / plis;  
-            const WF_compare = charges.WF / plis;
+            // Vérifier contrainte de largeur
+            const largeurPoutre = plis * 1.75;
+            if (largeurPoutre > calculateurData.largeurMax) return;
 
-            // Vérifier si les charges sont dans les limites pour ce nombre de plis
-            const limites = tableHauteur.limites;
+            // Vérifier portée dans les tables
+            const porteeTableMax = tableHauteur[largeurTable][plis];
+            if (!porteeTableMax || porteeDecimale > porteeTableMax) return;
+
+            // DIVISION par nombre de plis pour comparer aux limites
+            const WV_parPli = charges.WV / plis;
+            const WT_parPli = charges.WT / plis;  
+            const WF_parPli = charges.WF / plis;
+
+            // Vérifier si les charges divisées sont dans les limites
+            const limites = limitesParHauteur[hauteur];
             const chargesValides = 
-                WV_compare <= limites.WV && 
-                WT_compare <= limites.WT && 
-                WF_compare <= limites.WF;
+                WV_parPli <= limites.WV && 
+                WT_parPli <= limites.WT && 
+                WF_parPli <= limites.WF;
 
             if (!chargesValides) return;
 
-            // Score pour optimisation : favoriser moins de plis, puis moins de hauteur
-            const score = plis * 1000 + parseFloat(hauteur);
+            // Score selon optimisation
+            let score;
+            if (calculateurData.typeOptimisation === 'plis') {
+                score = plis * 1000 + parseFloat(hauteur);
+            } else {
+                score = parseFloat(hauteur) * 1000 + plis;
+            }
             
             if (!solutionOptimale || score < solutionOptimale.score) {
                 solutionOptimale = {
                     hauteur: hauteur + '"',
-                    largeur: (1.75 * plis).toFixed(2) + '"',
+                    largeur: largeurPoutre.toFixed(2) + '"',
                     configuration: plis + ' plis',
-                    porteeMax: porteeMax.toFixed(1) + ' pi.',
+                    porteeMax: porteeTableMax.toFixed(1) + ' pi.',
                     valide: true,
                     type: 'Versa-Lam',
                     score: score,
                     plis: plis,
-                    details: {
-                        WV_compare: WV_compare.toFixed(1),
-                        WT_compare: WT_compare.toFixed(1),
-                        WF_compare: WF_compare.toFixed(1),
-                        limite_WV: limites.WV,
-                        limite_WT: limites.WT,
-                        limite_WF: limites.WF
+                    chargesParPli: {
+                        WV: WV_parPli.toFixed(0),
+                        WT: WT_parPli.toFixed(0),
+                        WF: WF_parPli.toFixed(0)
                     }
                 };
             }
@@ -168,13 +210,11 @@ function calculerVersaLam() {
     if (!solutionOptimale) {
         return { 
             valide: false, 
-            message: 'Charges ou portée excessive - Augmenter hauteur/plis',
+            message: 'Aucune configuration valide - Charges ou portée excessive',
             details: {
                 WV: charges.WV.toFixed(1),
                 WT: charges.WT.toFixed(1),  
-                WF: charges.WF.toFixed(1),
-                portee: porteeDecimale.toFixed(1),
-                largeurTrib: largeurTable
+                WF: charges.WF.toFixed(1)
             }
         };
     }
@@ -320,7 +360,15 @@ function afficherEspacement() {
 
 function afficherTypeEtage() {
     const typeEtageContainer = document.getElementById('typeEtageContainer');
-    typeEtageContainer.style.display = calculateurData.typePoutre === 'versalam' ? 'block' : 'none';
+    const optimisationContainer = document.getElementById('optimisationContainer');
+    
+    if (calculateurData.typePoutre === 'versalam') {
+        typeEtageContainer.style.display = 'block';
+        optimisationContainer.style.display = 'block';
+    } else {
+        typeEtageContainer.style.display = 'none';
+        optimisationContainer.style.display = 'none';
+    }
 }
 
 function mettreAJourResultats() {
@@ -440,6 +488,16 @@ function configurerEvenements() {
 
     document.getElementById('chargeNeige').addEventListener('input', (e) => {
         calculateurData.chargeNeige = parseFloat(e.target.value) || 0;
+        mettreAJourInterface();
+    });
+
+    document.getElementById('largeurMax').addEventListener('input', (e) => {
+        calculateurData.largeurMax = parseFloat(e.target.value) || 0;
+        mettreAJourInterface();
+    });
+
+    document.getElementById('typeOptimisation').addEventListener('change', (e) => {
+        calculateurData.typeOptimisation = e.target.value;
         mettreAJourInterface();
     });
 }
