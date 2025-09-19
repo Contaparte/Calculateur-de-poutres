@@ -1,771 +1,391 @@
-// =============================================================================
-// TABLES DE DONNÉES
-// =============================================================================
+// Tableaux de données Versa-Lam basés sur la base de connaissances CECOBOIS
+const TABLES_VERSALAM = {
+    // Table pour poutre de plancher (deux étages) - Charge vive 40 lb/pi², Charge morte 15 lb/pi²
+    plancher_2_etages: {
+        // Hauteur 5.5" - 2 plis et 3 plis
+        "5.5": {
+            "2": { 20: 450, 24: 350, 28: 300, 32: 250, 36: 220, 40: 200 },
+            "3": { 20: 650, 24: 500, 28: 425, 32: 375, 36: 325, 40: 290 }
+        },
+        // Hauteur 7.25" - 2 plis et 3 plis  
+        "7.25": {
+            "2": { 20: 750, 24: 600, 28: 500, 32: 425, 36: 375, 40: 325 },
+            "3": { 20: 1050, 24: 850, 28: 725, 32: 625, 36: 550, 40: 490 }
+        },
+        // Hauteur 9.25" - 2 plis et 3 plis
+        "9.25": {
+            "2": { 20: 1100, 24: 875, 28: 750, 32: 650, 36: 575, 40: 515 },
+            "3": { 20: 1525, 24: 1225, 28: 1050, 32: 925, 36: 825, 40: 740 }
+        },
+        // Hauteur 9.5" - 2 plis et 3 plis
+        "9.5": {
+            "2": { 20: 1125, 24: 900, 28: 775, 32: 675, 36: 600, 40: 535 },
+            "3": { 20: 1575, 24: 1275, 28: 1100, 32: 950, 36: 850, 40: 765 }
+        },
+        // Hauteur 11.25" - 2 plis et 3 plis
+        "11.25": {
+            "2": { 20: 1550, 24: 1250, 28: 1075, 32: 925, 36: 825, 40: 740 },
+            "3": { 20: 2175, 24: 1750, 28: 1500, 32: 1300, 36: 1150, 40: 1040 }
+        },
+        // Hauteur 11.875" - 2 plis et 3 plis
+        "11.875": {
+            "2": { 20: 1725, 24: 1400, 28: 1200, 32: 1050, 36: 925, 40: 835 },
+            "3": { 20: 2425, 24: 1950, 28: 1675, 32: 1450, 36: 1300, 40: 1175 }
+        },
+        // Hauteur 14" - 2 plis et 3 plis
+        "14": {
+            "2": { 20: 2375, 24: 1925, 28: 1650, 32: 1425, 36: 1275, 40: 1150 },
+            "3": { 20: 3350, 24: 2700, 28: 2325, 32: 2025, 36: 1800, 40: 1625 }
+        },
+        // Hauteur 16" - 2 plis et 3 plis
+        "16": {
+            "2": { 20: 3175, 24: 2575, 28: 2200, 32: 1925, 36: 1725, 40: 1550 },
+            "3": { 20: 4475, 24: 3625, 28: 3100, 32: 2700, 36: 2425, 40: 2175 }
+        },
+        // Hauteur 18" - 2 plis et 3 plis
+        "18": {
+            "2": { 20: 4225, 24: 3425, 28: 2925, 32: 2550, 36: 2275, 40: 2050 },
+            "3": { 20: 5950, 24: 4825, 28: 4125, 32: 3600, 36: 3225, 40: 2900 }
+        }
+    },
 
-const tablesVersaLam = {
-    unEtage: {
-        '7.25': {
-            6: { 2: 10.5, 3: 12.0, 4: 13.25 },
-            8: { 2: 9.75, 3: 11.0, 4: 12.25 },
-            10: { 2: 9.0, 3: 10.25, 4: 11.25 },
-            12: { 2: 8.5, 3: 9.75, 4: 10.5 },
-            14: { 2: 8.0, 3: 9.25, 4: 10.0 },
-            16: { 2: 7.5, 3: 8.75, 4: 9.5 },
-            18: { 2: 7.25, 3: 8.25, 4: 9.0 },
-            20: { 2: 6.75, 3: 7.75, 4: 8.5 }
+    // Table pour poutre de plancher (un étage) - Charge vive 40 lb/pi², Charge morte 15 lb/pi²
+    plancher_1_etage: {
+        "5.5": {
+            "2": { 20: 675, 24: 540, 28: 460, 32: 400, 36: 355, 40: 320 },
+            "3": { 20: 950, 24: 760, 28: 650, 32: 565, 36: 505, 40: 455 }
         },
-    deuxEtages: {
-        '9.5': {
-            6: { 2: 8.33, 3: 9.58, 4: 10.5 },
-            8: { 2: 7.58, 3: 8.75, 4: 9.58 },
-            10: { 2: 7.0, 3: 8.08, 4: 8.83 },
-            12: { 2: 6.5, 3: 7.5, 4: 8.25 },
-            14: { 2: 6.08, 3: 7.0, 4: 7.75 },
-            16: { 2: 5.75, 3: 6.58, 4: 7.25 },
-            18: { 2: 5.42, 3: 6.25, 4: 6.83 },
-            20: { 2: 5.17, 3: 5.92, 4: 6.5 }
+        "7.25": {
+            "2": { 20: 1125, 24: 900, 28: 775, 32: 675, 36: 600, 40: 540 },
+            "3": { 20: 1575, 24: 1275, 28: 1100, 32: 950, 36: 850, 40: 765 }
         },
-        '11.875': {
-            6: { 2: 10.42, 3: 12.0, 4: 13.17 },
-            8: { 2: 9.5, 3: 10.92, 4: 12.0 },
-            10: { 2: 8.75, 3: 10.08, 4: 11.08 },
-            12: { 2: 8.17, 3: 9.42, 4: 10.33 },
-            14: { 2: 7.67, 3: 8.83, 4: 9.67 },
-            16: { 2: 7.25, 3: 8.33, 4: 9.17 },
-            18: { 2: 6.92, 3: 7.92, 4: 8.67 },
-            20: { 2: 6.58, 3: 7.58, 4: 8.25 }
+        "9.25": {
+            "2": { 20: 1650, 24: 1325, 28: 1125, 32: 985, 36: 875, 40: 790 },
+            "3": { 20: 2300, 24: 1850, 28: 1575, 32: 1375, 36: 1225, 40: 1100 }
         },
-        '14': {
-            6: { 2: 14.33, 3: 16.17, 4: 17.58 },
-            8: { 2: 13.17, 3: 14.83, 4: 16.17 },
-            10: { 2: 12.33, 3: 13.92, 4: 15.08 },
-            12: { 2: 11.67, 3: 13.17, 4: 14.25 },
-            14: { 2: 11.17, 3: 12.5, 4: 13.58 },
-            16: { 2: 10.67, 3: 12.0, 4: 12.92 },
-            18: { 2: 10.25, 3: 11.5, 4: 12.42 },
-            20: { 2: 9.92, 3: 11.08, 4: 11.92 }
+        "9.5": {
+            "2": { 20: 1700, 24: 1375, 28: 1175, 32: 1025, 36: 915, 40: 825 },
+            "3": { 20: 2375, 24: 1925, 28: 1650, 32: 1425, 36: 1275, 40: 1150 }
         },
-        '16': {
-            6: { 2: 16.08, 3: 18.17, 4: 19.75 },
-            8: { 2: 14.75, 3: 16.67, 4: 18.17 },
-            10: { 2: 13.83, 3: 15.58, 4: 16.92 },
-            12: { 2: 13.08, 3: 14.75, 4: 16.0 },
-            14: { 2: 12.5, 3: 14.08, 4: 15.25 },
-            16: { 2: 11.92, 3: 13.42, 4: 14.58 },
-            18: { 2: 11.5, 3: 12.92, 4: 14.0 },
-            20: { 2: 11.08, 3: 12.42, 4: 13.5 }
+        "11.25": {
+            "2": { 20: 2350, 24: 1900, 28: 1625, 32: 1425, 36: 1275, 40: 1150 },
+            "3": { 20: 3300, 24: 2675, 28: 2300, 32: 2000, 36: 1800, 40: 1625 }
         },
-        '18': {
-            6: { 2: 15.83, 3: 18.17, 4: 20.0 },
-            8: { 2: 14.33, 3: 16.5, 4: 18.17 },
-            10: { 2: 13.33, 3: 15.33, 4: 16.83 },
-            12: { 2: 12.5, 3: 14.33, 4: 15.75 },
-            14: { 2: 11.83, 3: 13.58, 4: 14.92 },
-            16: { 2: 11.25, 3: 12.92, 4: 14.17 },
-            18: { 2: 10.75, 3: 12.33, 4: 13.5 },
-            20: { 2: 10.25, 3: 11.75, 4: 12.92 }
+        "11.875": {
+            "2": { 20: 2625, 24: 2125, 28: 1825, 32: 1600, 36: 1425, 40: 1285 },
+            "3": { 20: 3675, 24: 2975, 28: 2550, 32: 2225, 36: 1975, 40: 1785 }
+        },
+        "14": {
+            "2": { 20: 3625, 24: 2925, 28: 2500, 32: 2200, 36: 1950, 40: 1775 },
+            "3": { 20: 5075, 24: 4100, 28: 3525, 32: 3075, 36: 2750, 40: 2475 }
+        },
+        "16": {
+            "2": { 20: 4850, 24: 3925, 28: 3375, 32: 2950, 36: 2625, 40: 2375 },
+            "3": { 20: 6800, 24: 5500, 28: 4725, 32: 4125, 36: 3675, 40: 3325 }
+        },
+        "18": {
+            "2": { 20: 6450, 24: 5225, 28: 4475, 32: 3925, 36: 3500, 40: 3150 },
+            "3": { 20: 9050, 24: 7325, 28: 6275, 32: 5500, 36: 4900, 40: 4425 }
         }
     },
-        '9.5': {
-            6: { 2: 10.42, 3: 12.0, 4: 13.17 },
-            8: { 2: 9.5, 3: 10.92, 4: 12.0 },
-            10: { 2: 8.83, 3: 10.08, 4: 11.08 },
-            12: { 2: 8.25, 3: 9.42, 4: 10.33 },
-            14: { 2: 8.5, 3: 9.5, 4: 10.5 },
-            16: { 2: 7.75, 3: 8.75, 4: 9.5 },
-            18: { 2: 7.25, 3: 8.25, 4: 9.0 },
-            20: { 2: 6.75, 3: 7.75, 4: 8.5 }
+
+    // Table pour linteau (toit seulement) - Charge neige 20 lb/pi², Charge morte 15 lb/pi²
+    linteau_toit_neige20: {
+        "5.5": {
+            "2": { 20: 825, 24: 715, 28: 635, 32: 575, 36: 525, 40: 485 },
+            "3": { 20: 975, 24: 845, 28: 750, 32: 680, 36: 620, 40: 575 }
         },
-        '11.875': {
-            6: { 2: 13.08, 3: 15.0, 4: 16.5 },
-            8: { 2: 11.92, 3: 13.58, 4: 15.0 },
-            10: { 2: 11.0, 3: 12.67, 4: 13.92 },
-            12: { 2: 10.25, 3: 11.83, 4: 13.0 },
-            14: { 2: 9.67, 3: 11.08, 4: 12.17 },
-            16: { 2: 9.17, 3: 10.5, 4: 11.5 },
-            18: { 2: 8.75, 3: 10.0, 4: 10.92 },
-            20: { 2: 8.33, 3: 9.58, 4: 10.42 }
+        "7.25": {
+            "2": { 20: 1325, 24: 1150, 28: 1025, 32: 925, 36: 845, 40: 775 },
+            "3": { 20: 1565, 24: 1355, 28: 1205, 32: 1090, 36: 995, 40: 915 }
         },
-        '14': {
-            6: { 2: 15.42, 3: 17.67, 4: 19.42 },
-            8: { 2: 14.0, 3: 16.08, 4: 17.67 },
-            10: { 2: 13.0, 3: 14.92, 4: 16.42 },
-            12: { 2: 12.17, 3: 13.92, 4: 15.33 },
-            14: { 2: 11.5, 3: 13.17, 4: 14.5 },
-            16: { 2: 10.83, 3: 12.42, 4: 13.67 },
-            18: { 2: 10.33, 3: 11.83, 4: 13.0 },
-            20: { 2: 9.83, 3: 11.33, 4: 12.42 }
-        },
-        '16': {
-            6: { 2: 17.67, 3: 20.17, 4: 22.25 },
-            8: { 2: 16.0, 3: 18.33, 4: 20.17 },
-            10: { 2: 14.83, 3: 17.0, 4: 18.75 },
-            12: { 2: 13.92, 3: 15.92, 4: 17.5 },
-            14: { 2: 13.17, 3: 15.08, 4: 16.58 },
-            16: { 2: 12.5, 3: 14.33, 4: 15.75 },
-            18: { 2: 11.92, 3: 13.67, 4: 15.0 },
-            20: { 2: 11.42, 3: 13.08, 4: 14.33 }
-        },
-        '18': {
-            6: { 2: 19.83, 3: 22.75, 4: 25.0 },
-            8: { 2: 18.0, 3: 20.67, 4: 22.75 },
-            10: { 2: 16.75, 3: 19.17, 4: 21.08 },
-            12: { 2: 15.67, 3: 17.92, 4: 19.67 },
-            14: { 2: 14.83, 3: 16.92, 4: 18.58 },
-            16: { 2: 14.08, 3: 16.08, 4: 17.67 },
-            18: { 2: 13.42, 3: 15.33, 4: 16.83 },
-            20: { 2: 12.83, 3: 14.67, 4: 16.08 }
+        "9.25": {
+            "2": { 20: 1950, 24: 1695, 28: 1505, 32: 1360, 36: 1245, 40: 1145 },
+            "3": { 20: 2305, 24: 2000, 28: 1775, 32: 1605, 36: 1465, 40: 1350 }
         }
     },
-    deuxEtages: {
-        '9.5': {
-            6: { 2: 8.33, 3: 9.58, 4: 10.5 },
-            8: { 2: 7.58, 3: 8.75, 4: 9.58 },
-            10: { 2: 7.0, 3: 8.08, 4: 8.83 },
-            12: { 2: 6.5, 3: 7.5, 4: 8.25 },
-            14: { 2: 6.08, 3: 7.0, 4: 7.75 },
-            16: { 2: 5.75, 3: 6.58, 4: 7.25 },
-            18: { 2: 5.42, 3: 6.25, 4: 6.83 },
-            20: { 2: 5.17, 3: 5.92, 4: 6.5 }
+
+    // Table pour linteau (toit seulement) - Charge neige 40 lb/pi², Charge morte 15 lb/pi²
+    linteau_toit_neige40: {
+        "5.5": {
+            "2": { 20: 675, 24: 585, 28: 520, 32: 470, 36: 430, 40: 395 },
+            "3": { 20: 800, 24: 695, 28: 615, 32: 560, 36: 510, 40: 470 }
         },
-        '11.875': {
-            6: { 2: 10.42, 3: 12.0, 4: 13.17 },
-            8: { 2: 9.5, 3: 10.92, 4: 12.0 },
-            10: { 2: 8.75, 3: 10.08, 4: 11.08 },
-            12: { 2: 8.17, 3: 9.42, 4: 10.33 },
-            14: { 2: 7.67, 3: 8.83, 4: 9.67 },
-            16: { 2: 7.25, 3: 8.33, 4: 9.17 },
-            18: { 2: 6.92, 3: 7.92, 4: 8.67 },
-            20: { 2: 6.58, 3: 7.58, 4: 8.25 }
+        "7.25": {
+            "2": { 20: 1090, 24: 945, 28: 840, 32: 760, 36: 695, 40: 640 },
+            "3": { 20: 1290, 24: 1120, 28: 995, 32: 900, 36: 820, 40: 755 }
         },
-        '14': {
-            6: { 2: 12.33, 3: 14.17, 4: 15.58 },
-            8: { 2: 11.17, 3: 12.83, 4: 14.17 },
-            10: { 2: 10.33, 3: 11.92, 4: 13.08 },
-            12: { 2: 9.67, 3: 11.17, 4: 12.25 },
-            14: { 2: 9.17, 3: 10.5, 4: 11.58 },
-            16: { 2: 8.67, 3: 10.0, 4: 10.92 },
-            18: { 2: 8.25, 3: 9.5, 4: 10.42 },
-            20: { 2: 7.92, 3: 9.08, 4: 9.92 }
-        },
-        '16': {
-            6: { 2: 14.08, 3: 16.17, 4: 17.75 },
-            8: { 2: 12.75, 3: 14.67, 4: 16.17 },
-            10: { 2: 11.83, 3: 13.58, 4: 14.92 },
-            12: { 2: 11.08, 3: 12.75, 4: 14.0 },
-            14: { 2: 10.5, 3: 12.08, 4: 13.25 },
-            16: { 2: 9.92, 3: 11.42, 4: 12.58 },
-            18: { 2: 9.5, 3: 10.92, 4: 12.0 },
-            20: { 2: 9.08, 3: 10.42, 4: 11.5 }
-        },
-        '18': {
-            6: { 2: 15.83, 3: 18.17, 4: 20.0 },
-            8: { 2: 14.33, 3: 16.5, 4: 18.17 },
-            10: { 2: 13.33, 3: 15.33, 4: 16.83 },
-            12: { 2: 12.5, 3: 14.33, 4: 15.75 },
-            14: { 2: 11.83, 3: 13.58, 4: 14.92 },
-            16: { 2: 11.25, 3: 12.92, 4: 14.17 },
-            18: { 2: 10.75, 3: 12.33, 4: 13.5 },
-            20: { 2: 10.25, 3: 11.75, 4: 12.92 }
+        "9.25": {
+            "2": { 20: 1600, 24: 1390, 28: 1235, 32: 1115, 36: 1020, 40: 940 },
+            "3": { 20: 1895, 24: 1645, 28: 1460, 32: 1320, 36: 1205, 40: 1110 }
         }
     }
 };
 
-const tablesPoutrelliesAjourees = {
-    connecteursMetalliques: {
-        '11.875x16': { portee: 18.5, chargeMax: 125 },
-        '14x16': { portee: 21.3, chargeMax: 150 },
-        '16x16': { portee: 23.8, chargeMax: 175 },
-        '18x16': { portee: 26.1, chargeMax: 200 }
-    },
-    ameMetallique: {
-        '11.875x16': { portee: 19.2, chargeMax: 135 },
-        '14x16': { portee: 22.1, chargeMax: 160 },
-        '16x16': { portee: 24.7, chargeMax: 185 },
-        '18x16': { portee: 27.1, chargeMax: 210 }
-    },
-    boisDente: {
-        '11.875x16': { portee: 20.1, chargeMax: 145 },
-        '14x16': { portee: 23.2, chargeMax: 170 },
-        '16x16': { portee: 25.9, chargeMax: 195 },
-        '18x16': { portee: 28.4, chargeMax: 220 }
-    }
+// Variables globales
+let resultatsCalcul = {
+    wv: 0,
+    wm: 0,
+    wt: 0,
+    wf: 0,
+    chargeEtage: 0,
+    chargeRC: 0,
+    totalLineaire: 0,
+    totalLinearePond: 0
 };
 
-// =============================================================================
-// VARIABLES GLOBALES
-// =============================================================================
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    // Écouteurs d'événements
+    document.getElementById('portee').addEventListener('input', updatePorteeDecimal);
+    document.getElementById('porteeInches').addEventListener('input', updatePorteeDecimal);
+    document.getElementById('ltEtage').addEventListener('input', calculerCharges);
+    document.getElementById('ltRC').addEventListener('input', calculerCharges);
+    document.getElementById('chargeMorte').addEventListener('input', calculerCharges);
+    document.getElementById('chargeVive').addEventListener('input', calculerCharges);
+    document.getElementById('chargeNeige').addEventListener('input', calculerCharges);
+    document.getElementById('typePoutre').addEventListener('change', calculerStructure);
+    document.getElementById('typeUsage').addEventListener('change', calculerStructure);
+    document.getElementById('etages').addEventListener('change', calculerStructure);
+    document.getElementById('typePortee').addEventListener('change', calculerStructure);
+    document.getElementById('optimiser').addEventListener('change', calculerStructure);
 
-let calculateurData = {
-    typePoutre: 'versalam',
-    portee: { pieds: 0, pouces: 0 },
-    largeurTributaire: 0,
-    largeurTributaireEtage: 0,
-    largeurTributaireRC: 0,
-    chargeMorte: 0,
-    chargeVive: 0,
-    chargeNeige: 0,
-    typePortee: 'simple',
-    typeEtage: 'un',
-    espacementPoutrelles: 16,
-    largeurMax: 0,
-    hauteurMax: 0,
-    activerLargeurMax: false,
-    activerHauteurMax: false,
-    typeOptimisation: 'plis'
-};
+    // Calcul initial
+    calculerCharges();
+    calculerStructure();
+});
 
-// =============================================================================
-// FONCTIONS DE CALCUL CORRIGÉES
-// =============================================================================
-
-function obtenirPorteeDecimale() {
-    return calculateurData.portee.pieds + calculateurData.portee.pouces / 12;
+function updatePorteeDecimal() {
+    const portee = parseFloat(document.getElementById('portee').value) || 0;
+    const inches = parseInt(document.getElementById('porteeInches').value) || 0;
+    const totalDecimal = portee + (inches / 12);
+    
+    document.getElementById('porteeDecimal').textContent = `= ${totalDecimal.toFixed(2)} pi.`;
+    calculerStructure();
 }
 
-function obtenirLargeurTributaireAjustee() {
-    const facteur = calculateurData.typePortee === 'continue' ? 1.25 : 1;
-    
-    if (calculateurData.typeEtage === 'deux') {
-        return {
-            etage: calculateurData.largeurTributaireEtage * facteur,
-            rc: calculateurData.largeurTributaireRC * facteur
-        };
-    } else {
-        return calculateurData.largeurTributaire * facteur;
-    }
+function calculerCharges() {
+    const ltEtage = parseFloat(document.getElementById('ltEtage').value) || 0;
+    const ltRC = parseFloat(document.getElementById('ltRC').value) || 0;
+    const cm = parseFloat(document.getElementById('chargeMorte').value) || 0;
+    const cv = parseFloat(document.getElementById('chargeVive').value) || 0;
+    const neige = parseFloat(document.getElementById('chargeNeige').value) || 0;
+
+    // Calculs selon la démarche CECOBOIS
+    const wvEtage = cv * ltEtage;
+    const wvRC = cv * ltRC;
+    const wv = wvEtage + wvRC;
+
+    const wmEtage = cm * ltEtage;
+    const wmRC = cm * ltRC;
+    const wm = wmEtage + wmRC;
+
+    const wt = wv + wm;
+    const wf = wv * 1.5 + wm * 1.25;
+
+    // Stockage des résultats
+    resultatsCalcul = {
+        wv: wv,
+        wm: wm,
+        wt: wt,
+        wf: wf,
+        chargeEtage: wvEtage + wmEtage,
+        chargeRC: wvRC + wmRC,
+        totalLineaire: wt,
+        totalLinearePond: wf
+    };
+
+    // Affichage
+    document.getElementById('totalLineaire').textContent = Math.round(wt);
+    document.getElementById('totalLinearePond').textContent = Math.round(wf);
+    document.getElementById('chargeEtage').textContent = Math.round(resultatsCalcul.chargeEtage);
+    document.getElementById('chargeRC').textContent = Math.round(resultatsCalcul.chargeRC);
+
+    calculerStructure();
 }
 
-function calculerChargesLineaires() {
-    const largeurTributaire = obtenirLargeurTributaireAjustee();
+function calculerStructure() {
+    const typePoutre = document.getElementById('typePoutre').value;
     
-    if (calculateurData.typeEtage === 'deux') {
-        // Calculs pour deux étages avec largeurs différentes
-        const WV_etage = calculateurData.chargeVive * largeurTributaire.etage;
-        const WM_etage = calculateurData.chargeMorte * largeurTributaire.etage;
-        const WN_etage = calculateurData.chargeNeige * largeurTributaire.etage;
-        
-        const WV_rc = calculateurData.chargeVive * largeurTributaire.rc;
-        const WM_rc = calculateurData.chargeMorte * largeurTributaire.rc;
-        const WN_rc = calculateurData.chargeNeige * largeurTributaire.rc;
-        
-        // Charges totales (étage + RC)
-        const WV = WV_etage + WV_rc;
-        const WM = WM_etage + WM_rc;
-        const WN = WN_etage + WN_rc;
-        
-        const WT = WV + WM + WN;
-        const WF = WV * 1.5 + WM * 1.25 + WN * 1.5;
-        
-        return { 
-            WV, WM, WN, WT, WF,
-            deuxEtages: {
-                etage: { WV: WV_etage, WM: WM_etage, WN: WN_etage, WT: WV_etage + WM_etage + WN_etage },
-                rc: { WV: WV_rc, WM: WM_rc, WN: WN_rc, WT: WV_rc + WM_rc + WN_rc }
-            }
-        };
+    if (typePoutre === 'versalam') {
+        calculerVersaLam();
     } else {
-        // Calculs pour un étage
-        const WV = calculateurData.chargeVive * largeurTributaire;
-        const WM = calculateurData.chargeMorte * largeurTributaire;
-        const WN = calculateurData.chargeNeige * largeurTributaire;
-        
-        const WT = WV + WM + WN;
-        const WF = WV * 1.5 + WM * 1.25 + WN * 1.5;
-        
-        return { WV, WM, WN, WT, WF };
+        // Pour les poutrelles ajourées, afficher un message
+        afficherResultat('Configuration non supportée', 'Les poutrelles ajourées nécessitent une analyse spécialisée avec logiciel.', false);
     }
 }
 
 function calculerVersaLam() {
-    const charges = calculerChargesLineaires();
-    const porteeDecimale = obtenirPorteeDecimale();
-    const largeurTributaire = obtenirLargeurTributaireAjustee();
-    
-    // Déterminer la largeur tributaire effective pour les tables
-    let largeurTableEffective;
-    if (calculateurData.typeEtage === 'deux') {
-        // Pour deux étages, prendre la plus grande largeur
-        largeurTableEffective = Math.max(largeurTributaire.etage, largeurTributaire.rc);
-    } else {
-        largeurTableEffective = largeurTributaire;
+    const typeUsage = document.getElementById('typeUsage').value;
+    const portee = parseFloat(document.getElementById('portee').value) || 0;
+    const inches = parseInt(document.getElementById('porteeInches').value) || 0;
+    const porteeTotal = portee + (inches / 12);
+    const optimiser = document.getElementById('optimiser').value;
+
+    if (porteeTotal <= 0 || resultatsCalcul.wf <= 0) {
+        afficherResultat('Données incomplètes', 'Veuillez remplir tous les champs requis.', false);
+        return;
     }
-    
-    // Trouver largeur tributaire la plus proche dans les tables
-    const largeursPossibles = [6, 8, 10, 12, 14, 16, 18, 20];
-    const largeurTable = largeursPossibles.reduce((prev, curr) => 
-        Math.abs(curr - largeurTableEffective) < Math.abs(prev - largeurTableEffective) ? curr : prev
-    );
 
-    // Sélectionner la table appropriée
-    const tables = calculateurData.typeEtage === 'deux' ? tablesVersaLam.deuxEtages : tablesVersaLam.unEtage;
-    let solutionOptimale = null;
-    const hauteursPossibles = ['7.25', '9.5', '11.875', '14', '16', '18'];
+    // Sélection de la table appropriée
+    let tableData = null;
+    const neige = parseFloat(document.getElementById('chargeNeige').value) || 0;
 
-    // Limites généreuses basées sur les exemples officiels (charges par pli)
-    const limitesParHauteur = {
-        '7.25': { WV: 500, WT: 700, WF: 900 },
-        '9.5': { WV: 600, WT: 850, WF: 1100 },
-        '11.875': { WV: 700, WT: 1000, WF: 1350 },
-        '14': { WV: 850, WT: 1200, WF: 1600 },
-        '16': { WV: 1000, WT: 1400, WF: 1900 },
-        '18': { WV: 1200, WT: 1700, WF: 2300 }
-    };
-
-    hauteursPossibles.forEach(hauteur => {
-        const tableHauteur = tables[hauteur];
-        if (!tableHauteur || !tableHauteur[largeurTable]) return;
-
-        [2, 3, 4].forEach(plis => {
-            // Vérifier contrainte de largeur SEULEMENT si activée
-            const largeurPoutre = plis * 1.75;
-            if (calculateurData.activerLargeurMax && largeurPoutre > calculateurData.largeurMax) return;
-
-            // Vérifier contrainte de hauteur SEULEMENT si activée
-            if (calculateurData.activerHauteurMax && parseFloat(hauteur) > calculateurData.hauteurMax) return;
-
-            // Vérifier portée dans les tables
-            const porteeTableMax = tableHauteur[largeurTable][plis];
-            if (!porteeTableMax || porteeDecimale > porteeTableMax) return;
-
-            // Division par nombre de plis pour comparer aux limites (méthodologie P1)
-            const WV_parPli = charges.WV / plis;
-            const WT_parPli = charges.WT / plis;  
-            const WF_parPli = charges.WF / plis;
-
-            // Vérifier si les charges divisées sont dans les limites
-            const limites = limitesParHauteur[hauteur];
-            const chargesValides = 
-                WV_parPli <= limites.WV && 
-                WT_parPli <= limites.WT && 
-                WF_parPli <= limites.WF;
-
-            if (!chargesValides) return;
-
-            // Score selon optimisation
-            let score;
-            if (calculateurData.typeOptimisation === 'plis') {
-                score = plis * 1000 + parseFloat(hauteur);
+    switch(typeUsage) {
+        case 'plancher-1-etage':
+            tableData = TABLES_VERSALAM.plancher_1_etage;
+            break;
+        case 'plancher-2-etages':
+            tableData = TABLES_VERSALAM.plancher_2_etages;
+            break;
+        case 'linteau-toit':
+            if (neige <= 25) {
+                tableData = TABLES_VERSALAM.linteau_toit_neige20;
             } else {
-                score = parseFloat(hauteur) * 1000 + plis;
+                tableData = TABLES_VERSALAM.linteau_toit_neige40;
             }
-            
-            if (!solutionOptimale || score < solutionOptimale.score) {
-                solutionOptimale = {
-                    hauteur: hauteur + '"',
-                    largeur: largeurPoutre.toFixed(2) + '"',
-                    configuration: plis + ' plis',
-                    porteeMax: porteeTableMax.toFixed(1) + ' pi.',
-                    valide: true,
-                    type: 'Versa-Lam',
-                    score: score,
-                    plis: plis,
-                    chargesParPli: {
-                        WV: WV_parPli.toFixed(1),
-                        WT: WT_parPli.toFixed(1),
-                        WF: WF_parPli.toFixed(1)
-                    }
-                };
-            }
-        });
-    });
-
-    if (!solutionOptimale) {
-        return { 
-            valide: false, 
-            message: 'Aucune configuration valide - Charges ou portée excessive',
-            details: {
-                WV: charges.WV.toFixed(1),
-                WT: charges.WT.toFixed(1),  
-                WF: charges.WF.toFixed(1)
-            }
-        };
-    }
-
-    return solutionOptimale;
-}
-
-function calculerPoutrelliesAjourees() {
-    let tableType = '';
-    let nomType = '';
-    
-    switch(calculateurData.typePoutre) {
-        case 'ajouree-connecteurs':
-            tableType = 'connecteursMetalliques';
-            nomType = 'Connecteurs métalliques';
-            break;
-        case 'ajouree-ame-metal':
-            tableType = 'ameMetallique';
-            nomType = 'Âme métallique';
-            break;
-        case 'ajouree-bois-dente':
-            tableType = 'boisDente';
-            nomType = 'Bois denté collé';
             break;
         default:
-            return { valide: false };
+            afficherResultat('Type d\'usage non supporté', 'Veuillez sélectionner un type d\'usage valide.', false);
+            return;
     }
 
-    const charges = calculerChargesLineaires();
-    const porteeDecimale = obtenirPorteeDecimale();
-    const tables = tablesPoutrelliesAjourees[tableType];
-    const hauteursPossibles = ['11.875', '14', '16', '18'];
-    
-    let solutionOptimale = null;
+    if (!tableData) {
+        afficherResultat('Table non trouvée', 'Aucune table de données disponible pour cette configuration.', false);
+        return;
+    }
 
-    hauteursPossibles.forEach(hauteur => {
-        const cle = `${hauteur}x${calculateurData.espacementPoutrelles}`;
-        const donnees = tables[cle];
-        
-        if (!donnees) return;
-        
-        // Vérifier portée et charge
-        const porteeOK = porteeDecimale <= donnees.portee;
-        const chargeOK = charges.WF <= donnees.chargeMax;
-        
-        if (porteeOK && chargeOK) {
-            if (!solutionOptimale || parseFloat(hauteur) < parseFloat(solutionOptimale.hauteur)) {
-                solutionOptimale = {
-                    hauteur: hauteur + '"',
-                    largeur: '2x3 ou 2x4',
-                    configuration: `${calculateurData.espacementPoutrelles}" c.c.`,
-                    porteeMax: donnees.portee.toFixed(1) + ' pi.',
-                    valide: true,
-                    type: nomType,
-                    methodeCalcul: 'Analyse par treillis'
-                };
+    // Recherche de solutions
+    const solutions = trouverSolutions(tableData, porteeTotal, resultatsCalcul.wf, optimiser);
+    
+    if (solutions.length > 0) {
+        const meilleureSolution = solutions[0];
+        afficherResultat(
+            `${meilleureSolution.plis} plis de 1¾" × ${meilleureSolution.hauteur}" hauteur`,
+            `Capacité: ${meilleureSolution.capacite} lb/pi. - Charge appliquée: ${Math.round(resultatsCalcul.wf)} lb/pi.`,
+            true
+        );
+        afficherSolutions(solutions);
+    } else {
+        afficherResultat(
+            'Aucune solution trouvée',
+            'Les charges sont trop élevées pour la portée demandée. Considérez réduire la portée ou les charges.',
+            false
+        );
+    }
+}
+
+function trouverSolutions(tableData, portee, chargeAppliquee, optimiser) {
+    const solutions = [];
+    const hauteurs = Object.keys(tableData);
+    
+    for (const hauteur of hauteurs) {
+        for (const plis of ['2', '3']) {
+            if (!tableData[hauteur] || !tableData[hauteur][plis]) continue;
+            
+            // Interpolation pour la portée exacte
+            const capacite = interpolerCapacite(tableData[hauteur][plis], portee);
+            
+            if (capacite && capacite >= chargeAppliquee) {
+                solutions.push({
+                    hauteur: hauteur,
+                    plis: plis,
+                    capacite: Math.round(capacite),
+                    chargeAppliquee: Math.round(chargeAppliquee),
+                    marge: Math.round(capacite - chargeAppliquee),
+                    ratio: capacite / chargeAppliquee
+                });
             }
         }
-    });
-
-    return solutionOptimale || { 
-        valide: false, 
-        message: `Portée ou charges excessives pour ${calculateurData.espacementPoutrelles}" c.c.`
-    };
-}
-
-function calculerFleches(resultatsStructure) {
-    if (!resultatsStructure.valide) return {};
-
-    const charges = calculerChargesLineaires();
-    let E, I;
-    const h = parseFloat(resultatsStructure.hauteur) || 12;
-    const L = obtenirPorteeDecimale() * 12;
-
-    if (calculateurData.typePoutre === 'versalam') {
-        E = 1800000;
-        const b = parseFloat(resultatsStructure.largeur) || 3.5;
-        I = (b * Math.pow(h, 3)) / 12;
-    } else {
-        E = 1600000;
-        I = Math.pow(h, 3) / 10;
     }
 
-    const flecheVive = (5 * charges.WV * Math.pow(L, 4)) / (384 * E * I);
-    const flecheTotale = (5 * charges.WT * Math.pow(L, 4)) / (384 * E * I);
-    
-    return {
-        flecheVive: flecheVive.toFixed(3),
-        flecheTotale: flecheTotale.toFixed(3),
-        limiteVive: (L / 360).toFixed(3),
-        limiteTotale: (L / 240).toFixed(3)
-    };
-}
-
-function calculerStructure() {
-    let resultatsStructure;
-    
-    if (calculateurData.typePoutre === 'versalam') {
-        resultatsStructure = calculerVersaLam();
-    } else {
-        resultatsStructure = calculerPoutrelliesAjourees();
+    // Tri selon l'optimisation demandée
+    if (optimiser === 'moins-plis') {
+        solutions.sort((a, b) => {
+            if (a.plis !== b.plis) return parseInt(a.plis) - parseInt(b.plis);
+            return parseFloat(a.hauteur) - parseFloat(b.hauteur);
+        });
+    } else if (optimiser === 'plus-plis') {
+        solutions.sort((a, b) => {
+            if (a.plis !== b.plis) return parseInt(b.plis) - parseInt(a.plis);
+            return parseFloat(a.hauteur) - parseFloat(b.hauteur);
+        });
+    } else { // hauteur-min
+        solutions.sort((a, b) => {
+            return parseFloat(a.hauteur) - parseFloat(b.hauteur);
+        });
     }
-    
-    if (resultatsStructure.valide) {
-        const fleches = calculerFleches(resultatsStructure);
-        return { ...resultatsStructure, ...fleches };
-    }
-    
-    return resultatsStructure;
+
+    return solutions;
 }
 
-// =============================================================================
-// FONCTIONS INTERFACE
-// =============================================================================
-
-function mettreAJourAffichagePortee() {
-    const porteeDecimale = obtenirPorteeDecimale();
-    document.getElementById('porteeDecimale').textContent = `= ${porteeDecimale.toFixed(2)} pi.`;
-}
-
-function mettreAJourAffichageLargeurTributaire() {
-    if (calculateurData.typeEtage === 'deux') {
-        const largeurAjustee = obtenirLargeurTributaireAjustee();
-        
-        const largeurAjusteeEtageElement = document.getElementById('largeurAjusteeEtage');
-        const largeurAjusteeRCElement = document.getElementById('largeurAjusteeRC');
-        
-        if (calculateurData.typePortee === 'continue') {
-            largeurAjusteeEtageElement.textContent = `Ajustée: ${largeurAjustee.etage.toFixed(1)} pi.`;
-            largeurAjusteeRCElement.textContent = `Ajustée: ${largeurAjustee.rc.toFixed(1)} pi.`;
-            largeurAjusteeEtageElement.style.display = 'block';
-            largeurAjusteeRCElement.style.display = 'block';
-        } else {
-            largeurAjusteeEtageElement.style.display = 'none';
-            largeurAjusteeRCElement.style.display = 'none';
-        }
-    } else {
-        const largeurAjusteeElement = document.getElementById('largeurAjustee');
-        if (calculateurData.typePortee === 'continue') {
-            const largeurAjustee = obtenirLargeurTributaireAjustee();
-            largeurAjusteeElement.textContent = `Ajustée: ${largeurAjustee.toFixed(1)} pi.`;
-            largeurAjusteeElement.style.display = 'block';
-        } else {
-            largeurAjusteeElement.style.display = 'none';
+function interpolerCapacite(donnees, portee) {
+    const largeurs = Object.keys(donnees).map(Number).sort((a, b) => a - b);
+    
+    // Si la portée correspond exactement à une largeur
+    for (const largeur of largeurs) {
+        if (Math.abs(portee - largeur) < 0.01) {
+            return donnees[largeur];
         }
     }
-}
-
-function mettreAJourAffichageCharges() {
-    const charges = calculerChargesLineaires();
     
-    document.getElementById('chargeTotal').textContent = `${charges.WT.toFixed(0)} lb/pi.ca.`;
-    document.getElementById('chargeLineaire').textContent = `${charges.WF.toFixed(0)} lb/pi. (pond.)`;
-    
-    // Afficher détails pour deux étages
-    const chargesDetailleesElement = document.getElementById('chargesDetaillees');
-    if (calculateurData.typeEtage === 'deux' && charges.deuxEtages) {
-        document.getElementById('chargeEtage').textContent = `${charges.deuxEtages.etage.WT.toFixed(0)} lb/pi.ca.`;
-        document.getElementById('chargeRC').textContent = `${charges.deuxEtages.rc.WT.toFixed(0)} lb/pi.ca.`;
-        chargesDetailleesElement.style.display = 'block';
-    } else {
-        chargesDetailleesElement.style.display = 'none';
-    }
-}
-
-function afficherLargeurMax() {
-    const largeurMaxContainer = document.getElementById('largeurMaxContainer');
-    largeurMaxContainer.style.display = calculateurData.activerLargeurMax ? 'block' : 'none';
-}
-
-function afficherHauteurMax() {
-    const hauteurMaxContainer = document.getElementById('hauteurMaxContainer');
-    hauteurMaxContainer.style.display = calculateurData.activerHauteurMax ? 'block' : 'none';
-}
-
-function afficherEspacement() {
-    const espacementContainer = document.getElementById('espacementContainer');
-    espacementContainer.style.display = calculateurData.typePoutre.startsWith('ajouree') ? 'block' : 'none';
-}
-
-function afficherTypeEtage() {
-    const typeEtageContainer = document.getElementById('typeEtageContainer');
-    const optimisationContainer = document.getElementById('optimisationContainer');
-    
-    if (calculateurData.typePoutre === 'versalam') {
-        typeEtageContainer.style.display = 'block';
-        optimisationContainer.style.display = 'block';
-    } else {
-        typeEtageContainer.style.display = 'none';
-        optimisationContainer.style.display = 'none';
-    }
-    
-    // Gérer l'affichage des largeurs tributaires
-    afficherLargeursTributaires();
-}
-
-function afficherLargeursTributaires() {
-    const largeurUnEtage = document.getElementById('largeurUnEtage');
-    const largeurDeuxEtages = document.getElementById('largeurDeuxEtages');
-    
-    if (calculateurData.typeEtage === 'deux' && calculateurData.typePoutre === 'versalam') {
-        largeurUnEtage.style.display = 'none';
-        largeurDeuxEtages.style.display = 'block';
-    } else {
-        largeurUnEtage.style.display = 'block';
-        largeurDeuxEtages.style.display = 'none';
-    }
-}
-
-function mettreAJourResultats() {
-    const resultats = calculerStructure();
-    const resultatsContainer = document.getElementById('resultatsContainer');
-    
-    resultatsContainer.className = resultats.valide ? 'bg-green-50 p-4 rounded-lg' : 'bg-red-50 p-4 rounded-lg';
-    
-    document.getElementById('typeStructure').textContent = resultats.type || 'Structure';
-    
-    const methodeElement = document.getElementById('methodeCalcul');
-    if (resultats.methodeCalcul) {
-        methodeElement.textContent = resultats.methodeCalcul;
-        methodeElement.style.display = 'block';
-    } else {
-        methodeElement.style.display = 'none';
-    }
-    
-    if (resultats.valide) {
-        document.getElementById('hauteurResultat').textContent = resultats.hauteur;
-        document.getElementById('largeurResultat').textContent = resultats.largeur;
-        document.getElementById('configurationResultat').textContent = resultats.configuration;
-        document.getElementById('porteeMaxResultat').textContent = resultats.porteeMax;
+    // Interpolation linéaire
+    for (let i = 0; i < largeurs.length - 1; i++) {
+        const l1 = largeurs[i];
+        const l2 = largeurs[i + 1];
         
-        document.getElementById('dimensionsContainer').style.display = 'block';
+        if (portee >= l1 && portee <= l2) {
+            const c1 = donnees[l1];
+            const c2 = donnees[l2];
+            const ratio = (portee - l1) / (l2 - l1);
+            return c1 + (c2 - c1) * ratio;
+        }
+    }
+    
+    // Extrapolation au-delà des limites (avec prudence)
+    if (portee < largeurs[0]) {
+        // Portée trop courte - utiliser la première valeur
+        return donnees[largeurs[0]];
+    } else if (portee > largeurs[largeurs.length - 1]) {
+        // Portée trop longue - pas de solution
+        return null;
+    }
+    
+    return null;
+}
+
+function afficherResultat(titre, description, valide) {
+    const resultatDiv = document.getElementById('resultatStructure');
+    resultatDiv.className = valide ? 'result-valid p-2 rounded text-sm' : 'result-invalid p-2 rounded text-sm';
+    resultatDiv.innerHTML = `${valide ? '✓' : '✗'} ${titre}<br>${description}`;
+}
+
+function afficherSolutions(solutions) {
+    const solutionsDiv = document.getElementById('solutionsList');
+    solutionsDiv.innerHTML = '';
+
+    solutions.slice(0, 10).forEach((solution, index) => {
+        const solutionDiv = document.createElement('div');
+        solutionDiv.className = 'p-2 bg-white border rounded text-xs';
+        solutionDiv.innerHTML = `
+            <div class="font-medium">${solution.plis} plis × ${solution.hauteur}"</div>
+            <div class="text-gray-600">
+                Capacité: ${solution.capacite} lb/pi<br>
+                Marge: ${solution.marge} lb/pi (${(((solution.ratio - 1) * 100)).toFixed(1)}%)
+            </div>
+        `;
         
-        if (resultats.flecheVive) {
-            const flecheViveElement = document.getElementById('flecheViveResultat');
-            const flecheTotaleElement = document.getElementById('flecheTotaleResultat');
-            
-            const flecheViveValide = parseFloat(resultats.flecheVive) <= parseFloat(resultats.limiteVive);
-            const flecheTotaleValide = parseFloat(resultats.flecheTotale) <= parseFloat(resultats.limiteTotale);
-            
-            flecheViveElement.textContent = `${resultats.flecheVive}"≤${resultats.limiteVive}"`;
-            flecheViveElement.className = `font-mono ${flecheViveValide ? 'fleche-valid' : 'fleche-invalid'}`;
-            
-            flecheTotaleElement.textContent = `${resultats.flecheTotale}"≤${resultats.limiteTotale}"`;
-            flecheTotaleElement.className = `font-mono ${flecheTotaleValide ? 'fleche-valid' : 'fleche-invalid'}`;
-            
-            document.getElementById('flechesContainer').style.display = 'block';
-        } else {
-            document.getElementById('flechesContainer').style.display = 'none';
+        if (index === 0) {
+            solutionDiv.className += ' border-green-500 bg-green-50';
         }
         
-        const statusElement = document.getElementById('statusMessage');
-        statusElement.textContent = '✓ Configuration valide';
-        statusElement.className = 'mt-3 p-2 rounded text-center text-sm font-semibold result-valid';
-        
-    } else {
-        document.getElementById('dimensionsContainer').style.display = 'none';
-        document.getElementById('flechesContainer').style.display = 'none';
-        
-        const statusElement = document.getElementById('statusMessage');
-        statusElement.textContent = `✗ ${resultats.message || 'Configuration non valide'}`;
-        statusElement.className = 'mt-3 p-2 rounded text-center text-sm font-semibold result-invalid';
+        solutionsDiv.appendChild(solutionDiv);
+    });
+
+    if (solutions.length > 10) {
+        const moreDiv = document.createElement('div');
+        moreDiv.className = 'text-xs text-gray-500 text-center';
+        moreDiv.textContent = `... et ${solutions.length - 10} autres solutions`;
+        solutionsDiv.appendChild(moreDiv);
     }
 }
-
-function mettreAJourInterface() {
-    mettreAJourAffichagePortee();
-    mettreAJourAffichageLargeurTributaire();
-    mettreAJourAffichageCharges();
-    afficherEspacement();
-    afficherTypeEtage();
-    afficherLargeurMax();
-    afficherHauteurMax();
-    mettreAJourResultats();
-}
-
-// =============================================================================
-// GESTION DES ÉVÉNEMENTS
-// =============================================================================
-
-function configurerEvenements() {
-    document.getElementById('typePoutre').addEventListener('change', (e) => {
-        calculateurData.typePoutre = e.target.value;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('espacementPoutrelles').addEventListener('change', (e) => {
-        calculateurData.espacementPoutrelles = parseFloat(e.target.value);
-        mettreAJourInterface();
-    });
-
-    document.getElementById('porteePieds').addEventListener('input', (e) => {
-        calculateurData.portee.pieds = parseInt(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('porteePouces').addEventListener('input', (e) => {
-        calculateurData.portee.pouces = parseInt(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('typePortee').addEventListener('change', (e) => {
-        calculateurData.typePortee = e.target.value;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('typeEtage').addEventListener('change', (e) => {
-        calculateurData.typeEtage = e.target.value;
-        mettreAJourInterface();
-    });
-
-    // Événements pour largeur tributaire simple
-    document.getElementById('largeurTributaire').addEventListener('input', (e) => {
-        calculateurData.largeurTributaire = parseFloat(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    // Événements pour largeurs tributaires séparées (deux étages)
-    document.getElementById('largeurTributaireEtage').addEventListener('input', (e) => {
-        calculateurData.largeurTributaireEtage = parseFloat(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('largeurTributaireRC').addEventListener('input', (e) => {
-        calculateurData.largeurTributaireRC = parseFloat(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('chargeMorte').addEventListener('input', (e) => {
-        calculateurData.chargeMorte = parseFloat(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('chargeVive').addEventListener('input', (e) => {
-        calculateurData.chargeVive = parseFloat(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('chargeNeige').addEventListener('input', (e) => {
-        calculateurData.chargeNeige = parseFloat(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('activerLargeurMax').addEventListener('change', (e) => {
-        calculateurData.activerLargeurMax = e.target.checked;
-        afficherLargeurMax();
-        mettreAJourInterface();
-    });
-
-    document.getElementById('largeurMax').addEventListener('input', (e) => {
-        calculateurData.largeurMax = parseFloat(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('activerHauteurMax').addEventListener('change', (e) => {
-        calculateurData.activerHauteurMax = e.target.checked;
-        afficherHauteurMax();
-        mettreAJourInterface();
-    });
-
-    document.getElementById('hauteurMax').addEventListener('input', (e) => {
-        calculateurData.hauteurMax = parseFloat(e.target.value) || 0;
-        mettreAJourInterface();
-    });
-
-    document.getElementById('typeOptimisation').addEventListener('change', (e) => {
-        calculateurData.typeOptimisation = e.target.value;
-        mettreAJourInterface();
-    });
-}
-
-// =============================================================================
-// INITIALISATION
-// =============================================================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    configurerEvenements();
-    mettreAJourInterface();
-    
-    console.log('Calculateur mis à jour - Deux largeurs tributaires pour deux étages');
-});
-
-// =============================================================================
-// API EXTERNE
-// =============================================================================
-
-window.CalculateurPoutres = {
-    obtenirResultats: () => calculerStructure(),
-    obtenirCharges: () => calculerChargesLineaires(),
-    obtenirDonnees: () => calculateurData
-};
