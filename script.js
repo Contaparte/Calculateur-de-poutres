@@ -4,6 +4,16 @@
 
 const tablesVersaLam = {
     unEtage: {
+        '7.25': {
+            6: { 2: 8.5, 3: 9.75, 4: 10.75 },
+            8: { 2: 7.75, 3: 8.92, 4: 9.8 },
+            10: { 2: 7.2, 3: 8.25, 4: 9.1 },
+            12: { 2: 6.75, 3: 7.75, 4: 8.5 },
+            14: { 2: 6.4, 3: 7.35, 4: 8.1 },
+            16: { 2: 6.0, 3: 6.9, 4: 7.6 },
+            18: { 2: 5.7, 3: 6.55, 4: 7.2 },
+            20: { 2: 5.4, 3: 6.2, 4: 6.8 }
+        },
         '9.5': {
             6: { 2: 10.42, 3: 12.0, 4: 13.17 },
             8: { 2: 9.5, 3: 10.92, 4: 12.0 },
@@ -238,15 +248,16 @@ function calculerVersaLam() {
     // Sélectionner la table appropriée
     const tables = calculateurData.typeEtage === 'deux' ? tablesVersaLam.deuxEtages : tablesVersaLam.unEtage;
     let solutionOptimale = null;
-    const hauteursPossibles = ['9.5', '11.875', '14', '16', '18'];
+    const hauteursPossibles = ['7.25', '9.5', '11.875', '14', '16', '18'];
 
-    // Limites approximatives par hauteur (corrigées selon les vraies tables)
+    // Limites par hauteur basées sur l'exemple P1 (charges par pli)
     const limitesParHauteur = {
-        '9.5': { WV: 350, WT: 480, WF: 650 },
-        '11.875': { WV: 500, WT: 700, WF: 950 },
-        '14': { WV: 700, WT: 980, WF: 1350 },
-        '16': { WV: 900, WT: 1250, WF: 1700 },
-        '18': { WV: 1100, WT: 1550, WF: 2100 }
+        '7.25': { WV: 200, WT: 280, WF: 380 },
+        '9.5': { WV: 300, WT: 420, WF: 570 },
+        '11.875': { WV: 450, WT: 630, WF: 850 },
+        '14': { WV: 650, WT: 900, WF: 1200 },
+        '16': { WV: 850, WT: 1180, WF: 1600 },
+        '18': { WV: 1050, WT: 1450, WF: 1950 }
     };
 
     hauteursPossibles.forEach(hauteur => {
@@ -265,12 +276,17 @@ function calculerVersaLam() {
             const porteeTableMax = tableHauteur[largeurTable][plis];
             if (!porteeTableMax || porteeDecimale > porteeTableMax) return;
 
-            // Vérifier les charges totales (sans division par plis)
+            // Division par nombre de plis pour comparer aux limites (méthodologie P1)
+            const WV_parPli = charges.WV / plis;
+            const WT_parPli = charges.WT / plis;  
+            const WF_parPli = charges.WF / plis;
+
+            // Vérifier si les charges divisées sont dans les limites
             const limites = limitesParHauteur[hauteur];
             const chargesValides = 
-                charges.WV <= limites.WV && 
-                charges.WT <= limites.WT && 
-                charges.WF <= limites.WF;
+                WV_parPli <= limites.WV && 
+                WT_parPli <= limites.WT && 
+                WF_parPli <= limites.WF;
 
             if (!chargesValides) return;
 
@@ -292,10 +308,10 @@ function calculerVersaLam() {
                     type: 'Versa-Lam',
                     score: score,
                     plis: plis,
-                    chargesUtilisees: {
-                        WV: charges.WV.toFixed(0),
-                        WT: charges.WT.toFixed(0),
-                        WF: charges.WF.toFixed(0)
+                    chargesParPli: {
+                        WV: WV_parPli.toFixed(1),
+                        WT: WT_parPli.toFixed(1),
+                        WF: WF_parPli.toFixed(1)
                     }
                 };
             }
