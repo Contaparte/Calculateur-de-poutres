@@ -117,7 +117,6 @@ function updateLargeursEtages() {
     
     for (let i = 1; i <= nbEtages; i++) {
         const etageLabel = `Étage ${i}`;
-        const defaultValue = i === 1 ? '13.1' : '9.17';
         
         html += `
             <div class="largeur-etage">
@@ -125,9 +124,9 @@ function updateLargeursEtages() {
                     <div class="input-field">
                         <label for="ltEtage${i}">L.T. ${etageLabel}</label>
                         <div class="dimension-input">
-                            <input type="number" id="ltEtage${i}Pieds" step="0.1" min="0" value="${Math.floor(defaultValue)}">
+                            <input type="number" id="ltEtage${i}Pieds" step="0.1" min="0">
                             <span>pi</span>
-                            <input type="number" id="ltEtage${i}Pouces" step="0.1" min="0" max="11.9" value="${((defaultValue % 1) * 12).toFixed(1)}">
+                            <input type="number" id="ltEtage${i}Pouces" step="0.1" min="0" max="11.9">
                             <span>po</span>
                         </div>
                     </div>
