@@ -1,73 +1,120 @@
-// Calculateur Universel de Poutres et Poutrelles
-// Script JavaScript avec méthode de calcul corrigée
-
 // =============================================================================
-// DONNÉES ET TABLES AVEC LIMITES DE CHARGES
+// TABLES DE DONNÉES
 // =============================================================================
 
-// Tables Versa-Lam corrigées selon documentation officielle
 const tablesVersaLam = {
     unEtage: {
         '9.5': {
-            6: { 2: 11.33, 3: 13.0, 4: 14.25 },
-            8: { 2: 10.42, 3: 11.92, 4: 13.08 },
-            10: { 2: 9.67, 3: 11.08, 4: 12.25 },
-            12: { 2: 9.0, 3: 10.33, 4: 11.42 },
-            14: { 2: 8.42, 3: 9.67, 4: 10.67 },
-            16: { 2: 7.92, 3: 9.08, 4: 10.0 },
-            18: { 2: 7.5, 3: 8.58, 4: 9.42 },
-            20: { 2: 7.08, 3: 8.08, 4: 8.92 }
+            6: { 2: 10.42, 3: 12.0, 4: 13.17 },
+            8: { 2: 9.5, 3: 10.92, 4: 12.0 },
+            10: { 2: 8.83, 3: 10.08, 4: 11.08 },
+            12: { 2: 8.25, 3: 9.42, 4: 10.33 },
+            14: { 2: 7.75, 3: 8.83, 4: 9.67 },
+            16: { 2: 7.33, 3: 8.33, 4: 9.17 },
+            18: { 2: 6.92, 3: 7.92, 4: 8.67 },
+            20: { 2: 6.58, 3: 7.58, 4: 8.25 }
         },
         '11.875': {
-            6: { 2: 14.17, 3: 16.25, 4: 17.83 },
-            8: { 2: 13.0, 3: 14.92, 4: 16.33 },
-            10: { 2: 12.17, 3: 13.92, 4: 15.33 },
-            12: { 2: 11.33, 3: 13.0, 4: 14.33 },
-            14: { 2: 10.67, 3: 12.25, 4: 13.5 },
-            16: { 2: 10.08, 3: 11.58, 4: 12.75 },
-            18: { 2: 9.58, 3: 10.92, 4: 12.08 },
-            20: { 2: 9.08, 3: 10.42, 4: 11.42 }
+            6: { 2: 13.08, 3: 15.0, 4: 16.5 },
+            8: { 2: 11.92, 3: 13.58, 4: 15.0 },
+            10: { 2: 11.0, 3: 12.67, 4: 13.92 },
+            12: { 2: 10.25, 3: 11.83, 4: 13.0 },
+            14: { 2: 9.67, 3: 11.08, 4: 12.17 },
+            16: { 2: 9.17, 3: 10.5, 4: 11.5 },
+            18: { 2: 8.75, 3: 10.0, 4: 10.92 },
+            20: { 2: 8.33, 3: 9.58, 4: 10.42 }
         },
         '14': {
-            6: { 2: 16.75, 3: 19.08, 4: 21.0 },
-            8: { 2: 15.33, 3: 17.58, 4: 19.25 },
-            10: { 2: 14.33, 3: 16.42, 4: 18.0 },
-            12: { 2: 13.42, 3: 15.42, 4: 16.92 },
-            14: { 2: 12.67, 3: 14.5, 4: 15.92 },
-            16: { 2: 11.92, 3: 13.67, 4: 15.0 },
-            18: { 2: 11.33, 3: 13.0, 4: 14.25 },
-            20: { 2: 10.75, 3: 12.33, 4: 13.58 }
+            6: { 2: 15.42, 3: 17.67, 4: 19.42 },
+            8: { 2: 14.0, 3: 16.08, 4: 17.67 },
+            10: { 2: 13.0, 3: 14.92, 4: 16.42 },
+            12: { 2: 12.17, 3: 13.92, 4: 15.33 },
+            14: { 2: 11.5, 3: 13.17, 4: 14.5 },
+            16: { 2: 10.83, 3: 12.42, 4: 13.67 },
+            18: { 2: 10.33, 3: 11.83, 4: 13.0 },
+            20: { 2: 9.83, 3: 11.33, 4: 12.42 }
         },
         '16': {
-            6: { 2: 19.08, 3: 21.83, 4: 23.92 },
-            8: { 2: 17.58, 3: 20.0, 4: 22.0 },
-            10: { 2: 16.33, 3: 18.75, 4: 20.58 },
-            12: { 2: 15.33, 3: 17.67, 4: 19.42 },
-            14: { 2: 14.5, 3: 16.67, 4: 18.33 },
-            16: { 2: 13.75, 3: 15.75, 4: 17.33 },
-            18: { 2: 13.08, 3: 15.0, 4: 16.5 },
-            20: { 2: 12.5, 3: 14.33, 4: 15.75 }
+            6: { 2: 17.67, 3: 20.17, 4: 22.25 },
+            8: { 2: 16.0, 3: 18.33, 4: 20.17 },
+            10: { 2: 14.83, 3: 17.0, 4: 18.75 },
+            12: { 2: 13.92, 3: 15.92, 4: 17.5 },
+            14: { 2: 13.17, 3: 15.08, 4: 16.58 },
+            16: { 2: 12.5, 3: 14.33, 4: 15.75 },
+            18: { 2: 11.92, 3: 13.67, 4: 15.0 },
+            20: { 2: 11.42, 3: 13.08, 4: 14.33 }
         },
         '18': {
-            6: { 2: 21.5, 3: 24.5, 4: 26.83 },
-            8: { 2: 19.75, 3: 22.5, 4: 24.75 },
-            10: { 2: 18.42, 3: 21.08, 4: 23.08 },
-            12: { 2: 17.33, 3: 19.83, 4: 21.75 },
-            14: { 2: 16.42, 3: 18.75, 4: 20.58 },
-            16: { 2: 15.58, 3: 17.83, 4: 19.58 },
-            18: { 2: 14.83, 3: 17.0, 4: 18.67 },
-            20: { 2: 14.17, 3: 16.25, 4: 17.83 }
+            6: { 2: 19.83, 3: 22.75, 4: 25.0 },
+            8: { 2: 18.0, 3: 20.67, 4: 22.75 },
+            10: { 2: 16.75, 3: 19.17, 4: 21.08 },
+            12: { 2: 15.67, 3: 17.92, 4: 19.67 },
+            14: { 2: 14.83, 3: 16.92, 4: 18.58 },
+            16: { 2: 14.08, 3: 16.08, 4: 17.67 },
+            18: { 2: 13.42, 3: 15.33, 4: 16.83 },
+            20: { 2: 12.83, 3: 14.67, 4: 16.08 }
+        }
+    },
+    deuxEtages: {
+        '9.5': {
+            6: { 2: 8.33, 3: 9.58, 4: 10.5 },
+            8: { 2: 7.58, 3: 8.75, 4: 9.58 },
+            10: { 2: 7.0, 3: 8.08, 4: 8.83 },
+            12: { 2: 6.5, 3: 7.5, 4: 8.25 },
+            14: { 2: 6.08, 3: 7.0, 4: 7.75 },
+            16: { 2: 5.75, 3: 6.58, 4: 7.25 },
+            18: { 2: 5.42, 3: 6.25, 4: 6.83 },
+            20: { 2: 5.17, 3: 5.92, 4: 6.5 }
+        },
+        '11.875': {
+            6: { 2: 10.42, 3: 12.0, 4: 13.17 },
+            8: { 2: 9.5, 3: 10.92, 4: 12.0 },
+            10: { 2: 8.75, 3: 10.08, 4: 11.08 },
+            12: { 2: 8.17, 3: 9.42, 4: 10.33 },
+            14: { 2: 7.67, 3: 8.83, 4: 9.67 },
+            16: { 2: 7.25, 3: 8.33, 4: 9.17 },
+            18: { 2: 6.92, 3: 7.92, 4: 8.67 },
+            20: { 2: 6.58, 3: 7.58, 4: 8.25 }
+        },
+        '14': {
+            6: { 2: 12.33, 3: 14.17, 4: 15.58 },
+            8: { 2: 11.17, 3: 12.83, 4: 14.17 },
+            10: { 2: 10.33, 3: 11.92, 4: 13.08 },
+            12: { 2: 9.67, 3: 11.17, 4: 12.25 },
+            14: { 2: 9.17, 3: 10.5, 4: 11.58 },
+            16: { 2: 8.67, 3: 10.0, 4: 10.92 },
+            18: { 2: 8.25, 3: 9.5, 4: 10.42 },
+            20: { 2: 7.92, 3: 9.08, 4: 9.92 }
+        },
+        '16': {
+            6: { 2: 14.08, 3: 16.17, 4: 17.75 },
+            8: { 2: 12.75, 3: 14.67, 4: 16.17 },
+            10: { 2: 11.83, 3: 13.58, 4: 14.92 },
+            12: { 2: 11.08, 3: 12.75, 4: 14.0 },
+            14: { 2: 10.5, 3: 12.08, 4: 13.25 },
+            16: { 2: 9.92, 3: 11.42, 4: 12.58 },
+            18: { 2: 9.5, 3: 10.92, 4: 12.0 },
+            20: { 2: 9.08, 3: 10.42, 4: 11.5 }
+        },
+        '18': {
+            6: { 2: 15.83, 3: 18.17, 4: 20.0 },
+            8: { 2: 14.33, 3: 16.5, 4: 18.17 },
+            10: { 2: 13.33, 3: 15.33, 4: 16.83 },
+            12: { 2: 12.5, 3: 14.33, 4: 15.75 },
+            14: { 2: 11.83, 3: 13.58, 4: 14.92 },
+            16: { 2: 11.25, 3: 12.92, 4: 14.17 },
+            18: { 2: 10.75, 3: 12.33, 4: 13.5 },
+            20: { 2: 10.25, 3: 11.75, 4: 12.92 }
         }
     }
 };
 
-// Tables poutrelles ajourées (simplifiées)
 const tablesPoutrelliesAjourees = {
     connecteursMetalliques: {
         '11.875x16': { portee: 18.5, chargeMax: 125 },
         '14x16': { portee: 21.3, chargeMax: 150 },
         '16x16': { portee: 23.8, chargeMax: 175 },
-        '18x16': { portee: 26.2, chargeMax: 200 }
+        '18x16': { portee: 26.1, chargeMax: 200 }
     },
     ameMetallique: {
         '11.875x16': { portee: 19.2, chargeMax: 135 },
@@ -91,6 +138,8 @@ let calculateurData = {
     typePoutre: 'versalam',
     portee: { pieds: 7, pouces: 6 },
     largeurTributaire: 9.17,
+    largeurTributaireEtage: 9.17,
+    largeurTributaireRC: 13.1,
     chargeMorte: 15,
     chargeVive: 40,
     chargeNeige: 0,
@@ -111,22 +160,57 @@ function obtenirPorteeDecimale() {
 }
 
 function obtenirLargeurTributaireAjustee() {
-    return calculateurData.typePortee === 'continue' 
-        ? calculateurData.largeurTributaire * 1.25 
-        : calculateurData.largeurTributaire;
+    const facteur = calculateurData.typePortee === 'continue' ? 1.25 : 1;
+    
+    if (calculateurData.typeEtage === 'deux') {
+        return {
+            etage: calculateurData.largeurTributaireEtage * facteur,
+            rc: calculateurData.largeurTributaireRC * facteur
+        };
+    } else {
+        return calculateurData.largeurTributaire * facteur;
+    }
 }
 
 function calculerChargesLineaires() {
     const largeurTributaire = obtenirLargeurTributaireAjustee();
     
-    const WV = calculateurData.chargeVive * largeurTributaire; // Charge vive linéaire
-    const WM = calculateurData.chargeMorte * largeurTributaire; // Charge morte linéaire
-    const WN = calculateurData.chargeNeige * largeurTributaire; // Charge neige linéaire
-    
-    const WT = WV + WM + WN; // Charge totale non pondérée
-    const WF = WV * 1.5 + WM * 1.25 + WN * 1.5; // Charge totale pondérée
-    
-    return { WV, WM, WN, WT, WF };
+    if (calculateurData.typeEtage === 'deux') {
+        // Calculs pour deux étages avec largeurs différentes
+        const WV_etage = calculateurData.chargeVive * largeurTributaire.etage;
+        const WM_etage = calculateurData.chargeMorte * largeurTributaire.etage;
+        const WN_etage = calculateurData.chargeNeige * largeurTributaire.etage;
+        
+        const WV_rc = calculateurData.chargeVive * largeurTributaire.rc;
+        const WM_rc = calculateurData.chargeMorte * largeurTributaire.rc;
+        const WN_rc = calculateurData.chargeNeige * largeurTributaire.rc;
+        
+        // Charges totales (étage + RC)
+        const WV = WV_etage + WV_rc;
+        const WM = WM_etage + WM_rc;
+        const WN = WN_etage + WN_rc;
+        
+        const WT = WV + WM + WN;
+        const WF = WV * 1.5 + WM * 1.25 + WN * 1.5;
+        
+        return { 
+            WV, WM, WN, WT, WF,
+            deuxEtages: {
+                etage: { WV: WV_etage, WM: WM_etage, WN: WN_etage, WT: WV_etage + WM_etage + WN_etage },
+                rc: { WV: WV_rc, WM: WM_rc, WN: WN_rc, WT: WV_rc + WM_rc + WN_rc }
+            }
+        };
+    } else {
+        // Calculs pour un étage
+        const WV = calculateurData.chargeVive * largeurTributaire;
+        const WM = calculateurData.chargeMorte * largeurTributaire;
+        const WN = calculateurData.chargeNeige * largeurTributaire;
+        
+        const WT = WV + WM + WN;
+        const WF = WV * 1.5 + WM * 1.25 + WN * 1.5;
+        
+        return { WV, WM, WN, WT, WF };
+    }
 }
 
 function calculerVersaLam() {
@@ -134,17 +218,27 @@ function calculerVersaLam() {
     const porteeDecimale = obtenirPorteeDecimale();
     const largeurTributaire = obtenirLargeurTributaireAjustee();
     
+    // Déterminer la largeur tributaire effective pour les tables
+    let largeurTableEffective;
+    if (calculateurData.typeEtage === 'deux') {
+        // Pour deux étages, prendre la plus grande largeur
+        largeurTableEffective = Math.max(largeurTributaire.etage, largeurTributaire.rc);
+    } else {
+        largeurTableEffective = largeurTributaire;
+    }
+    
     // Trouver largeur tributaire la plus proche dans les tables
     const largeursPossibles = [6, 8, 10, 12, 14, 16, 18, 20];
     const largeurTable = largeursPossibles.reduce((prev, curr) => 
-        Math.abs(curr - largeurTributaire) < Math.abs(prev - largeurTributaire) ? curr : prev
+        Math.abs(curr - largeurTableEffective) < Math.abs(prev - largeurTableEffective) ? curr : prev
     );
 
-    const tables = tablesVersaLam.unEtage;
+    // Sélectionner la table appropriée
+    const tables = calculateurData.typeEtage === 'deux' ? tablesVersaLam.deuxEtages : tablesVersaLam.unEtage;
     let solutionOptimale = null;
     const hauteursPossibles = ['9.5', '11.875', '14', '16', '18'];
 
-    // Limites approximatives par hauteur (à ajuster selon vraies tables)
+    // Limites approximatives par hauteur (ajustées pour deux étages)
     const limitesParHauteur = {
         '9.5': { WV: 262, WT: 360, WF: 516 },
         '11.875': { WV: 445, WT: 636, WF: 877 },
@@ -337,13 +431,30 @@ function mettreAJourAffichagePortee() {
 }
 
 function mettreAJourAffichageLargeurTributaire() {
-    const largeurAjusteeElement = document.getElementById('largeurAjustee');
-    if (calculateurData.typePortee === 'continue') {
+    if (calculateurData.typeEtage === 'deux') {
         const largeurAjustee = obtenirLargeurTributaireAjustee();
-        largeurAjusteeElement.textContent = `Ajustée: ${largeurAjustee.toFixed(1)} pi.`;
-        largeurAjusteeElement.style.display = 'block';
+        
+        const largeurAjusteeEtageElement = document.getElementById('largeurAjusteeEtage');
+        const largeurAjusteeRCElement = document.getElementById('largeurAjusteeRC');
+        
+        if (calculateurData.typePortee === 'continue') {
+            largeurAjusteeEtageElement.textContent = `Ajustée: ${largeurAjustee.etage.toFixed(1)} pi.`;
+            largeurAjusteeRCElement.textContent = `Ajustée: ${largeurAjustee.rc.toFixed(1)} pi.`;
+            largeurAjusteeEtageElement.style.display = 'block';
+            largeurAjusteeRCElement.style.display = 'block';
+        } else {
+            largeurAjusteeEtageElement.style.display = 'none';
+            largeurAjusteeRCElement.style.display = 'none';
+        }
     } else {
-        largeurAjusteeElement.style.display = 'none';
+        const largeurAjusteeElement = document.getElementById('largeurAjustee');
+        if (calculateurData.typePortee === 'continue') {
+            const largeurAjustee = obtenirLargeurTributaireAjustee();
+            largeurAjusteeElement.textContent = `Ajustée: ${largeurAjustee.toFixed(1)} pi.`;
+            largeurAjusteeElement.style.display = 'block';
+        } else {
+            largeurAjusteeElement.style.display = 'none';
+        }
     }
 }
 
@@ -352,6 +463,16 @@ function mettreAJourAffichageCharges() {
     
     document.getElementById('chargeTotal').textContent = `${charges.WT.toFixed(0)} lb/pi.ca.`;
     document.getElementById('chargeLineaire').textContent = `${charges.WF.toFixed(0)} lb/pi. (pond.)`;
+    
+    // Afficher détails pour deux étages
+    const chargesDetailleesElement = document.getElementById('chargesDetaillees');
+    if (calculateurData.typeEtage === 'deux' && charges.deuxEtages) {
+        document.getElementById('chargeEtage').textContent = `${charges.deuxEtages.etage.WT.toFixed(0)} lb/pi.ca.`;
+        document.getElementById('chargeRC').textContent = `${charges.deuxEtages.rc.WT.toFixed(0)} lb/pi.ca.`;
+        chargesDetailleesElement.style.display = 'block';
+    } else {
+        chargesDetailleesElement.style.display = 'none';
+    }
 }
 
 function afficherLargeurMax() {
@@ -374,6 +495,22 @@ function afficherTypeEtage() {
     } else {
         typeEtageContainer.style.display = 'none';
         optimisationContainer.style.display = 'none';
+    }
+    
+    // Gérer l'affichage des largeurs tributaires
+    afficherLargeursTributaires();
+}
+
+function afficherLargeursTributaires() {
+    const largeurUnEtage = document.getElementById('largeurUnEtage');
+    const largeurDeuxEtages = document.getElementById('largeurDeuxEtages');
+    
+    if (calculateurData.typeEtage === 'deux' && calculateurData.typePoutre === 'versalam') {
+        largeurUnEtage.style.display = 'none';
+        largeurDeuxEtages.style.display = 'block';
+    } else {
+        largeurUnEtage.style.display = 'block';
+        largeurDeuxEtages.style.display = 'none';
     }
 }
 
@@ -478,8 +615,20 @@ function configurerEvenements() {
         mettreAJourInterface();
     });
 
+    // Événements pour largeur tributaire simple
     document.getElementById('largeurTributaire').addEventListener('input', (e) => {
         calculateurData.largeurTributaire = parseFloat(e.target.value) || 0;
+        mettreAJourInterface();
+    });
+
+    // Événements pour largeurs tributaires séparées (deux étages)
+    document.getElementById('largeurTributaireEtage').addEventListener('input', (e) => {
+        calculateurData.largeurTributaireEtage = parseFloat(e.target.value) || 0;
+        mettreAJourInterface();
+    });
+
+    document.getElementById('largeurTributaireRC').addEventListener('input', (e) => {
+        calculateurData.largeurTributaireRC = parseFloat(e.target.value) || 0;
         mettreAJourInterface();
     });
 
@@ -523,7 +672,7 @@ document.addEventListener('DOMContentLoaded', function() {
     configurerEvenements();
     mettreAJourInterface();
     
-    console.log('Calculateur corrigé - Méthode avec charges pondérées et plis variables');
+    console.log('Calculateur mis à jour - Deux largeurs tributaires pour deux étages');
 });
 
 // =============================================================================
