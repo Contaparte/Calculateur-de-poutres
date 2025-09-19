@@ -1,83 +1,59 @@
 // Calculateur Universel de Poutres et Poutrelles
-// Script JavaScript principal
+// Script JavaScript avec méthode de calcul corrigée
 
 // =============================================================================
-// DONNÉES ET TABLES
+// DONNÉES ET TABLES AVEC LIMITES DE CHARGES
 // =============================================================================
 
-// Tables Versa-Lam
+// Tables Versa-Lam avec limites de charges (WV, WT, WF par pli)
 const tablesVersaLam = {
     unEtage: {
+        '7.25': {
+            limites: { WV: 183, WT: 252, WF: 361 }, // Limites par pli
+            portees: { 6: 16.75, 8: 16.33, 10: 15.75, 12: 15.0, 14: 14.25 }
+        },
         '9.5': {
-            6: { 2: 16.75, 3: 15.33, 4: 15.33 },
-            8: { 2: 16.33, 3: 15.33, 4: 15.33 },
-            10: { 2: 15.75, 3: 15.33, 4: 15.33 },
-            12: { 2: 15.0, 3: 15.33, 4: 15.33 },
-            14: { 2: 14.25, 3: 15.0, 4: 15.33 },
-            16: { 2: 13.5, 3: 14.5, 4: 15.33 },
-            18: { 2: 12.75, 3: 14.0, 4: 15.0 },
-            20: { 2: 12.0, 3: 13.5, 4: 14.5 }
+            limites: { WV: 262, WT: 360, WF: 516 },
+            portees: { 6: 18.25, 8: 17.75, 10: 17.0, 12: 16.25, 14: 15.5, 16: 14.75, 18: 14.0, 20: 13.25 }
         },
         '11.875': {
-            6: { 2: 18.25, 3: 16.33, 4: 22.17 },
-            8: { 2: 17.75, 3: 15.33, 4: 21.5 },
-            10: { 2: 17.0, 3: 15.33, 4: 20.75 },
-            12: { 2: 16.25, 3: 15.33, 4: 20.0 },
-            14: { 2: 15.5, 3: 15.0, 4: 19.25 },
-            16: { 2: 14.75, 3: 14.5, 4: 18.5 },
-            18: { 2: 14.0, 3: 14.0, 4: 17.75 },
-            20: { 2: 13.25, 3: 13.5, 4: 17.0 }
+            limites: { WV: 445, WT: 636, WF: 877 },
+            portees: { 6: 23.5, 8: 22.75, 10: 22.0, 12: 21.25, 14: 20.5, 16: 19.75, 18: 19.0, 20: 18.25 }
         },
         '14': {
-            6: { 2: 23.5, 3: 20.5, 4: 23.17 },
-            8: { 2: 22.75, 3: 19.75, 4: 22.33 },
-            10: { 2: 22.0, 3: 19.0, 4: 21.5 },
-            12: { 2: 21.25, 3: 18.25, 4: 20.67 },
-            14: { 2: 20.5, 3: 17.5, 4: 19.83 },
-            16: { 2: 19.75, 3: 16.75, 4: 19.0 },
-            18: { 2: 19.0, 3: 16.0, 4: 18.17 },
-            20: { 2: 18.25, 3: 15.25, 4: 17.33 }
+            limites: { WV: 650, WT: 900, WF: 1250 },
+            portees: { 6: 29.0, 8: 28.0, 10: 27.0, 12: 26.0, 14: 25.0, 16: 24.0, 18: 23.0, 20: 22.0 }
         },
         '16': {
-            6: { 2: 29.0, 3: 24.67, 4: 30.83 },
-            8: { 2: 28.0, 3: 23.67, 4: 29.67 },
-            10: { 2: 27.0, 3: 22.67, 4: 28.5 },
-            12: { 2: 26.0, 3: 21.67, 4: 27.33 },
-            14: { 2: 25.0, 3: 20.67, 4: 26.17 },
-            16: { 2: 24.0, 3: 19.67, 4: 25.0 },
-            18: { 2: 23.0, 3: 18.67, 4: 23.83 },
-            20: { 2: 22.0, 3: 17.67, 4: 22.67 }
-        }
-    },
-    deuxEtages: {
-        '9.5': {
-            6: { 2: 11.33, 3: 13.0, 4: 14.25 },
-            8: { 2: 9.17, 3: 11.42, 4: 12.58 },
-            10: { 2: 8.25, 3: 11.17, 4: 12.33 },
-            12: { 2: 8.0, 3: 10.58, 4: 11.67 }
+            limites: { WV: 850, WT: 1180, WF: 1600 },
+            portees: { 6: 31.75, 8: 30.5, 10: 29.25, 12: 28.0, 14: 26.75, 16: 25.5, 18: 24.25, 20: 23.0 }
+        },
+        '18': {
+            limites: { WV: 1050, WT: 1450, WF: 1950 },
+            portees: { 6: 35.0, 8: 34.0, 10: 33.0, 12: 32.0, 14: 31.0, 16: 30.0, 18: 29.0, 20: 28.0 }
         }
     }
 };
 
-// Tables poutrelles ajourées
+// Tables poutrelles ajourées (simplifiées)
 const tablesPoutrelliesAjourees = {
     connecteursMetalliques: {
-        '11.875x16': 18.5, '11.875x19.2': 16.8, '11.875x24': 14.2,
-        '14x16': 21.3, '14x19.2': 19.4, '14x24': 16.8,
-        '16x16': 23.8, '16x19.2': 21.7, '16x24': 18.8,
-        '18x16': 26.2, '18x19.2': 23.9, '18x24': 20.7
+        '11.875x16': { portee: 18.5, chargeMax: 125 },
+        '14x16': { portee: 21.3, chargeMax: 150 },
+        '16x16': { portee: 23.8, chargeMax: 175 },
+        '18x16': { portee: 26.2, chargeMax: 200 }
     },
     ameMetallique: {
-        '11.875x16': 19.2, '11.875x19.2': 17.4, '11.875x24': 15.1,
-        '14x16': 22.1, '14x19.2': 20.1, '14x24': 17.4,
-        '16x16': 24.7, '16x19.2': 22.5, '16x24': 19.5,
-        '18x16': 27.1, '18x19.2': 24.7, '18x24': 21.4
+        '11.875x16': { portee: 19.2, chargeMax: 135 },
+        '14x16': { portee: 22.1, chargeMax: 160 },
+        '16x16': { portee: 24.7, chargeMax: 185 },
+        '18x16': { portee: 27.1, chargeMax: 210 }
     },
     boisDente: {
-        '11.875x16': 20.1, '11.875x19.2': 18.3, '11.875x24': 15.9,
-        '14x16': 23.2, '14x19.2': 21.1, '14x24': 18.3,
-        '16x16': 25.9, '16x19.2': 23.6, '16x24': 20.4,
-        '18x16': 28.4, '18x19.2': 25.9, '18x24': 22.4
+        '11.875x16': { portee: 20.1, chargeMax: 145 },
+        '14x16': { portee: 23.2, chargeMax: 170 },
+        '16x16': { portee: 25.9, chargeMax: 195 },
+        '18x16': { portee: 28.4, chargeMax: 220 }
     }
 };
 
@@ -98,7 +74,7 @@ let calculateurData = {
 };
 
 // =============================================================================
-// FONCTIONS DE CALCUL
+// FONCTIONS DE CALCUL CORRIGÉES
 // =============================================================================
 
 function obtenirPorteeDecimale() {
@@ -111,59 +87,96 @@ function obtenirLargeurTributaireAjustee() {
         : calculateurData.largeurTributaire;
 }
 
-function obtenirChargeTotal() {
-    return calculateurData.chargeMorte + calculateurData.chargeVive + calculateurData.chargeNeige;
-}
-
-function obtenirChargeLineaire() {
-    return obtenirChargeTotal() * obtenirLargeurTributaireAjustee();
+function calculerChargesLineaires() {
+    const largeurTributaire = obtenirLargeurTributaireAjustee();
+    
+    const WV = calculateurData.chargeVive * largeurTributaire; // Charge vive linéaire
+    const WM = calculateurData.chargeMorte * largeurTributaire; // Charge morte linéaire
+    const WN = calculateurData.chargeNeige * largeurTributaire; // Charge neige linéaire
+    
+    const WT = WV + WM + WN; // Charge totale non pondérée
+    const WF = WV * 1.5 + WM * 1.25 + WN * 1.5; // Charge totale pondérée
+    
+    return { WV, WM, WN, WT, WF };
 }
 
 function calculerVersaLam() {
-    const tableType = calculateurData.typeEtage === 'un' ? 'unEtage' : 'deuxEtages';
-    const tables = tablesVersaLam[tableType];
+    const charges = calculerChargesLineaires();
+    const porteeDecimale = obtenirPorteeDecimale();
+    const largeurTributaire = obtenirLargeurTributaireAjustee();
     
-    if (!tables) {
-        return { valide: false, message: 'Tables non disponibles pour deux étages' };
-    }
-
+    // Trouver largeur tributaire la plus proche
     const largeursPossibles = [6, 8, 10, 12, 14, 16, 18, 20];
-    const largeurTributaireAjustee = obtenirLargeurTributaireAjustee();
     const largeurTable = largeursPossibles.reduce((prev, curr) => 
-        Math.abs(curr - largeurTributaireAjustee) < Math.abs(prev - largeurTributaireAjustee) ? curr : prev
+        Math.abs(curr - largeurTributaire) < Math.abs(prev - largeurTributaire) ? curr : prev
     );
 
-    const porteeDecimale = obtenirPorteeDecimale();
+    const tables = tablesVersaLam.unEtage;
     let solutionOptimale = null;
 
+    // Tester chaque hauteur et nombre de plis
     Object.keys(tables).forEach(hauteur => {
-        if (tables[hauteur][largeurTable]) {
-            [2, 3, 4].forEach(plis => {
-                const porteeMax = tables[hauteur][largeurTable][plis];
-                
-                if (porteeMax && porteeDecimale <= porteeMax) {
-                    const score = parseFloat(hauteur) * plis;
-                    
-                    if (!solutionOptimale || score < solutionOptimale.score) {
-                        solutionOptimale = {
-                            hauteur: hauteur + '"',
-                            largeur: (1.75 * plis).toFixed(2) + '"',
-                            configuration: plis + ' plis',
-                            porteeMax: porteeMax.toFixed(1) + ' pi.',
-                            valide: true,
-                            type: 'Versa-Lam',
-                            score: score
-                        };
+        const tableHauteur = tables[hauteur];
+        if (!tableHauteur.portees[largeurTable]) return;
+
+        [2, 3, 4].forEach(plis => {
+            const porteeMax = tableHauteur.portees[largeurTable];
+            
+            // Vérifier si la portée est acceptable
+            if (porteeDecimale > porteeMax) return;
+
+            // Calculer les valeurs à comparer (divisées par nombre de plis)
+            const WV_compare = charges.WV / plis;
+            const WT_compare = charges.WT / plis;
+            const WF_compare = charges.WF / plis;
+
+            // Vérifier si les charges sont dans les limites
+            const limites = tableHauteur.limites;
+            const chargesValides = 
+                WV_compare <= limites.WV && 
+                WT_compare <= limites.WT && 
+                WF_compare <= limites.WF;
+
+            if (!chargesValides) return;
+
+            // Score pour optimisation (plus petit = mieux)
+            const score = parseFloat(hauteur) * plis;
+            
+            if (!solutionOptimale || score < solutionOptimale.score) {
+                solutionOptimale = {
+                    hauteur: hauteur + '"',
+                    largeur: (1.75 * plis).toFixed(2) + '"',
+                    configuration: plis + ' plis',
+                    porteeMax: porteeMax.toFixed(1) + ' pi.',
+                    valide: true,
+                    type: 'Versa-Lam',
+                    score: score,
+                    details: {
+                        WV_compare: WV_compare.toFixed(1),
+                        WT_compare: WT_compare.toFixed(1),
+                        WF_compare: WF_compare.toFixed(1),
+                        limite_WV: limites.WV,
+                        limite_WT: limites.WT,
+                        limite_WF: limites.WF
                     }
-                }
-            });
-        }
+                };
+            }
+        });
     });
 
-    return solutionOptimale || { 
-        valide: false, 
-        message: 'Portée excessive pour Versa-Lam' 
-    };
+    if (!solutionOptimale) {
+        return { 
+            valide: false, 
+            message: 'Charges ou portée excessive - Augmenter hauteur/plis',
+            details: {
+                WV: charges.WV.toFixed(1),
+                WT: charges.WT.toFixed(1),  
+                WF: charges.WF.toFixed(1)
+            }
+        };
+    }
+
+    return solutionOptimale;
 }
 
 function calculerPoutrelliesAjourees() {
@@ -181,29 +194,36 @@ function calculerPoutrelliesAjourees() {
             break;
         case 'ajouree-bois-dente':
             tableType = 'boisDente';
-            nomType = 'Bois denté collé (Open Joist 2000)';
+            nomType = 'Bois denté collé';
             break;
         default:
             return { valide: false };
     }
 
+    const charges = calculerChargesLineaires();
+    const porteeDecimale = obtenirPorteeDecimale();
     const tables = tablesPoutrelliesAjourees[tableType];
     const hauteursPossibles = ['11.875', '14', '16', '18'];
-    const porteeDecimale = obtenirPorteeDecimale();
     
     let solutionOptimale = null;
 
     hauteursPossibles.forEach(hauteur => {
         const cle = `${hauteur}x${calculateurData.espacementPoutrelles}`;
-        const porteeMax = tables[cle];
+        const donnees = tables[cle];
         
-        if (porteeMax && porteeDecimale <= porteeMax) {
+        if (!donnees) return;
+        
+        // Vérifier portée et charge
+        const porteeOK = porteeDecimale <= donnees.portee;
+        const chargeOK = charges.WF <= donnees.chargeMax;
+        
+        if (porteeOK && chargeOK) {
             if (!solutionOptimale || parseFloat(hauteur) < parseFloat(solutionOptimale.hauteur)) {
                 solutionOptimale = {
                     hauteur: hauteur + '"',
                     largeur: '2x3 ou 2x4',
                     configuration: `${calculateurData.espacementPoutrelles}" c.c.`,
-                    porteeMax: porteeMax.toFixed(1) + ' pi.',
+                    porteeMax: donnees.portee.toFixed(1) + ' pi.',
                     valide: true,
                     type: nomType,
                     methodeCalcul: 'Analyse par treillis'
@@ -214,29 +234,29 @@ function calculerPoutrelliesAjourees() {
 
     return solutionOptimale || { 
         valide: false, 
-        message: `Portée excessive pour poutrelles ajourées à ${calculateurData.espacementPoutrelles}" c.c.` 
+        message: `Portée ou charges excessives pour ${calculateurData.espacementPoutrelles}" c.c.`
     };
 }
 
 function calculerFleches(resultatsStructure) {
     if (!resultatsStructure.valide) return {};
 
+    const charges = calculerChargesLineaires();
     let E, I;
     const h = parseFloat(resultatsStructure.hauteur) || 12;
     const L = obtenirPorteeDecimale() * 12;
-    const largeurTributaireAjustee = obtenirLargeurTributaireAjustee();
 
     if (calculateurData.typePoutre === 'versalam') {
-        E = 1800000; // Versa-Lam
+        E = 1800000;
         const b = parseFloat(resultatsStructure.largeur) || 3.5;
         I = (b * Math.pow(h, 3)) / 12;
     } else {
-        E = 1600000; // Poutrelles ajourées
-        I = Math.pow(h, 3) / 10; // Approximation pour structures ajourées
+        E = 1600000;
+        I = Math.pow(h, 3) / 10;
     }
 
-    const flecheVive = (5 * calculateurData.chargeVive * largeurTributaireAjustee * Math.pow(L, 4)) / (384 * E * I);
-    const flecheTotale = (5 * obtenirChargeTotal() * largeurTributaireAjustee * Math.pow(L, 4)) / (384 * E * I);
+    const flecheVive = (5 * charges.WV * Math.pow(L, 4)) / (384 * E * I);
+    const flecheTotale = (5 * charges.WT * Math.pow(L, 4)) / (384 * E * I);
     
     return {
         flecheVive: flecheVive.toFixed(3),
@@ -284,50 +304,30 @@ function mettreAJourAffichageLargeurTributaire() {
 }
 
 function mettreAJourAffichageCharges() {
-    const chargeTotal = obtenirChargeTotal();
-    const chargeLineaire = obtenirChargeLineaire();
+    const charges = calculerChargesLineaires();
     
-    document.getElementById('chargeTotal').textContent = `${chargeTotal} lb/pi.ca.`;
-    document.getElementById('chargeLineaire').textContent = `${Math.round(chargeLineaire)} lb/pi.`;
+    document.getElementById('chargeTotal').textContent = `${charges.WT.toFixed(0)} lb/pi.ca.`;
+    document.getElementById('chargeLineaire').textContent = `${charges.WF.toFixed(0)} lb/pi. (pond.)`;
 }
 
 function afficherEspacement() {
-    const typePoutre = calculateurData.typePoutre;
     const espacementContainer = document.getElementById('espacementContainer');
-    
-    if (typePoutre.startsWith('ajouree')) {
-        espacementContainer.style.display = 'block';
-    } else {
-        espacementContainer.style.display = 'none';
-    }
+    espacementContainer.style.display = calculateurData.typePoutre.startsWith('ajouree') ? 'block' : 'none';
 }
 
 function afficherTypeEtage() {
-    const typePoutre = calculateurData.typePoutre;
     const typeEtageContainer = document.getElementById('typeEtageContainer');
-    
-    if (typePoutre === 'versalam') {
-        typeEtageContainer.style.display = 'block';
-    } else {
-        typeEtageContainer.style.display = 'none';
-    }
+    typeEtageContainer.style.display = calculateurData.typePoutre === 'versalam' ? 'block' : 'none';
 }
 
 function mettreAJourResultats() {
     const resultats = calculerStructure();
     const resultatsContainer = document.getElementById('resultatsContainer');
     
-    // Changer la couleur de fond selon la validité
-    if (resultats.valide) {
-        resultatsContainer.className = 'bg-green-50 p-4 rounded-lg';
-    } else {
-        resultatsContainer.className = 'bg-red-50 p-4 rounded-lg';
-    }
+    resultatsContainer.className = resultats.valide ? 'bg-green-50 p-4 rounded-lg' : 'bg-red-50 p-4 rounded-lg';
     
-    // Mettre à jour le type de structure
     document.getElementById('typeStructure').textContent = resultats.type || 'Structure';
     
-    // Afficher/masquer la méthode de calcul
     const methodeElement = document.getElementById('methodeCalcul');
     if (resultats.methodeCalcul) {
         methodeElement.textContent = resultats.methodeCalcul;
@@ -337,7 +337,6 @@ function mettreAJourResultats() {
     }
     
     if (resultats.valide) {
-        // Dimensions
         document.getElementById('hauteurResultat').textContent = resultats.hauteur;
         document.getElementById('largeurResultat').textContent = resultats.largeur;
         document.getElementById('configurationResultat').textContent = resultats.configuration;
@@ -345,7 +344,6 @@ function mettreAJourResultats() {
         
         document.getElementById('dimensionsContainer').style.display = 'block';
         
-        // Flèches
         if (resultats.flecheVive) {
             const flecheViveElement = document.getElementById('flecheViveResultat');
             const flecheTotaleElement = document.getElementById('flecheTotaleResultat');
@@ -364,17 +362,14 @@ function mettreAJourResultats() {
             document.getElementById('flechesContainer').style.display = 'none';
         }
         
-        // Message de statut
         const statusElement = document.getElementById('statusMessage');
         statusElement.textContent = '✓ Configuration valide';
         statusElement.className = 'mt-3 p-2 rounded text-center text-sm font-semibold result-valid';
         
     } else {
-        // Masquer les détails si non valide
         document.getElementById('dimensionsContainer').style.display = 'none';
         document.getElementById('flechesContainer').style.display = 'none';
         
-        // Message d'erreur
         const statusElement = document.getElementById('statusMessage');
         statusElement.textContent = `✗ ${resultats.message || 'Configuration non valide'}`;
         statusElement.className = 'mt-3 p-2 rounded text-center text-sm font-semibold result-invalid';
@@ -395,19 +390,16 @@ function mettreAJourInterface() {
 // =============================================================================
 
 function configurerEvenements() {
-    // Type de poutre
     document.getElementById('typePoutre').addEventListener('change', (e) => {
         calculateurData.typePoutre = e.target.value;
         mettreAJourInterface();
     });
 
-    // Espacement poutrelles
     document.getElementById('espacementPoutrelles').addEventListener('change', (e) => {
         calculateurData.espacementPoutrelles = parseFloat(e.target.value);
         mettreAJourInterface();
     });
 
-    // Portée
     document.getElementById('porteePieds').addEventListener('input', (e) => {
         calculateurData.portee.pieds = parseInt(e.target.value) || 0;
         mettreAJourInterface();
@@ -418,25 +410,21 @@ function configurerEvenements() {
         mettreAJourInterface();
     });
 
-    // Type de portée
     document.getElementById('typePortee').addEventListener('change', (e) => {
         calculateurData.typePortee = e.target.value;
         mettreAJourInterface();
     });
 
-    // Type d'étage
     document.getElementById('typeEtage').addEventListener('change', (e) => {
         calculateurData.typeEtage = e.target.value;
         mettreAJourInterface();
     });
 
-    // Largeur tributaire
     document.getElementById('largeurTributaire').addEventListener('input', (e) => {
         calculateurData.largeurTributaire = parseFloat(e.target.value) || 0;
         mettreAJourInterface();
     });
 
-    // Charges
     document.getElementById('chargeMorte').addEventListener('input', (e) => {
         calculateurData.chargeMorte = parseFloat(e.target.value) || 0;
         mettreAJourInterface();
@@ -461,29 +449,15 @@ document.addEventListener('DOMContentLoaded', function() {
     configurerEvenements();
     mettreAJourInterface();
     
-    console.log('Calculateur de poutres initialisé');
-    console.log('Version: Poutres Versa-Lam + Poutrelles Ajourées');
+    console.log('Calculateur corrigé - Méthode avec charges pondérées et plis variables');
 });
 
 // =============================================================================
-// FONCTIONS UTILITAIRES EXPORTÉES (si besoin)
+// API EXTERNE
 // =============================================================================
 
 window.CalculateurPoutres = {
     obtenirResultats: () => calculerStructure(),
-    obtenirDonnees: () => calculateurData,
-    reinitialiser: () => {
-        calculateurData = {
-            typePoutre: 'versalam',
-            portee: { pieds: 7, pouces: 6 },
-            largeurTributaire: 9.17,
-            chargeMorte: 15,
-            chargeVive: 40,
-            chargeNeige: 0,
-            typePortee: 'simple',
-            typeEtage: 'un',
-            espacementPoutrelles: 16
-        };
-        mettreAJourInterface();
-    }
+    obtenirCharges: () => calculerChargesLineaires(),
+    obtenirDonnees: () => calculateurData
 };
