@@ -109,14 +109,49 @@ const VERSA_LAM_TABLE = {
 // Hauteurs disponibles
 const HAUTEURS = ["7¼", "9¼", "9½", "11¼", "11⅞", "14", "16", "18"];
 
+function updateLargeursEtages() {
+    const nbEtages = parseInt(document.getElementById('nbEtages').value);
+    const container = document.getElementById('largeursContainer');
+    
+    let html = '<label>Largeurs tributaires par étage</label>';
+    
+    for (let i = 1; i <= nbEtages; i++) {
+        const etageLabel = i === 1 ? 'Rez-de-chaussée' : `Étage ${i-1}`;
+        const defaultValue = i === 1 ? '13.1' : '9.17';
+        
+        html += `
+            <div class="largeur-etage">
+                <div class="input-row">
+                    <div class="input-field">
+                        <label for="ltEtage${i}">L.T. ${etageLabel}</label>
+                        <div class="dimension-input">
+                            <input type="number" id="ltEtage${i}Pieds" step="0.1" min="0" value="${Math.floor(defaultValue)}">
+                            <span>pi</span>
+                            <input type="number" id="ltEtage${i}Pouces" step="0.1" min="0" max="11.9" value="${((defaultValue % 1) * 12).toFixed(1)}">
+                            <span>po</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+}
+
 function calculerPoutre() {
     // Récupération des valeurs d'entrée
-    const portee = parseFloat(document.getElementById('portee').value);
-    const nbPlis = parseInt(document.getElementById('nbPlis').value);
-    const ltRc = parseFloat(document.getElementById('ltRc').value) || 0;
-    const ltEtage = parseFloat(document.getElementById('ltEtage').value) || 0;
+    const porteePieds = parseFloat(document.getElementById('porteePieds').value) || 0;
+    const porteePouces = parseFloat(document.getElementById('porteePouces').value) || 0;
+    const portee = porteePieds + (porteePouces / 12);
+    
+    const nbEtages = parseInt(document.getElementById('nbEtages').value);
     const chargeMorte = parseFloat(document.getElementById('chargeMorte').value) || 0;
     const chargeVive = parseFloat(document.getElementById('chargeVive').value) || 0;
+    const chargeViveNeige = parseFloat(document.getElementById('chargeViveNeige').value) || 0;
+    const largeurMax = parseFloat(document.getElementById('largeurMax').value) || null;
+    const hauteurMax = parseFloat(document.getElementById('hauteurMax').value) || null;
+    const optimisation = document.getElementById('optimisation').value;
 
     // Validation des entrées
     if (!portee || portee < 6 || portee > 30) {
@@ -124,17 +159,26 @@ function calculerPoutre() {
         return;
     }
 
+    // Calcul des largeurs tributaires totales
+    let ltTotal = 0;
+    const largeurs = [];
+    
+    for (let i = 1; i <= nbEtages; i++) {
+        const pieds = parseFloat(document.getElementById(`ltEtage${i}Pieds`).value) || 0;
+        const pouces = parseFloat(document.getElementById(`ltEtage${i}Pouces`).value) || 0;
+        const largeur = pieds + (pouces / 12);
+        largeurs.push(largeur);
+        ltTotal += largeur;
+    }
+
     // Calculs selon la méthodologie (étapes 4-7)
     
     // Étape 4: Charge vive uniformément répartie
-    const wvRc = chargeVive * ltRc;
-    const wvEtage = chargeVive * ltEtage;
-    const wvTotal = wvRc + wvEtage;
+    const chargeViveTotale = chargeVive + chargeViveNeige;
+    const wvTotal = chargeViveTotale * ltTotal;
 
     // Étape 5: Charge morte uniformément répartie
-    const wmRc = chargeMorte * ltRc;
-    const wmEtage = chargeMorte * ltEtage;
-    const wmTotal = wmRc + wmEtage;
+    const wmTotal = chargeMorte * ltTotal;
 
     // Étape 6: Charge totale non pondérée
     const wtTotal = wvTotal + wmTotal;
@@ -142,24 +186,19 @@ function calculerPoutre() {
     // Étape 7: Charge totale pondérée
     const wfTotal = wvTotal * 1.5 + wmTotal * 1.25;
 
-    // Ajustement selon le nombre de plis
-    const wvParPli = wvTotal / nbPlis;
-    const wtParPli = wtTotal / nbPlis;
-    const wfParPli = wfTotal / nbPlis;
-
     // Affichage des résultats de calcul
     document.getElementById('resultWv').textContent = `${wvTotal.toFixed(1)} lb/pi`;
     document.getElementById('resultWm').textContent = `${wmTotal.toFixed(1)} lb/pi`;
     document.getElementById('resultWt').textContent = `${wtTotal.toFixed(1)} lb/pi`;
     document.getElementById('resultWf').textContent = `${wfTotal.toFixed(1)} lb/pi`;
 
-    // Étape 8: Recherche dans la table
-    const poutresViables = trouverPoutresViables(portee, wvParPli, wtParPli, wfParPli, nbPlis);
+    // Étape 8: Recherche des poutres viables
+    const poutresViables = trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, hauteurMax, optimisation);
     
-    afficherResultatsPoutres(poutresViables, nbPlis, wvTotal, wtTotal, wfTotal);
+    afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal);
 }
 
-function trouverPoutresViables(portee, wvParPli, wtParPli, wfParPli, nbPlis) {
+function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, hauteurMax, optimisation) {
     const poutresViables = [];
     
     // Trouver la portée dans la table (ou la plus proche supérieure)
@@ -177,47 +216,85 @@ function trouverPoutresViables(portee, wvParPli, wtParPli, wfParPli, nbPlis) {
 
     const donnees = VERSA_LAM_TABLE[porteeTable];
     
-    // Vérifier chaque hauteur disponible
-    for (let hauteur of HAUTEURS) {
-        if (donnees[hauteur]) {
-            const spec = donnees[hauteur];
+    // Tester différents nombres de plis (1 à 4)
+    for (let nbPlis = 1; nbPlis <= 4; nbPlis++) {
+        const largeurPoutre = nbPlis * 1.75;
+        
+        // Vérifier contrainte de largeur
+        if (largeurMax && largeurPoutre > largeurMax) {
+            continue;
+        }
+        
+        // Charges par pli
+        const wvParPli = wvTotal / nbPlis;
+        const wtParPli = wtTotal / nbPlis;
+        const wfParPli = wfTotal / nbPlis;
+        
+        // Vérifier chaque hauteur disponible
+        for (let hauteur of HAUTEURS) {
+            const hauteurNum = parseFloat(hauteur.replace('¼', '.25').replace('½', '.5').replace('⅞', '.875'));
             
-            // Vérifier les trois critères de chargement
-            let critere1 = true; // Charge vive non pondérée
-            let critere2 = true; // Charge totale non pondérée  
-            let critere3 = true; // Charge totale pondérée
-            
-            if (spec.wv !== null && wvParPli > spec.wv) {
-                critere1 = false;
+            // Vérifier contrainte de hauteur
+            if (hauteurMax && hauteurNum > hauteurMax) {
+                continue;
             }
             
-            if (spec.wt !== null && wtParPli > spec.wt) {
-                critere2 = false;
-            }
-            
-            if (spec.wf !== null && wfParPli > spec.wf) {
-                critere3 = false;
-            }
-            
-            if (critere1 && critere2 && critere3) {
-                poutresViables.push({
-                    hauteur: hauteur,
-                    porteeTable: porteeTable,
-                    wvMax: spec.wv || 'N/A',
-                    wtMax: spec.wt || 'N/A',
-                    wfMax: spec.wf || 'N/A',
-                    critere1: critere1,
-                    critere2: critere2,
-                    critere3: critere3
-                });
+            if (donnees[hauteur]) {
+                const spec = donnees[hauteur];
+                
+                // Vérifier les trois critères de chargement
+                let critere1 = true; // Charge vive non pondérée
+                let critere2 = true; // Charge totale non pondérée  
+                let critere3 = true; // Charge totale pondérée
+                
+                if (spec.wv !== null && wvParPli > spec.wv) {
+                    critere1 = false;
+                }
+                
+                if (spec.wt !== null && wtParPli > spec.wt) {
+                    critere2 = false;
+                }
+                
+                if (spec.wf !== null && wfParPli > spec.wf) {
+                    critere3 = false;
+                }
+                
+                if (critere1 && critere2 && critere3) {
+                    poutresViables.push({
+                        hauteur: hauteur,
+                        hauteurNum: hauteurNum,
+                        nbPlis: nbPlis,
+                        largeurPoutre: largeurPoutre,
+                        porteeTable: porteeTable,
+                        wvMax: spec.wv || 'N/A',
+                        wtMax: spec.wt || 'N/A',
+                        wfMax: spec.wf || 'N/A',
+                        critere1: critere1,
+                        critere2: critere2,
+                        critere3: critere3
+                    });
+                }
             }
         }
+    }
+    
+    // Trier selon l'optimisation choisie
+    if (optimisation === 'plis') {
+        poutresViables.sort((a, b) => {
+            if (a.nbPlis !== b.nbPlis) return a.nbPlis - b.nbPlis;
+            return a.hauteurNum - b.hauteurNum;
+        });
+    } else {
+        poutresViables.sort((a, b) => {
+            if (a.hauteurNum !== b.hauteurNum) return a.hauteurNum - b.hauteurNum;
+            return a.nbPlis - b.nbPlis;
+        });
     }
     
     return poutresViables;
 }
 
-function afficherResultatsPoutres(poutresViables, nbPlis, wvTotal, wtTotal, wfTotal) {
+function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
     const container = document.getElementById('poutreResults');
     
     if (poutresViables.length === 0) {
@@ -227,7 +304,7 @@ function afficherResultatsPoutres(poutresViables, nbPlis, wvTotal, wtTotal, wfTo
                 <p>Les charges dépassent les capacités des poutres Versa-Lam 2.0E pour cette portée.</p>
                 <p>Suggestions :</p>
                 <ul style="text-align: left; margin-top: 10px;">
-                    <li>Augmenter le nombre de plis</li>
+                    <li>Augmenter les contraintes de largeur/hauteur</li>
                     <li>Réduire la portée</li>
                     <li>Réduire les charges</li>
                     <li>Considérer des appuis intermédiaires</li>
@@ -239,22 +316,22 @@ function afficherResultatsPoutres(poutresViables, nbPlis, wvTotal, wtTotal, wfTo
 
     let html = `
         <div class="poutre-options">
-            <h3 style="margin-bottom: 20px; color: #27ae60;">
+            <h3 style="margin-bottom: 20px; color: #D2691E;">
                 Poutres Versa-Lam® viables (${poutresViables.length} option${poutresViables.length > 1 ? 's' : ''})
             </h3>
     `;
 
     poutresViables.forEach((poutre, index) => {
-        const epaisseur = nbPlis === 1 ? "1¾\"" : `${nbPlis} × 1¾\"`;
-        const largeur = nbPlis * 1.75;
+        const epaisseur = poutre.nbPlis === 1 ? "1¾\"" : `${poutre.nbPlis} × 1¾\"`;
         
         html += `
             <div class="poutre-option" onclick="selectionnerPoutre(${index})">
                 <div class="poutre-title">
-                    ${epaisseur} × ${poutre.hauteur}" (${largeur}" × ${poutre.hauteur}")
+                    ${epaisseur} × ${poutre.hauteur}" (${poutre.largeurPoutre}" × ${poutre.hauteur}")
                 </div>
                 <div class="poutre-specs">
                     <div><strong>Portée:</strong> ${poutre.porteeTable}'</div>
+                    <div><strong>Nombre de plis:</strong> ${poutre.nbPlis}</div>
                     <div><strong>Capacité Wv:</strong> ${poutre.wvMax} lb/pi</div>
                     <div><strong>Capacité Wt:</strong> ${poutre.wtMax} lb/pi</div>
                     <div><strong>Capacité Wf:</strong> ${poutre.wfMax} lb/pi</div>
@@ -264,13 +341,12 @@ function afficherResultatsPoutres(poutresViables, nbPlis, wvTotal, wtTotal, wfTo
     });
 
     html += `
-        <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 10px; font-size: 0.9em;">
-            <strong>Charges de conception (total ${nbPlis} pli${nbPlis > 1 ? 's' : ''}):</strong><br>
+        <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 8px; font-size: 0.9em;">
+            <strong>Charges de conception totales:</strong><br>
             Wv = ${wvTotal.toFixed(1)} lb/pi | 
             Wt = ${wtTotal.toFixed(1)} lb/pi | 
             Wf = ${wfTotal.toFixed(1)} lb/pi<br>
-            <em>Charges par pli utilisées pour comparaison: Wv = ${(wvTotal/nbPlis).toFixed(1)}, 
-            Wt = ${(wtTotal/nbPlis).toFixed(1)}, Wf = ${(wfTotal/nbPlis).toFixed(1)} lb/pi</em>
+            <em>Les valeurs ci-dessus représentent les charges totales supportées par la poutre complète.</em>
         </div>
     `;
 
@@ -290,14 +366,28 @@ function selectionnerPoutre(index) {
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialiser les largeurs tributaires
+    updateLargeursEtages();
+    
     // Calculer automatiquement lors des changements de valeurs
-    const inputs = ['portee', 'nbPlis', 'ltRc', 'ltEtage', 'chargeMorte', 'chargeVive'];
+    const inputs = ['porteePieds', 'porteePouces', 'nbEtages', 'chargeMorte', 'chargeVive', 'chargeViveNeige', 'largeurMax', 'hauteurMax', 'optimisation'];
     inputs.forEach(inputId => {
-        document.getElementById(inputId).addEventListener('input', function() {
-            // Auto-calcul avec un délai pour éviter trop de calculs
+        const element = document.getElementById(inputId);
+        if (element) {
+            element.addEventListener('input', function() {
+                // Auto-calcul avec un délai pour éviter trop de calculs
+                clearTimeout(this.timer);
+                this.timer = setTimeout(calculerPoutre, 500);
+            });
+        }
+    });
+    
+    // Ajouter des événements pour les largeurs tributaires dynamiques
+    document.getElementById('largeursContainer').addEventListener('input', function(e) {
+        if (e.target.tagName === 'INPUT') {
             clearTimeout(this.timer);
             this.timer = setTimeout(calculerPoutre, 500);
-        });
+        }
     });
     
     // Calcul initial
