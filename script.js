@@ -98,6 +98,7 @@ let calculateurData = {
     typeEtage: 'un',
     espacementPoutrelles: 16,
     largeurMax: 5.5,
+    activerLargeurMax: false,
     typeOptimisation: 'plis'
 };
 
@@ -157,9 +158,9 @@ function calculerVersaLam() {
         if (!tableHauteur || !tableHauteur[largeurTable]) return;
 
         [2, 3, 4].forEach(plis => {
-            // Vérifier contrainte de largeur
+            // Vérifier contrainte de largeur SEULEMENT si activée
             const largeurPoutre = plis * 1.75;
-            if (largeurPoutre > calculateurData.largeurMax) return;
+            if (calculateurData.activerLargeurMax && largeurPoutre > calculateurData.largeurMax) return;
 
             // Vérifier portée dans les tables
             const porteeTableMax = tableHauteur[largeurTable][plis];
@@ -353,6 +354,11 @@ function mettreAJourAffichageCharges() {
     document.getElementById('chargeLineaire').textContent = `${charges.WF.toFixed(0)} lb/pi. (pond.)`;
 }
 
+function afficherLargeurMax() {
+    const largeurMaxContainer = document.getElementById('largeurMaxContainer');
+    largeurMaxContainer.style.display = calculateurData.activerLargeurMax ? 'block' : 'none';
+}
+
 function afficherEspacement() {
     const espacementContainer = document.getElementById('espacementContainer');
     espacementContainer.style.display = calculateurData.typePoutre.startsWith('ajouree') ? 'block' : 'none';
@@ -433,6 +439,7 @@ function mettreAJourInterface() {
     mettreAJourAffichageCharges();
     afficherEspacement();
     afficherTypeEtage();
+    afficherLargeurMax();
     mettreAJourResultats();
 }
 
@@ -488,6 +495,12 @@ function configurerEvenements() {
 
     document.getElementById('chargeNeige').addEventListener('input', (e) => {
         calculateurData.chargeNeige = parseFloat(e.target.value) || 0;
+        mettreAJourInterface();
+    });
+
+    document.getElementById('activerLargeurMax').addEventListener('change', (e) => {
+        calculateurData.activerLargeurMax = e.target.checked;
+        afficherLargeurMax();
         mettreAJourInterface();
     });
 
