@@ -1,95 +1,95 @@
-// Table des donnÃ©es Versa-Lam 2.0E extraite du Guide du concepteur page 5
+// Table des données Versa-Lam 2.0E extraite du Guide du concepteur page 5
 const VERSA_LAM_TABLE = {
     6: {
-        "7Â¼": { wv: 762, wt: null, wf: 1399 },
-        "9Â¼": { wv: null, wt: null, wf: 1885 },
-        "9Â½": { wv: null, wt: null, wf: 1950 },
-        "11Â¼": { wv: null, wt: null, wf: 2429 },
-        "11â…ž": { wv: null, wt: null, wf: 2613 },
+        "7¼": { wv: 762, wt: null, wf: 1399 },
+        "9¼": { wv: null, wt: null, wf: 1885 },
+        "9½": { wv: null, wt: null, wf: 1950 },
+        "11¼": { wv: null, wt: null, wf: 2429 },
+        "11⅞": { wv: null, wt: null, wf: 2613 },
         "14": { wv: null, wt: null, wf: 3292 }
     },
     8: {
-        "7Â¼": { wv: 321, wt: 478, wf: 947 },
-        "9Â¼": { wv: 667, wt: null, wf: 1326 },
-        "9Â½": { wv: 723, wt: null, wf: 1369 },
-        "11Â¼": { wv: null, wt: null, wf: 1679 },
-        "11â…ž": { wv: null, wt: null, wf: 1796 },
+        "7¼": { wv: 321, wt: 478, wf: 947 },
+        "9¼": { wv: 667, wt: null, wf: 1326 },
+        "9½": { wv: 723, wt: null, wf: 1369 },
+        "11¼": { wv: null, wt: null, wf: 1679 },
+        "11⅞": { wv: null, wt: null, wf: 1796 },
         "14": { wv: null, wt: null, wf: 2215 },
         "16": { wv: null, wt: null, wf: 2648 }
     },
     10: {
-        "7Â¼": { wv: 164, wt: 243, wf: 604 },
-        "9Â¼": { wv: 341, wt: 508, wf: 959 },
-        "9Â½": { wv: 370, wt: 550, wf: 1009 },
-        "11Â¼": { wv: 615, wt: null, wf: 1282 },
-        "11â…ž": { wv: 723, wt: null, wf: 1367 },
+        "7¼": { wv: 164, wt: 243, wf: 604 },
+        "9¼": { wv: 341, wt: 508, wf: 959 },
+        "9½": { wv: 370, wt: 550, wf: 1009 },
+        "11¼": { wv: 615, wt: null, wf: 1282 },
+        "11⅞": { wv: 723, wt: null, wf: 1367 },
         "14": { wv: null, wt: null, wf: 1668 },
         "16": { wv: null, wt: null, wf: 1972 }
     },
     12: {
-        "7Â¼": { wv: 95, wt: 139, wf: 418 },
-        "9Â¼": { wv: 197, wt: 292, wf: 664 },
-        "9Â½": { wv: 214, wt: 316, wf: 699 },
-        "11Â¼": { wv: 355, wt: 528, wf: 963 },
-        "11â…ž": { wv: 418, wt: 622, wf: 1067 },
+        "7¼": { wv: 95, wt: 139, wf: 418 },
+        "9¼": { wv: 197, wt: 292, wf: 664 },
+        "9½": { wv: 214, wt: 316, wf: 699 },
+        "11¼": { wv: 355, wt: 528, wf: 963 },
+        "11⅞": { wv: 418, wt: 622, wf: 1067 },
         "14": { wv: 686, wt: null, wf: 1337 },
         "16": { wv: 1024, wt: null, wf: 1570 },
         "18": { wv: null, wt: null, wf: 1816 }
     },
     14: {
-        "7Â¼": { wv: 59, wt: 86, wf: 306 },
-        "9Â¼": { wv: 124, wt: 182, wf: 486 },
-        "9Â½": { wv: 134, wt: 197, wf: 512 },
-        "11Â¼": { wv: 224, wt: 330, wf: 706 },
-        "11â…ž": { wv: 263, wt: 389, wf: 782 },
+        "7¼": { wv: 59, wt: 86, wf: 306 },
+        "9¼": { wv: 124, wt: 182, wf: 486 },
+        "9½": { wv: 134, wt: 197, wf: 512 },
+        "11¼": { wv: 224, wt: 330, wf: 706 },
+        "11⅞": { wv: 263, wt: 389, wf: 782 },
         "14": { wv: 432, wt: 641, wf: 1069 },
         "16": { wv: 644, wt: null, wf: 1304 },
         "18": { wv: 918, wt: null, wf: 1501 }
     },
     16: {
-        "7Â¼": { wv: 40, wt: 56, wf: 233 },
-        "9Â¼": { wv: 83, wt: 120, wf: 371 },
-        "9Â½": { wv: 90, wt: 130, wf: 390 },
-        "11Â¼": { wv: 150, wt: 219, wf: 538 },
-        "11â…ž": { wv: 176, wt: 258, wf: 597 },
+        "7¼": { wv: 40, wt: 56, wf: 233 },
+        "9¼": { wv: 83, wt: 120, wf: 371 },
+        "9½": { wv: 90, wt: 130, wf: 390 },
+        "11¼": { wv: 150, wt: 219, wf: 538 },
+        "11⅞": { wv: 176, wt: 258, wf: 597 },
         "14": { wv: 289, wt: 427, wf: 816 },
         "16": { wv: 432, wt: 639, wf: 1051 },
         "18": { wv: 615, wt: null, wf: 1278 }
     },
     18: {
-        "9Â¼": { wv: 58, wt: 83, wf: 292 },
-        "9Â½": { wv: 63, wt: 90, wf: 307 },
-        "11Â¼": { wv: 105, wt: 152, wf: 424 },
-        "11â…ž": { wv: 124, wt: 180, wf: 470 },
+        "9¼": { wv: 58, wt: 83, wf: 292 },
+        "9½": { wv: 63, wt: 90, wf: 307 },
+        "11¼": { wv: 105, wt: 152, wf: 424 },
+        "11⅞": { wv: 124, wt: 180, wf: 470 },
         "14": { wv: 203, wt: 297, wf: 643 },
         "16": { wv: 303, wt: 447, wf: 829 },
         "18": { wv: 432, wt: 639, wf: 1036 }
     },
     20: {
-        "9Â¼": { wv: 42, wt: 59, wf: 235 },
-        "9Â½": { wv: 46, wt: 64, wf: 247 },
-        "11Â¼": { wv: 76, wt: 109, wf: 342 },
-        "11â…ž": { wv: 90, wt: 129, wf: 379 },
+        "9¼": { wv: 42, wt: 59, wf: 235 },
+        "9½": { wv: 46, wt: 64, wf: 247 },
+        "11¼": { wv: 76, wt: 109, wf: 342 },
+        "11⅞": { wv: 90, wt: 129, wf: 379 },
         "14": { wv: 148, wt: 215, wf: 519 },
         "16": { wv: 221, wt: 323, wf: 669 },
         "18": { wv: 314, wt: 463, wf: 837 }
     },
     22: {
-        "11Â¼": { wv: 57, wt: 80, wf: 281 },
-        "11â…ž": { wv: 67, wt: 95, wf: 312 },
+        "11¼": { wv: 57, wt: 80, wf: 281 },
+        "11⅞": { wv: 67, wt: 95, wf: 312 },
         "14": { wv: 111, wt: 159, wf: 427 },
         "16": { wv: 166, wt: 241, wf: 551 },
         "18": { wv: 236, wt: 345, wf: 690 }
     },
     24: {
-        "11Â¼": { wv: 44, wt: 61, wf: 235 },
-        "11â…ž": { wv: 52, wt: 72, wf: 261 },
+        "11¼": { wv: 44, wt: 61, wf: 235 },
+        "11⅞": { wv: 52, wt: 72, wf: 261 },
         "14": { wv: 85, wt: 121, wf: 357 },
         "16": { wv: 127, wt: 183, wf: 461 },
         "18": { wv: 182, wt: 264, wf: 578 }
     },
     26: {
-        "11Â¼": { wv: 41, wt: 55, wf: 221 },
+        "11¼": { wv: 41, wt: 55, wf: 221 },
         "14": { wv: 67, wt: 94, wf: 303 },
         "16": { wv: 100, wt: 142, wf: 392 },
         "18": { wv: 143, wt: 205, wf: 491 }
@@ -107,7 +107,7 @@ const VERSA_LAM_TABLE = {
 };
 
 // Hauteurs disponibles
-const HAUTEURS = ["7Â¼", "9Â¼", "9Â½", "11Â¼", "11â…ž", "14", "16", "18"];
+const HAUTEURS = ["7¼", "9¼", "9½", "11¼", "11⅞", "14", "16", "18"];
 
 function updateLargeursEtages() {
     const nbEtages = parseInt(document.getElementById('nbEtages').value);
@@ -139,7 +139,7 @@ function updateLargeursEtages() {
 }
 
 function calculerPoutre() {
-    // RÃ©cupÃ©ration des valeurs d'entrÃ©e
+    // Récupération des valeurs d'entrée
     const porteePieds = parseFloat(document.getElementById('porteePieds').value) || 0;
     const porteePouces = parseFloat(document.getElementById('porteePouces').value) || 0;
     const portee = porteePieds + (porteePouces / 12);
@@ -152,7 +152,7 @@ function calculerPoutre() {
     const hauteurMax = parseFloat(document.getElementById('hauteurMax').value) || null;
     const optimisation = document.getElementById('optimisation').value;
 
-    // Validation des entrÃ©es
+    // Validation des entrées
     if (!portee || portee < 6 || portee > 30) {
         document.getElementById('poutreResults').innerHTML = `
             <p style="text-align: center; color: #A0522D; margin-top: 50px;">
@@ -188,28 +188,28 @@ function calculerPoutre() {
         return;
     }
 
-    // Calculs selon la mÃ©thodologie (Ã©tapes 4-7)
+    // Calculs selon la méthodologie (étapes 4-7)
     
-    // Ã‰tape 4: Charge vive uniformÃ©ment rÃ©partie
+    // Étape 4: Charge vive uniformément répartie
     const chargeViveTotale = chargeVive + chargeViveNeige;
     const wvTotal = chargeViveTotale * ltTotal;
 
-    // Ã‰tape 5: Charge morte uniformÃ©ment rÃ©partie
+    // Étape 5: Charge morte uniformément répartie
     const wmTotal = chargeMorte * ltTotal;
 
-    // Ã‰tape 6: Charge totale non pondÃ©rÃ©e
+    // Étape 6: Charge totale non pondérée
     const wtTotal = wvTotal + wmTotal;
 
-    // Ã‰tape 7: Charge totale pondÃ©rÃ©e
+    // Étape 7: Charge totale pondérée
     const wfTotal = wvTotal * 1.5 + wmTotal * 1.25;
 
-    // Affichage des rÃ©sultats de calcul
+    // Affichage des résultats de calcul
     document.getElementById('resultWv').textContent = `${wvTotal.toFixed(1)} lb/pi`;
     document.getElementById('resultWm').textContent = `${wmTotal.toFixed(1)} lb/pi`;
     document.getElementById('resultWt').textContent = `${wtTotal.toFixed(1)} lb/pi`;
     document.getElementById('resultWf').textContent = `${wfTotal.toFixed(1)} lb/pi`;
 
-    // Ã‰tape 8: Recherche des poutres viables
+    // Étape 8: Recherche des poutres viables
     const poutresViables = trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, hauteurMax, optimisation);
     
     afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal);
@@ -218,7 +218,7 @@ function calculerPoutre() {
 function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, hauteurMax, optimisation) {
     const poutresViables = [];
     
-    // Trouver la portÃ©e dans la table (ou la plus proche supÃ©rieure)
+    // Trouver la portée dans la table (ou la plus proche supérieure)
     let porteeTable = null;
     for (let p of Object.keys(VERSA_LAM_TABLE).map(Number).sort((a, b) => a - b)) {
         if (p >= portee) {
@@ -233,11 +233,11 @@ function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, ha
 
     const donnees = VERSA_LAM_TABLE[porteeTable];
     
-    // Tester diffÃ©rents nombres de plis (1 Ã  4)
+    // Tester différents nombres de plis (1 à 4)
     for (let nbPlis = 1; nbPlis <= 4; nbPlis++) {
         const largeurPoutre = nbPlis * 1.75;
         
-        // VÃ©rifier contrainte de largeur
+        // Vérifier contrainte de largeur
         if (largeurMax && largeurPoutre > largeurMax) {
             continue;
         }
@@ -247,11 +247,11 @@ function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, ha
         const wtParPli = wtTotal / nbPlis;
         const wfParPli = wfTotal / nbPlis;
         
-        // VÃ©rifier chaque hauteur disponible
+        // Vérifier chaque hauteur disponible
         for (let hauteur of HAUTEURS) {
-            const hauteurNum = parseFloat(hauteur.replace('Â¼', '.25').replace('Â½', '.5').replace('â…ž', '.875'));
+            const hauteurNum = parseFloat(hauteur.replace('¼', '.25').replace('½', '.5').replace('⅞', '.875'));
             
-            // VÃ©rifier contrainte de hauteur
+            // Vérifier contrainte de hauteur
             if (hauteurMax && hauteurNum > hauteurMax) {
                 continue;
             }
@@ -259,10 +259,10 @@ function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, ha
             if (donnees[hauteur]) {
                 const spec = donnees[hauteur];
                 
-                // VÃ©rifier les trois critÃ¨res de chargement
-                let critere1 = true; // Charge vive non pondÃ©rÃ©e
-                let critere2 = true; // Charge totale non pondÃ©rÃ©e  
-                let critere3 = true; // Charge totale pondÃ©rÃ©e
+                // Vérifier les trois critères de chargement
+                let critere1 = true; // Charge vive non pondérée
+                let critere2 = true; // Charge totale non pondérée  
+                let critere3 = true; // Charge totale pondérée
                 
                 if (spec.wv !== null && wvParPli > spec.wv) {
                     critere1 = false;
@@ -339,12 +339,12 @@ function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
     `;
 
     poutresViables.forEach((poutre, index) => {
-        const epaisseur = poutre.nbPlis === 1 ? "1Â¾\"" : `${poutre.nbPlis} Ã— 1Â¾\"`;
+        const epaisseur = poutre.nbPlis === 1 ? "1¾\"" : `${poutre.nbPlis} × 1¾\"`;
         
         html += `
             <div class="poutre-option" onclick="selectionnerPoutre(${index})">
                 <div class="poutre-title">
-                    ${epaisseur} Ã— ${poutre.hauteur}" (${poutre.largeurPoutre}" Ã— ${poutre.hauteur}")
+                    ${epaisseur} × ${poutre.hauteur}" (${poutre.largeurPoutre}" × ${poutre.hauteur}")
                 </div>
                 <div class="poutre-specs">
                     <div><strong>Portée:</strong> ${poutre.porteeTable}'</div>
