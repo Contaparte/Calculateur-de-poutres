@@ -152,9 +152,18 @@ function calculerPoutre() {
     const hauteurMax = parseFloat(document.getElementById('hauteurMax').value) || null;
     const optimisation = document.getElementById('optimisation').value;
 
-    // Validation des entrées
+    // Validation des entrées - ne pas afficher d'alerte si calcul automatique
     if (!portee || portee < 6 || portee > 30) {
-        alert('La portée doit être entre 6 et 30 pieds');
+        // Effacer les résultats si portée invalide
+        document.getElementById('resultWv').textContent = '-';
+        document.getElementById('resultWm').textContent = '-';
+        document.getElementById('resultWt').textContent = '-';
+        document.getElementById('resultWf').textContent = '-';
+        document.getElementById('poutreResults').innerHTML = `
+            <p style="text-align: center; color: #A0522D; margin-top: 50px;">
+                Entrez les paramètres et cliquez sur "Calculer" pour voir les options de poutres.
+            </p>
+        `;
         return;
     }
 
