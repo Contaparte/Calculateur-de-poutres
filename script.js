@@ -113,10 +113,10 @@ function updateLargeursEtages() {
     const nbEtages = parseInt(document.getElementById('nbEtages').value);
     const container = document.getElementById('largeursContainer');
     
-    let html = '<label>Largeurs tributaires par Ã©tage</label>';
+    let html = '<label>Largeurs tributaires par étage</label>';
     
     for (let i = 1; i <= nbEtages; i++) {
-        const etageLabel = `Ã‰tage ${i}`;
+        const etageLabel = `Étage ${i}`;
         
         html += `
             <div class="largeur-etage">
@@ -124,9 +124,9 @@ function updateLargeursEtages() {
                     <div class="input-field">
                         <label for="ltEtage${i}">L.T. ${etageLabel}</label>
                         <div class="dimension-input">
-                            <input type="number" id="ltEtage${i}Pieds" step="0.1" min="0" placeholder="0">
+                            <input type="number" id="ltEtage${i}Pieds" step="0.1" min="0" placeholder="Pieds">
                             <span>pi</span>
-                            <input type="number" id="ltEtage${i}Pouces" step="0.1" min="0" max="11.9" placeholder="0">
+                            <input type="number" id="ltEtage${i}Pouces" step="0.1" min="0" max="11.9" placeholder="Pouces">
                             <span>po</span>
                         </div>
                     </div>
@@ -156,7 +156,7 @@ function calculerPoutre() {
     if (!portee || portee < 6 || portee > 30) {
         document.getElementById('poutreResults').innerHTML = `
             <p style="text-align: center; color: #A0522D; margin-top: 50px;">
-                La portÃ©e doit Ãªtre entre 6 et 30 pieds
+                La portée doit être entre 6 et 30 pieds
             </p>
         `;
         return;
@@ -182,7 +182,7 @@ function calculerPoutre() {
         document.getElementById('resultWf').textContent = '-';
         document.getElementById('poutreResults').innerHTML = `
             <p style="text-align: center; color: #A0522D; margin-top: 50px;">
-                Entrez les paramÃ¨tres pour voir les options de poutres.
+                Entrez les paramètres pour voir les options de poutres.
             </p>
         `;
         return;
@@ -317,14 +317,14 @@ function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
     if (poutresViables.length === 0) {
         container.innerHTML = `
             <div class="no-solution">
-                <h3>Aucune poutre viable trouvÃ©e</h3>
-                <p>Les charges dÃ©passent les capacitÃ©s des poutres Versa-Lam 2.0E pour cette portÃ©e.</p>
+                <h3>Aucune poutre viable trouvée</h3>
+                <p>Les charges dépassent les capacités des poutres Versa-Lam 2.0E pour cette portée.</p>
                 <p>Suggestions :</p>
                 <ul style="text-align: left; margin-top: 10px;">
                     <li>Augmenter les contraintes de largeur/hauteur</li>
-                    <li>RÃ©duire la portÃ©e</li>
-                    <li>RÃ©duire les charges</li>
-                    <li>ConsidÃ©rer des appuis intermÃ©diaires</li>
+                    <li>Réduire la portée</li>
+                    <li>Réduire les charges</li>
+                    <li>Considérer des appuis intermédiaires</li>
                 </ul>
             </div>
         `;
@@ -334,7 +334,7 @@ function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
     let html = `
         <div class="poutre-options">
             <h3 style="margin-bottom: 20px; color: #D2691E;">
-                Poutres Versa-LamÂ® viables (${poutresViables.length} option${poutresViables.length > 1 ? 's' : ''})
+                Poutres Versa-Lam® viables (${poutresViables.length} option${poutresViables.length > 1 ? 's' : ''})
             </h3>
     `;
 
@@ -347,11 +347,11 @@ function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
                     ${epaisseur} Ã— ${poutre.hauteur}" (${poutre.largeurPoutre}" Ã— ${poutre.hauteur}")
                 </div>
                 <div class="poutre-specs">
-                    <div><strong>PortÃ©e:</strong> ${poutre.porteeTable}'</div>
+                    <div><strong>Portée:</strong> ${poutre.porteeTable}'</div>
                     <div><strong>Nombre de plis:</strong> ${poutre.nbPlis}</div>
-                    <div><strong>CapacitÃ© Wv:</strong> ${poutre.wvMax} lb/pi</div>
-                    <div><strong>CapacitÃ© Wt:</strong> ${poutre.wtMax} lb/pi</div>
-                    <div><strong>CapacitÃ© Wf:</strong> ${poutre.wfMax} lb/pi</div>
+                    <div><strong>Capacité Wv:</strong> ${poutre.wvMax} lb/pi</div>
+                    <div><strong>Capacité Wt:</strong> ${poutre.wtMax} lb/pi</div>
+                    <div><strong>Capacité Wf:</strong> ${poutre.wfMax} lb/pi</div>
                 </div>
             </div>
         `;
@@ -363,7 +363,7 @@ function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
             Wv = ${wvTotal.toFixed(1)} lb/pi | 
             Wt = ${wtTotal.toFixed(1)} lb/pi | 
             Wf = ${wfTotal.toFixed(1)} lb/pi<br>
-            <em>Les valeurs ci-dessus reprÃ©sentent les charges totales supportÃ©es par la poutre complÃ¨te.</em>
+            <em>Les valeurs ci-dessus représentent les charges totales supportées par la poutre complète.</em>
         </div>
     `;
 
@@ -372,12 +372,12 @@ function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
 }
 
 function selectionnerPoutre(index) {
-    // Retirer la sÃ©lection prÃ©cÃ©dente
+    // Retirer la sélection précédente
     document.querySelectorAll('.poutre-option').forEach(option => {
         option.classList.remove('selected');
     });
     
-    // Ajouter la sÃ©lection Ã  l'option cliquÃ©e
+    // Ajouter la sélection à l'option cliquée
     document.querySelectorAll('.poutre-option')[index].classList.add('selected');
 }
 
@@ -392,14 +392,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const element = document.getElementById(inputId);
         if (element) {
             element.addEventListener('input', function() {
-                // Auto-calcul avec un dÃ©lai pour Ã©viter trop de calculs
+                // Auto-calcul avec un délai pour éviter trop de calculs
                 clearTimeout(this.timer);
                 this.timer = setTimeout(calculerPoutre, 500);
             });
         }
     });
     
-    // Ajouter des Ã©vÃ©nements pour les largeurs tributaires dynamiques
+    // Ajouter des événements pour les largeurs tributaires dynamiques
     document.getElementById('largeursContainer').addEventListener('input', function(e) {
         if (e.target.tagName === 'INPUT') {
             clearTimeout(this.timer);
