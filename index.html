@@ -179,6 +179,7 @@
             border-radius: 6px;
             padding: 15px;
             margin-bottom: 15px;
+            border-left: 4px solid #D2691E;
             transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
@@ -190,7 +191,7 @@
         }
 
         .poutre-option.selected {
-            border-left: 4px solid #D2691E;
+            border-right: 4px solid #D2691E;
         }
 
         .poutre-title {
@@ -265,9 +266,9 @@
                         <div class="input-field">
                             <label for="portee">Portée de la poutre</label>
                             <div class="dimension-input">
-                                <input type="number" id="porteePieds" min="6" max="30">
+                                <input type="number" id="porteePieds" min="6" max="30" value="15">
                                 <span>pi</span>
-                                <input type="number" id="porteePouces" min="0" max="11" step="0.5">
+                                <input type="number" id="porteePouces" min="0" max="11" step="0.5" value="0">
                                 <span>po</span>
                             </div>
                         </div>
@@ -296,17 +297,17 @@
                     <div class="input-row">
                         <div class="input-field">
                             <label for="chargeMorte">Charge morte (CM)</label>
-                            <input type="number" id="chargeMorte" step="1" min="0">
+                            <input type="number" id="chargeMorte" step="1" min="0" value="15">
                         </div>
                         <div class="input-field">
                             <label for="chargeVive">Charge vive (CV) (occupation)</label>
-                            <input type="number" id="chargeVive" step="1" min="0">
+                            <input type="number" id="chargeVive" step="1" min="0" value="40">
                         </div>
                     </div>
                     <div class="input-row">
                         <div class="input-field">
                             <label for="chargeViveNeige">Charge vive (CV) (neige)</label>
-                            <input type="number" id="chargeViveNeige" step="1" min="0">
+                            <input type="number" id="chargeViveNeige" step="1" min="0" value="0">
                         </div>
                         <div class="input-field">
                             <!-- Vide pour garder l'alignement -->
