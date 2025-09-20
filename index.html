@@ -253,21 +253,21 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Calculateur Poutres Versa-LamÂ® 2.0E</h1>
+            <h1>Calculateur Poutres Versa-Lam® 2.0E</h1>
         </div>
 
         <div class="main-content">
             <div class="input-section">
-                <h2 class="section-title">ParamÃ¨tres de conception</h2>
+                <h2 class="section-title">Paramètres de conception</h2>
                 
                 <div class="input-group">
                     <div class="input-row">
                         <div class="input-field">
-                            <label for="portee">PortÃ©e de la poutre</label>
+                            <label for="portee">Portée de la poutre</label>
                             <div class="dimension-input">
-                                <input type="number" id="porteePieds" min="6" max="30" placeholder="15">
+                                <input type="number" id="porteePieds" min="6" max="30" placeholder="Pieds">
                                 <span>pi</span>
-                                <input type="number" id="porteePouces" min="0" max="11" step="0.5" placeholder="0">
+                                <input type="number" id="porteePouces" min="0" max="11" step="0.5" placeholder="Pouces">
                                 <span>po</span>
                             </div>
                         </div>
@@ -277,12 +277,12 @@
                 <div class="input-group">
                     <div class="input-row">
                         <div class="input-field">
-                            <label for="nbEtages">Nombre d'Ã©tages supportÃ©s</label>
+                            <label for="nbEtages">Nombre d'étages supportés</label>
                             <select id="nbEtages" onchange="updateLargeursEtages()">
-                                <option value="1">1 Ã©tage</option>
-                                <option value="2" selected>2 Ã©tages</option>
-                                <option value="3">3 Ã©tages</option>
-                                <option value="4">4 Ã©tages</option>
+                                <option value="1" selected>1 étage</option>
+                                <option value="2">2 étages</option>
+                                <option value="3">3 étages</option>
+                                <option value="4">4 étages</option>
                             </select>
                         </div>
                     </div>
@@ -296,17 +296,17 @@
                     <div class="input-row">
                         <div class="input-field">
                             <label for="chargeMorte">Charge morte (CM)</label>
-                            <input type="number" id="chargeMorte" step="1" min="0" placeholder="15">
+                            <input type="number" id="chargeMorte" step="1" min="0" placeholder="Valeur CM">
                         </div>
                         <div class="input-field">
                             <label for="chargeVive">Charge vive (CV) (occupation)</label>
-                            <input type="number" id="chargeVive" step="1" min="0" placeholder="40">
+                            <input type="number" id="chargeVive" step="1" min="0" placeholder="Valeur CV">
                         </div>
                     </div>
                     <div class="input-row">
                         <div class="input-field">
                             <label for="chargeViveNeige">Charge vive (CV) (neige)</label>
-                            <input type="number" id="chargeViveNeige" step="1" min="0" placeholder="0">
+                            <input type="number" id="chargeViveNeige" step="1" min="0" placeholder="Valeur CV neige">
                         </div>
                         <div class="input-field">
                             <!-- Vide pour garder l'alignement -->
@@ -342,30 +342,30 @@
             </div>
 
             <div class="results-section">
-                <h2 class="section-title">RÃ©sultats de calcul</h2>
+                <h2 class="section-title">Résultats de calcul</h2>
                 
                 <div class="results-grid">
                     <div class="result-card">
-                        <div class="result-label">Charge vive rÃ©partie (Wv)</div>
+                        <div class="result-label">Charge vive répartie (Wv)</div>
                         <div class="result-value" id="resultWv">-</div>
                     </div>
                     <div class="result-card">
-                        <div class="result-label">Charge morte rÃ©partie (Wm)</div>
+                        <div class="result-label">Charge morte répartie (Wm)</div>
                         <div class="result-value" id="resultWm">-</div>
                     </div>
                     <div class="result-card">
-                        <div class="result-label">Charge totale non pondÃ©rÃ©e (Wt)</div>
+                        <div class="result-label">Charge totale non pondérée (Wt)</div>
                         <div class="result-value" id="resultWt">-</div>
                     </div>
                     <div class="result-card">
-                        <div class="result-label">Charge totale pondÃ©rÃ©e (Wf)</div>
+                        <div class="result-label">Charge totale pondérée (Wf)</div>
                         <div class="result-value" id="resultWf">-</div>
                     </div>
                 </div>
 
                 <div id="poutreResults">
                     <p style="text-align: center; color: #A0522D; margin-top: 50px;">
-                        Entrez les paramÃ¨tres pour voir les options de poutres.
+                        Entrez les paramètres pour voir les options de poutres.
                     </p>
                 </div>
             </div>
