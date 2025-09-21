@@ -106,12 +106,123 @@ const VERSA_LAM_TABLE = {
     }
 };
 
-// Hauteurs disponibles
+// Table des données CCQ - Tableaux 9.23.4.2.-H, I, J (Poutres composées)
+const CCQ_TABLE = {
+    // Tableau 9.23.4.2.-H - 1 plancher supporté
+    1: {
+        // Douglas Fir-Larch Select Structural
+        "douglas_select": {
+            6: { "3-38x184": 3.36, "4-38x184": 3.70, "5-38x184": 3.99, "3-38x235": 4.30, "4-38x235": 4.73, "5-38x235": 5.09, "3-38x286": 5.23, "4-38x286": 5.66, "5-38x286": 5.99 },
+            8: { "3-38x184": 3.12, "4-38x184": 3.44, "5-38x184": 3.70, "3-38x235": 3.99, "4-38x235": 4.39, "5-38x235": 4.73, "3-38x286": 4.84, "4-38x286": 5.34, "5-38x286": 5.66 },
+            10: { "3-38x184": 2.94, "4-38x184": 3.23, "5-38x184": 3.48, "3-38x235": 3.75, "4-38x235": 4.13, "5-38x235": 4.45, "3-38x286": 4.41, "4-38x286": 5.03, "5-38x286": 5.41 },
+            12: { "3-38x184": 2.79, "4-38x184": 3.07, "5-38x184": 3.31, "3-38x235": 3.52, "4-38x235": 3.92, "5-38x235": 4.23, "3-38x286": 4.09, "4-38x286": 4.72, "5-38x286": 5.14 },
+            14: { "3-38x184": 2.67, "4-38x184": 2.94, "5-38x184": 3.17, "3-38x235": 3.29, "4-38x235": 3.75, "5-38x235": 4.04, "3-38x286": 3.82, "4-38x286": 4.41, "5-38x286": 4.92 },
+            16: { "3-38x184": 2.54, "4-38x184": 2.83, "5-38x184": 3.04, "3-38x235": 3.11, "4-38x235": 3.59, "5-38x235": 3.89, "3-38x286": 3.60, "4-38x286": 4.16, "5-38x286": 4.65 },
+            18: { "3-38x184": 2.41, "4-38x184": 2.73, "5-38x184": 2.94, "3-38x235": 2.95, "4-38x235": 3.40, "5-38x235": 3.75, "3-38x286": 3.42, "4-38x286": 3.95, "5-38x286": 4.41 },
+            20: { "3-38x184": 2.28, "4-38x184": 2.62, "5-38x184": 2.85, "3-38x235": 2.80, "4-38x235": 3.24, "5-38x235": 3.62, "3-38x286": 3.26, "4-38x286": 3.76, "5-38x286": 4.20 }
+        },
+        // Hem-Fir Select Structural  
+        "hem_fir_select": {
+            6: { "3-38x184": 3.32, "4-38x184": 3.65, "5-38x184": 3.93, "3-38x235": 4.24, "4-38x235": 4.66, "5-38x235": 5.03, "3-38x286": 5.16, "4-38x286": 5.61, "5-38x286": 5.93 },
+            8: { "3-38x184": 3.08, "4-38x184": 3.39, "5-38x184": 3.65, "3-38x235": 3.93, "4-38x235": 4.33, "5-38x235": 4.66, "3-38x286": 4.76, "4-38x286": 5.27, "5-38x286": 5.61 },
+            10: { "3-38x184": 2.90, "4-38x184": 3.19, "5-38x184": 3.44, "3-38x235": 3.70, "4-38x235": 4.08, "5-38x235": 4.39, "3-38x286": 4.35, "4-38x286": 4.96, "5-38x286": 5.34 },
+            12: { "3-38x184": 2.75, "4-38x184": 3.03, "5-38x184": 3.27, "3-38x235": 3.47, "4-38x235": 3.87, "5-38x235": 4.17, "3-38x286": 4.02, "4-38x286": 4.65, "5-38x286": 5.07 },
+            14: { "3-38x184": 2.63, "4-38x184": 2.90, "5-38x184": 3.12, "3-38x235": 3.24, "4-38x235": 3.70, "5-38x235": 3.99, "3-38x286": 3.66, "4-38x286": 4.35, "5-38x286": 4.85 },
+            16: { "3-38x184": 2.49, "4-38x184": 2.79, "5-38x184": 3.00, "3-38x235": 2.95, "4-38x235": 3.53, "5-38x235": 3.83, "3-38x286": 3.32, "4-38x286": 4.10, "5-38x286": 4.58 },
+            18: { "3-38x184": 2.28, "4-38x184": 2.69, "5-38x184": 2.90, "3-38x235": 2.70, "4-38x235": 3.35, "5-38x235": 3.70, "3-38x286": 3.04, "4-38x286": 3.87, "5-38x286": 4.35 },
+            20: { "3-38x184": 2.10, "4-38x184": 2.58, "5-38x184": 2.81, "3-38x235": 2.47, "4-38x235": 3.18, "5-38x235": 3.57, "3-38x286": 2.80, "4-38x286": 3.66, "5-38x286": 4.13 }
+        }
+    },
+    // Tableau 9.23.4.2.-I - 2 planchers supportés
+    2: {
+        "douglas_select": {
+            6: { "3-38x184": 2.80, "4-38x184": 3.08, "5-38x184": 3.32, "3-38x235": 3.49, "4-38x235": 3.93, "5-38x235": 4.24, "3-38x286": 4.05, "4-38x286": 4.67, "5-38x286": 5.16 },
+            8: { "3-38x184": 2.55, "4-38x184": 2.86, "5-38x184": 3.08, "3-38x235": 3.12, "4-38x235": 3.60, "5-38x235": 3.93, "3-38x286": 3.62, "4-38x286": 4.18, "5-38x286": 4.67 },
+            10: { "3-38x184": 2.33, "4-38x184": 2.69, "5-38x184": 2.90, "3-38x235": 2.85, "4-38x235": 3.29, "5-38x235": 3.68, "3-38x286": 3.30, "4-38x286": 3.82, "5-38x286": 4.27 },
+            12: { "3-38x184": 2.16, "4-38x184": 2.49, "5-38x184": 2.75, "3-38x235": 2.64, "4-38x235": 3.04, "5-38x235": 3.40, "3-38x286": 2.99, "4-38x286": 3.53, "5-38x286": 3.95 },
+            14: { "3-38x184": 2.00, "4-38x184": 2.33, "5-38x184": 2.60, "3-38x235": 2.38, "4-38x235": 2.85, "5-38x235": 3.18, "3-38x286": 2.69, "4-38x286": 3.30, "5-38x286": 3.69 },
+            16: { "3-38x184": 1.82, "4-38x184": 2.20, "5-38x184": 2.45, "3-38x235": 2.17, "4-38x235": 2.68, "5-38x235": 3.00, "3-38x286": 2.45, "4-38x286": 3.08, "5-38x286": 3.48 },
+            18: { "3-38x184": 1.67, "4-38x184": 2.08, "5-38x184": 2.33, "3-38x235": 2.00, "4-38x235": 2.51, "5-38x235": 2.85, "3-38x286": 2.26, "4-38x286": 2.83, "5-38x286": 3.30 },
+            20: { "3-38x184": 1.54, "4-38x184": 1.97, "5-38x184": 2.22, "3-38x235": 1.85, "4-38x235": 2.37, "5-38x235": 2.72, "3-38x286": 2.10, "4-38x286": 2.61, "5-38x286": 3.13 }
+        },
+        "hem_fir_select": {
+            6: { "3-38x184": 2.76, "4-38x184": 3.04, "5-38x184": 3.27, "3-38x235": 3.43, "4-38x235": 3.88, "5-38x235": 4.18, "3-38x286": 3.99, "4-38x286": 4.60, "5-38x286": 5.09 },
+            8: { "3-38x184": 2.51, "4-38x184": 2.82, "5-38x184": 3.04, "3-38x235": 2.97, "4-38x235": 3.55, "5-38x235": 3.88, "3-38x286": 3.34, "4-38x286": 4.12, "5-38x286": 4.60 },
+            10: { "3-38x184": 2.15, "4-38x184": 2.65, "5-38x184": 2.86, "3-38x235": 2.56, "4-38x235": 3.24, "5-38x235": 3.62, "3-38x286": 2.88, "4-38x286": 3.65, "5-38x286": 4.20 },
+            12: { "3-38x184": 1.90, "4-38x184": 2.40, "5-38x184": 2.72, "3-38x235": 2.26, "4-38x235": 2.85, "5-38x235": 3.35, "3-38x286": 2.55, "4-38x286": 3.21, "5-38x286": 3.87 },
+            14: { "3-38x184": 1.70, "4-38x184": 2.15, "5-38x184": 2.56, "3-38x235": 2.03, "4-38x235": 2.56, "5-38x235": 3.08, "3-38x286": 2.30, "4-38x286": 2.88, "5-38x286": 3.46 },
+            16: { "3-38x184": 1.56, "4-38x184": 1.95, "5-38x184": 2.35, "3-38x235": 1.86, "4-38x235": 2.32, "5-38x235": 2.79, "3-38x286": 2.11, "4-38x286": 2.62, "5-38x286": 3.14 },
+            18: { "3-38x184": 1.44, "4-38x184": 1.79, "5-38x184": 2.15, "3-38x235": 1.72, "4-38x235": 2.14, "5-38x235": 2.56, "3-38x286": 1.96, "4-38x286": 2.42, "5-38x286": 2.88 },
+            20: { "3-38x184": 1.35, "4-38x184": 1.66, "5-38x184": 1.97, "3-38x235": 1.60, "4-38x235": 1.98, "5-38x235": 2.36, "3-38x286": 1.83, "4-38x286": 2.25, "5-38x286": 2.65 }
+        }
+    },
+    // Tableau 9.23.4.2.-J - 3 planchers supportés
+    3: {
+        "douglas_select": {
+            6: { "3-38x184": 2.38, "4-38x184": 2.74, "5-38x184": 2.95, "3-38x235": 2.91, "4-38x235": 3.36, "5-38x235": 3.75, "3-38x286": 3.37, "4-38x286": 3.89, "5-38x286": 4.35 },
+            8: { "3-38x184": 2.13, "4-38x184": 2.46, "5-38x184": 2.74, "3-38x235": 2.60, "4-38x235": 3.00, "5-38x235": 3.36, "3-38x286": 2.92, "4-38x286": 3.48, "5-38x286": 3.89 },
+            10: { "3-38x184": 1.88, "4-38x184": 2.24, "5-38x184": 2.51, "3-38x235": 2.24, "4-38x235": 2.74, "5-38x235": 3.06, "3-38x286": 2.53, "4-38x286": 3.18, "5-38x286": 3.56 },
+            12: { "3-38x184": 1.66, "4-38x184": 2.08, "5-38x184": 2.32, "3-38x235": 1.99, "4-38x235": 2.49, "5-38x235": 2.84, "3-38x286": 2.25, "4-38x286": 2.81, "5-38x286": 3.29 },
+            14: { "3-38x184": 1.50, "4-38x184": 1.88, "5-38x184": 2.17, "3-38x235": 1.80, "4-38x235": 2.24, "5-38x235": 2.65, "3-38x286": 2.04, "4-38x286": 2.53, "5-38x286": 3.02 },
+            16: { "3-38x184": 1.38, "4-38x184": 1.71, "5-38x184": 2.05, "3-38x235": 1.65, "4-38x235": 2.04, "5-38x235": 2.44, "3-38x286": 1.88, "4-38x286": 2.31, "5-38x286": 2.75 },
+            18: { "3-38x184": 1.28, "4-38x184": 1.58, "5-38x184": 1.88, "3-38x235": 1.53, "4-38x235": 1.89, "5-38x235": 2.24, "3-38x286": 1.75, "4-38x286": 2.14, "5-38x286": 2.53 },
+            20: { "3-38x184": 1.19, "4-38x184": 1.47, "5-38x184": 1.74, "3-38x235": 1.43, "4-38x235": 1.76, "5-38x235": 2.08, "3-38x286": 1.64, "4-38x286": 2.00, "5-38x286": 2.35 }
+        },
+        "hem_fir_select": {
+            6: { "3-38x184": 2.22, "4-38x184": 2.70, "5-38x184": 2.91, "3-38x235": 2.64, "4-38x235": 3.31, "5-38x235": 3.70, "3-38x286": 2.98, "4-38x286": 3.78, "5-38x286": 4.29 },
+            8: { "3-38x184": 1.85, "4-38x184": 2.35, "5-38x184": 2.70, "3-38x235": 2.21, "4-38x235": 2.79, "5-38x235": 3.31, "3-38x286": 2.50, "4-38x286": 3.14, "5-38x286": 3.78 },
+            10: { "3-38x184": 1.61, "4-38x184": 2.02, "5-38x184": 2.43, "3-38x235": 1.92, "4-38x235": 2.40, "5-38x235": 2.89, "3-38x286": 2.18, "4-38x286": 2.71, "5-38x286": 3.24 },
+            12: { "3-38x184": 1.43, "4-38x184": 1.78, "5-38x184": 2.14, "3-38x235": 1.71, "4-38x235": 2.13, "5-38x235": 2.54, "3-38x286": 1.95, "4-38x286": 2.40, "5-38x286": 2.86 },
+            14: { "3-38x184": 1.30, "4-38x184": 1.61, "5-38x184": 1.92, "3-38x235": 1.56, "4-38x235": 1.92, "5-38x235": 2.28, "3-38x286": 1.77, "4-38x286": 2.18, "5-38x286": 2.58 },
+            16: { "3-38x184": 1.19, "4-38x184": 1.47, "5-38x184": 1.74, "3-38x235": 1.44, "4-38x235": 1.76, "5-38x235": 2.08, "3-38x286": 1.64, "4-38x286": 2.00, "5-38x286": 2.35 },
+            18: { "3-38x184": 1.11, "4-38x184": 1.36, "5-38x184": 1.61, "3-38x235": 1.34, "4-38x235": 1.63, "5-38x235": 1.92, "3-38x286": 1.53, "4-38x286": 1.85, "5-38x286": 2.18 },
+            20: { "3-38x184": 1.05, "4-38x184": 1.27, "5-38x184": 1.50, "3-38x235": 1.25, "4-38x235": 1.52, "5-38x235": 1.79, "3-38x286": 1.44, "4-38x286": 1.73, "5-38x286": 2.04 }
+        }
+    }
+};
+
+// Conversion des dimensions impériales pour l'affichage
+const CCQ_BEAM_DIMENSIONS = {
+    "3-38x184": "3-1½\"×7¼\"",
+    "4-38x184": "4-1½\"×7¼\"", 
+    "5-38x184": "5-1½\"×7¼\"",
+    "3-38x235": "3-1½\"×9¼\"",
+    "4-38x235": "4-1½\"×9¼\"",
+    "5-38x235": "5-1½\"×9¼\"", 
+    "3-38x286": "3-1½\"×11¼\"",
+    "4-38x286": "4-1½\"×11¼\"",
+    "5-38x286": "5-1½\"×11¼\""
+};
+
+// Hauteurs disponibles pour Versa-Lam
 const HAUTEURS = ["7¼", "9¼", "9½", "11¼", "11⅞", "14", "16", "18"];
 
-function updateLargeursEtages() {
-    const nbEtages = parseInt(document.getElementById('nbEtages').value);
-    const container = document.getElementById('largeursContainer');
+// Variables globales
+let currentTab = 'versa-lam';
+
+// Fonction de gestion des onglets
+function switchTab(tabName) {
+    // Cacher tous les contenus d'onglets
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // Désactiver tous les boutons d'onglets
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    // Activer l'onglet sélectionné
+    document.getElementById(tabName + '-content').classList.add('active');
+    document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+    
+    currentTab = tabName;
+}
+
+function updateLargeursEtages(type = 'versa') {
+    const suffix = type === 'versa' ? 'Versa' : 'Ccq';
+    const nbEtages = parseInt(document.getElementById(`nbEtages${suffix}`).value);
+    const container = document.getElementById(`largeursContainer${suffix}`);
     
     let html = '<label>Largeurs tributaires par étage</label>';
     
@@ -122,11 +233,11 @@ function updateLargeursEtages() {
             <div class="largeur-etage">
                 <div class="input-row">
                     <div class="input-field">
-                        <label for="ltEtage${i}">L.T. ${etageLabel}</label>
+                        <label for="ltEtage${i}${suffix}">L.T. ${etageLabel}</label>
                         <div class="dimension-input">
-                            <input type="number" id="ltEtage${i}Pieds" step="0.1" min="0" placeholder="Pieds">
+                            <input type="number" id="ltEtage${i}Pieds${suffix}" step="0.1" min="0" placeholder="Pieds">
                             <span>pi</span>
-                            <input type="number" id="ltEtage${i}Pouces" step="0.1" min="0" max="11.9" placeholder="Pouces">
+                            <input type="number" id="ltEtage${i}Pouces${suffix}" step="0.1" min="0" max="11.9" placeholder="Pouces">
                             <span>po</span>
                         </div>
                     </div>
@@ -138,23 +249,33 @@ function updateLargeursEtages() {
     container.innerHTML = html;
 }
 
-function calculerPoutre() {
+function calculerPoutre(type = null) {
+    if (!type) type = currentTab === 'versa-lam' ? 'versa' : 'ccq';
+    
+    if (type === 'versa') {
+        calculerPoutreVersa();
+    } else {
+        calculerPoutreCcq();
+    }
+}
+
+function calculerPoutreVersa() {
     // Récupération des valeurs d'entrée
-    const porteePieds = parseFloat(document.getElementById('porteePieds').value) || 0;
-    const porteePouces = parseFloat(document.getElementById('porteePouces').value) || 0;
+    const porteePieds = parseFloat(document.getElementById('porteePiedsVersa').value) || 0;
+    const porteePouces = parseFloat(document.getElementById('porteePoucesVersa').value) || 0;
     const portee = porteePieds + (porteePouces / 12);
     
-    const nbEtages = parseInt(document.getElementById('nbEtages').value);
-    const chargeMorte = parseFloat(document.getElementById('chargeMorte').value) || 0;
-    const chargeVive = parseFloat(document.getElementById('chargeVive').value) || 0;
-    const chargeViveNeige = parseFloat(document.getElementById('chargeViveNeige').value) || 0;
-    const largeurMax = parseFloat(document.getElementById('largeurMax').value) || null;
-    const hauteurMax = parseFloat(document.getElementById('hauteurMax').value) || null;
-    const optimisation = document.getElementById('optimisation').value;
+    const nbEtages = parseInt(document.getElementById('nbEtagesVersa').value);
+    const chargeMorte = parseFloat(document.getElementById('chargeMorteVersa').value) || 0;
+    const chargeVive = parseFloat(document.getElementById('chargeViveVersa').value) || 0;
+    const chargeViveNeige = parseFloat(document.getElementById('chargeViveNeigeVersa').value) || 0;
+    const largeurMax = parseFloat(document.getElementById('largeurMaxVersa').value) || null;
+    const hauteurMax = parseFloat(document.getElementById('hauteurMaxVersa').value) || null;
+    const optimisation = document.getElementById('optimisationVersa').value;
 
     // Validation des entrées
     if (!portee || portee < 6 || portee > 30) {
-        document.getElementById('poutreResults').innerHTML = `
+        document.getElementById('poutreResultsVersa').innerHTML = `
             <p style="text-align: center; color: #A0522D; margin-top: 50px;">
                 La portée doit être entre 6 et 30 pieds
             </p>
@@ -167,8 +288,8 @@ function calculerPoutre() {
     const largeurs = [];
     
     for (let i = 1; i <= nbEtages; i++) {
-        const pieds = parseFloat(document.getElementById(`ltEtage${i}Pieds`).value) || 0;
-        const pouces = parseFloat(document.getElementById(`ltEtage${i}Pouces`).value) || 0;
+        const pieds = parseFloat(document.getElementById(`ltEtage${i}PiedsVersa`).value) || 0;
+        const pouces = parseFloat(document.getElementById(`ltEtage${i}PoucesVersa`).value) || 0;
         const largeur = pieds + (pouces / 12);
         largeurs.push(largeur);
         ltTotal += largeur;
@@ -176,11 +297,11 @@ function calculerPoutre() {
 
     // Vérification qu'il y a au moins des valeurs pour calculer
     if (ltTotal === 0 || chargeMorte === 0 || chargeVive === 0) {
-        document.getElementById('resultWv').textContent = '-';
-        document.getElementById('resultWm').textContent = '-';
-        document.getElementById('resultWt').textContent = '-';
-        document.getElementById('resultWf').textContent = '-';
-        document.getElementById('poutreResults').innerHTML = `
+        document.getElementById('resultWvVersa').textContent = '-';
+        document.getElementById('resultWmVersa').textContent = '-';
+        document.getElementById('resultWtVersa').textContent = '-';
+        document.getElementById('resultWfVersa').textContent = '-';
+        document.getElementById('poutreResultsVersa').innerHTML = `
             <p style="text-align: center; color: #A0522D; margin-top: 50px;">
                 Entrez les paramètres pour voir les options de poutres.
             </p>
@@ -204,15 +325,158 @@ function calculerPoutre() {
     const wfTotal = wvTotal * 1.5 + wmTotal * 1.25;
 
     // Affichage des résultats de calcul
-    document.getElementById('resultWv').textContent = `${wvTotal.toFixed(1)} lb/pi`;
-    document.getElementById('resultWm').textContent = `${wmTotal.toFixed(1)} lb/pi`;
-    document.getElementById('resultWt').textContent = `${wtTotal.toFixed(1)} lb/pi`;
-    document.getElementById('resultWf').textContent = `${wfTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWvVersa').textContent = `${wvTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWmVersa').textContent = `${wmTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWtVersa').textContent = `${wtTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWfVersa').textContent = `${wfTotal.toFixed(1)} lb/pi`;
 
     // Étape 8: Recherche des poutres viables
     const poutresViables = trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, hauteurMax, optimisation);
     
-    afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal);
+    afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal, 'versa');
+}
+
+function calculerPoutreCcq() {
+    // Récupération des valeurs d'entrée
+    const porteePieds = parseFloat(document.getElementById('porteePiedsCcq').value) || 0;
+    const porteePouces = parseFloat(document.getElementById('porteePoucesCcq').value) || 0;
+    const portee = porteePieds + (porteePouces / 12);
+    
+    const nbEtages = parseInt(document.getElementById('nbEtagesCcq').value);
+    const chargeMorte = parseFloat(document.getElementById('chargeMorteCcq').value) || 0;
+    const chargeVive = parseFloat(document.getElementById('chargeViveCcq').value) || 0;
+    const chargeViveNeige = parseFloat(document.getElementById('chargeViveNeigeCcq').value) || 0;
+    const largeurMax = parseFloat(document.getElementById('largeurMaxCcq').value) || null;
+    const hauteurMax = parseFloat(document.getElementById('hauteurMaxCcq').value) || null;
+    const optimisation = document.getElementById('optimisationCcq').value;
+
+    // Validation des entrées
+    if (!portee || portee < 6 || portee > 30) {
+        document.getElementById('poutreResultsCcq').innerHTML = `
+            <p style="text-align: center; color: #A0522D; margin-top: 50px;">
+                La portée doit être entre 6 et 30 pieds
+            </p>
+        `;
+        return;
+    }
+
+    // Calcul des largeurs tributaires totales
+    let ltTotal = 0;
+    const largeurs = [];
+    
+    for (let i = 1; i <= nbEtages; i++) {
+        const pieds = parseFloat(document.getElementById(`ltEtage${i}PiedsCcq`).value) || 0;
+        const pouces = parseFloat(document.getElementById(`ltEtage${i}PoucesCcq`).value) || 0;
+        const largeur = pieds + (pouces / 12);
+        largeurs.push(largeur);
+        ltTotal += largeur;
+    }
+
+    // Vérification qu'il y a au moins des valeurs pour calculer
+    if (ltTotal === 0 || chargeMorte === 0 || chargeVive === 0) {
+        document.getElementById('resultWvCcq').textContent = '-';
+        document.getElementById('resultWmCcq').textContent = '-';
+        document.getElementById('resultWtCcq').textContent = '-';
+        document.getElementById('resultWfCcq').textContent = '-';
+        document.getElementById('poutreResultsCcq').innerHTML = `
+            <p style="text-align: center; color: #A0522D; margin-top: 50px;">
+                Entrez les paramètres pour voir les options de poutres.
+            </p>
+        `;
+        return;
+    }
+
+    // Calculs selon la méthodologie CCQ
+    const chargeViveTotale = chargeVive + chargeViveNeige;
+    const wvTotal = chargeViveTotale * ltTotal;
+    const wmTotal = chargeMorte * ltTotal;
+    const wtTotal = wvTotal + wmTotal;
+    const wfTotal = wvTotal * 1.5 + wmTotal * 1.25;
+
+    // Affichage des résultats de calcul
+    document.getElementById('resultWvCcq').textContent = `${wvTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWmCcq').textContent = `${wmTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWtCcq').textContent = `${wtTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWfCcq').textContent = `${wfTotal.toFixed(1)} lb/pi`;
+
+    // Recherche des poutres viables CCQ
+    const poutresViables = trouverPoutresViablesCcq(portee, ltTotal, nbEtages, largeurMax, hauteurMax, optimisation);
+    
+    afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal, 'ccq');
+}
+
+function trouverPoutresViablesCcq(portee, ltTotal, nbEtages, largeurMax, hauteurMax, optimisation) {
+    const poutresViables = [];
+    
+    // Utiliser le bon tableau selon le nombre d'étages
+    const tableauNbEtages = Math.min(nbEtages, 3); // Max 3 étages dans les tableaux
+    const tableauCcq = CCQ_TABLE[tableauNbEtages];
+    
+    if (!tableauCcq) return [];
+    
+    // Convertir la portée en mètres pour la recherche dans le tableau
+    const porteeMetres = Math.round(portee * 0.3048);
+    
+    // Essayer Douglas Fir-Larch Select Structural et Hem-Fir Select Structural
+    const essences = ['douglas_select', 'hem_fir_select'];
+    
+    for (let essence of essences) {
+        const donnees = tableauCcq[essence];
+        if (!donnees) continue;
+        
+        // Trouver la portée dans le tableau (ou la plus proche supérieure)
+        let porteeTable = null;
+        for (let p of Object.keys(donnees).map(Number).sort((a, b) => a - b)) {
+            if (p >= porteeMetres) {
+                porteeTable = p;
+                break;
+            }
+        }
+        
+        if (!porteeTable || !donnees[porteeTable]) continue;
+        
+        const specsPortee = donnees[porteeTable];
+        
+        // Tester chaque dimension de poutre disponible
+        for (let [dimension, porteeMax] of Object.entries(specsPortee)) {
+            if (portee <= porteeMax) {
+                // Extraire les informations de la dimension
+                const [nbPlis, largeurMm, hauteurMm] = dimension.split('-')[1].split('x');
+                const largeurPoutre = parseInt(nbPlis) * 1.5; // 38mm ≈ 1.5"
+                const hauteurPoutre = parseInt(hauteurMm) * 0.0394; // mm to inches
+                
+                // Vérifier contraintes dimensionnelles
+                if (largeurMax && largeurPoutre > largeurMax) continue;
+                if (hauteurMax && hauteurPoutre > hauteurMax) continue;
+                
+                poutresViables.push({
+                    dimension: dimension,
+                    displayName: CCQ_BEAM_DIMENSIONS[dimension],
+                    nbPlis: parseInt(nbPlis),
+                    largeurPoutre: largeurPoutre,
+                    hauteurPoutre: hauteurPoutre,
+                    porteeMax: porteeMax,
+                    essence: essence === 'douglas_select' ? 'Douglas Fir-Larch Select' : 'Hem-Fir Select',
+                    porteeTable: porteeTable
+                });
+            }
+        }
+    }
+    
+    // Trier selon l'optimisation
+    if (optimisation === 'plis') {
+        poutresViables.sort((a, b) => {
+            if (a.nbPlis !== b.nbPlis) return a.nbPlis - b.nbPlis;
+            return a.hauteurPoutre - b.hauteurPoutre;
+        });
+    } else {
+        poutresViables.sort((a, b) => {
+            if (a.hauteurPoutre !== b.hauteurPoutre) return a.hauteurPoutre - b.hauteurPoutre;
+            return a.nbPlis - b.nbPlis;
+        });
+    }
+    
+    return poutresViables;
 }
 
 function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, hauteurMax, optimisation) {
@@ -311,14 +575,15 @@ function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, ha
     return poutresViables;
 }
 
-function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
-    const container = document.getElementById('poutreResults');
+function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal, type) {
+    const suffix = type === 'versa' ? 'Versa' : 'Ccq';
+    const container = document.getElementById(`poutreResults${suffix}`);
     
     if (poutresViables.length === 0) {
         container.innerHTML = `
             <div class="no-solution">
                 <h3>Aucune poutre viable trouvée</h3>
-                <p>Les charges dépassent les capacités des poutres Versa-Lam 2.0E pour cette portée.</p>
+                <p>Les charges dépassent les capacités des poutres ${type === 'versa' ? 'Versa-Lam 2.0E' : 'CCQ'} pour cette portée.</p>
                 <p>Suggestions :</p>
                 <ul style="text-align: left; margin-top: 10px;">
                     <li>Augmenter les contraintes de largeur/hauteur</li>
@@ -334,27 +599,44 @@ function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
     let html = `
         <div class="poutre-options">
             <h3 style="margin-bottom: 20px; color: #D2691E;">
-                Poutres Versa-Lam® viables (${poutresViables.length} option${poutresViables.length > 1 ? 's' : ''})
+                Poutres ${type === 'versa' ? 'Versa-Lam®' : 'CCQ'} viables (${poutresViables.length} option${poutresViables.length > 1 ? 's' : ''})
             </h3>
     `;
 
     poutresViables.forEach((poutre, index) => {
-        const epaisseur = poutre.nbPlis === 1 ? "1¾\"" : `${poutre.nbPlis} × 1¾\"`;
-        
-        html += `
-            <div class="poutre-option" onclick="selectionnerPoutre(${index})">
-                <div class="poutre-title">
-                    ${epaisseur} × ${poutre.hauteur}" (${poutre.largeurPoutre}" × ${poutre.hauteur}")
+        if (type === 'versa') {
+            const epaisseur = poutre.nbPlis === 1 ? "1¾\"" : `${poutre.nbPlis} × 1¾\"`;
+            
+            html += `
+                <div class="poutre-option" onclick="selectionnerPoutre(${index}, '${type}')">
+                    <div class="poutre-title">
+                        ${epaisseur} × ${poutre.hauteur}" (${poutre.largeurPoutre}" × ${poutre.hauteur}")
+                    </div>
+                    <div class="poutre-specs">
+                        <div><strong>Portée:</strong> ${poutre.porteeTable}'</div>
+                        <div><strong>Nombre de plis:</strong> ${poutre.nbPlis}</div>
+                        <div><strong>Capacité Wv:</strong> ${poutre.wvMax} lb/pi</div>
+                        <div><strong>Capacité Wt:</strong> ${poutre.wtMax} lb/pi</div>
+                        <div><strong>Capacité Wf:</strong> ${poutre.wfMax} lb/pi</div>
+                    </div>
                 </div>
-                <div class="poutre-specs">
-                    <div><strong>Portée:</strong> ${poutre.porteeTable}'</div>
-                    <div><strong>Nombre de plis:</strong> ${poutre.nbPlis}</div>
-                    <div><strong>Capacité Wv:</strong> ${poutre.wvMax} lb/pi</div>
-                    <div><strong>Capacité Wt:</strong> ${poutre.wtMax} lb/pi</div>
-                    <div><strong>Capacité Wf:</strong> ${poutre.wfMax} lb/pi</div>
+            `;
+        } else {
+            html += `
+                <div class="poutre-option" onclick="selectionnerPoutre(${index}, '${type}')">
+                    <div class="poutre-title">
+                        ${poutre.displayName} - ${poutre.essence}
+                    </div>
+                    <div class="poutre-specs">
+                        <div><strong>Portée max:</strong> ${poutre.porteeMax.toFixed(2)} m</div>
+                        <div><strong>Nombre de plis:</strong> ${poutre.nbPlis}</div>
+                        <div><strong>Largeur:</strong> ${poutre.largeurPoutre.toFixed(1)}"</div>
+                        <div><strong>Hauteur:</strong> ${poutre.hauteurPoutre.toFixed(1)}"</div>
+                        <div><strong>Tableau:</strong> ${poutre.porteeTable}m</div>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
     });
 
     html += `
@@ -371,39 +653,60 @@ function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
     container.innerHTML = html;
 }
 
-function selectionnerPoutre(index) {
+function selectionnerPoutre(index, type = 'versa') {
+    const suffix = type === 'versa' ? 'Versa' : 'Ccq';
     // Retirer la sélection précédente
-    document.querySelectorAll('.poutre-option').forEach(option => {
+    document.querySelectorAll(`#poutreResults${suffix} .poutre-option`).forEach(option => {
         option.classList.remove('selected');
     });
     
     // Ajouter la sélection à l'option cliquée
-    document.querySelectorAll('.poutre-option')[index].classList.add('selected');
+    document.querySelectorAll(`#poutreResults${suffix} .poutre-option`)[index].classList.add('selected');
 }
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialiser les largeurs tributaires
-    updateLargeursEtages();
+    // Initialiser les largeurs tributaires pour les deux onglets
+    updateLargeursEtages('versa');
+    updateLargeursEtages('ccq');
     
-    // Calculer automatiquement lors des changements de valeurs
-    const inputs = ['porteePieds', 'porteePouces', 'nbEtages', 'chargeMorte', 'chargeVive', 'chargeViveNeige', 'largeurMax', 'hauteurMax', 'optimisation'];
-    inputs.forEach(inputId => {
+    // Calculer automatiquement lors des changements de valeurs - Versa-Lam
+    const inputsVersa = ['porteePiedsVersa', 'porteePoucesVersa', 'nbEtagesVersa', 'chargeMorteVersa', 'chargeViveVersa', 'chargeViveNeigeVersa', 'largeurMaxVersa', 'hauteurMaxVersa', 'optimisationVersa'];
+    inputsVersa.forEach(inputId => {
         const element = document.getElementById(inputId);
         if (element) {
             element.addEventListener('input', function() {
-                // Auto-calcul avec un délai pour éviter trop de calculs
                 clearTimeout(this.timer);
-                this.timer = setTimeout(calculerPoutre, 500);
+                this.timer = setTimeout(() => calculerPoutre('versa'), 500);
             });
         }
     });
     
-    // Ajouter des événements pour les largeurs tributaires dynamiques
-    document.getElementById('largeursContainer').addEventListener('input', function(e) {
+    // Calculer automatiquement lors des changements de valeurs - CCQ
+    const inputsCcq = ['porteePiedsCcq', 'porteePoucesCcq', 'nbEtagesCcq', 'chargeMorteCcq', 'chargeViveCcq', 'chargeViveNeigeCcq', 'largeurMaxCcq', 'hauteurMaxCcq', 'optimisationCcq'];
+    inputsCcq.forEach(inputId => {
+        const element = document.getElementById(inputId);
+        if (element) {
+            element.addEventListener('input', function() {
+                clearTimeout(this.timer);
+                this.timer = setTimeout(() => calculerPoutre('ccq'), 500);
+            });
+        }
+    });
+    
+    // Ajouter des événements pour les largeurs tributaires dynamiques - Versa-Lam
+    document.getElementById('largeursContainerVersa').addEventListener('input', function(e) {
         if (e.target.tagName === 'INPUT') {
             clearTimeout(this.timer);
-            this.timer = setTimeout(calculerPoutre, 500);
+            this.timer = setTimeout(() => calculerPoutre('versa'), 500);
+        }
+    });
+    
+    // Ajouter des événements pour les largeurs tributaires dynamiques - CCQ
+    document.getElementById('largeursContainerCcq').addEventListener('input', function(e) {
+        if (e.target.tagName === 'INPUT') {
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => calculerPoutre('ccq'), 500);
         }
     });
 });
