@@ -40,6 +40,45 @@
             font-weight: 300;
         }
 
+        .tabs {
+            display: flex;
+            background: #f5f5f0;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 30px;
+            background: transparent;
+            border: none;
+            color: #8B4513;
+            font-weight: 600;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button.active {
+            background: white;
+            border-bottom-color: #D2691E;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -247,6 +286,10 @@
             .poutre-specs {
                 grid-template-columns: 1fr;
             }
+
+            .tabs {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -256,117 +299,241 @@
             <h1>Calculateur Poutres Versa-Lam® 2.0E</h1>
         </div>
 
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('versa-lam')">Versa-Lam</button>
+            <button class="tab-button" onclick="switchTab('ccq')">CCQ</button>
+        </div>
+
         <div class="main-content">
-            <div class="input-section">
-                <h2 class="section-title">Paramètres de conception</h2>
-                
-                <div class="input-group">
-                    <div class="input-row">
-                        <div class="input-field">
-                            <label for="portee">Portée de la poutre</label>
-                            <div class="dimension-input">
-                                <input type="number" id="porteePieds" min="6" max="30" placeholder="Pieds">
-                                <span>pi</span>
-                                <input type="number" id="porteePouces" min="0" max="11" step="0.5" placeholder="Pouces">
-                                <span>po</span>
+            <!-- Contenu Versa-Lam -->
+            <div id="versa-lam-content" class="tab-content active">
+                <div class="input-section">
+                    <h2 class="section-title">Paramètres de conception - Versa-Lam</h2>
+                    
+                    <div class="input-group">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="porteeVersa">Portée de la poutre</label>
+                                <div class="dimension-input">
+                                    <input type="number" id="porteePiedsVersa" min="6" max="30" placeholder="Pieds">
+                                    <span>pi</span>
+                                    <input type="number" id="porteePoucesVersa" min="0" max="11" step="0.5" placeholder="Pouces">
+                                    <span>po</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="nbEtagesVersa">Nombre d'étages supportés</label>
+                                <select id="nbEtagesVersa" onchange="updateLargeursEtages('versa')">
+                                    <option value="1" selected>1 étage</option>
+                                    <option value="2">2 étages</option>
+                                    <option value="3">3 étages</option>
+                                    <option value="4">4 étages</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="largeurs-container" id="largeursContainerVersa">
+                            <!-- Sera rempli dynamiquement -->
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Charges (lb/pi.ca.)</label>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="chargeMorteVersa">Charge morte (CM)</label>
+                                <input type="number" id="chargeMorteVersa" step="1" min="0" placeholder="Valeur CM">
+                            </div>
+                            <div class="input-field">
+                                <label for="chargeViveVersa">Charge vive (CV) (occupation)</label>
+                                <input type="number" id="chargeViveVersa" step="1" min="0" placeholder="Valeur CV">
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="chargeViveNeigeVersa">Charge vive (CV) (neige)</label>
+                                <input type="number" id="chargeViveNeigeVersa" step="1" min="0" placeholder="Valeur CV neige">
+                            </div>
+                            <div class="input-field">
+                                <!-- Vide pour garder l'alignement -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Contraintes dimensionnelles</label>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="largeurMaxVersa">Largeur max (po)</label>
+                                <input type="number" id="largeurMaxVersa" step="0.25" min="0" placeholder="Aucune contrainte">
+                            </div>
+                            <div class="input-field">
+                                <label for="hauteurMaxVersa">Hauteur max (po)</label>
+                                <input type="number" id="hauteurMaxVersa" step="0.25" min="0" placeholder="Aucune contrainte">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="optimisationVersa">Optimisation</label>
+                                <select id="optimisationVersa">
+                                    <option value="plis">Favoriser moins de plis</option>
+                                    <option value="hauteur">Favoriser hauteur moindre</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="input-group">
-                    <div class="input-row">
-                        <div class="input-field">
-                            <label for="nbEtages">Nombre d'étages supportés</label>
-                            <select id="nbEtages" onchange="updateLargeursEtages()">
-                                <option value="1" selected>1 étage</option>
-                                <option value="2">2 étages</option>
-                                <option value="3">3 étages</option>
-                                <option value="4">4 étages</option>
-                            </select>
+                <div class="results-section">
+                    <h2 class="section-title">Résultats de calcul - Versa-Lam</h2>
+                    
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Charge vive répartie (Wv)</div>
+                            <div class="result-value" id="resultWvVersa">-</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Charge morte répartie (Wm)</div>
+                            <div class="result-value" id="resultWmVersa">-</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Charge totale non pondérée (Wt)</div>
+                            <div class="result-value" id="resultWtVersa">-</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Charge totale pondérée (Wf)</div>
+                            <div class="result-value" id="resultWfVersa">-</div>
                         </div>
                     </div>
-                    <div class="largeurs-container" id="largeursContainer">
-                        <!-- Sera rempli dynamiquement -->
-                    </div>
-                </div>
 
-                <div class="input-group">
-                    <label>Charges (lb/pi.ca.)</label>
-                    <div class="input-row">
-                        <div class="input-field">
-                            <label for="chargeMorte">Charge morte (CM)</label>
-                            <input type="number" id="chargeMorte" step="1" min="0" placeholder="Valeur CM">
-                        </div>
-                        <div class="input-field">
-                            <label for="chargeVive">Charge vive (CV) (occupation)</label>
-                            <input type="number" id="chargeVive" step="1" min="0" placeholder="Valeur CV">
-                        </div>
-                    </div>
-                    <div class="input-row">
-                        <div class="input-field">
-                            <label for="chargeViveNeige">Charge vive (CV) (neige)</label>
-                            <input type="number" id="chargeViveNeige" step="1" min="0" placeholder="Valeur CV neige">
-                        </div>
-                        <div class="input-field">
-                            <!-- Vide pour garder l'alignement -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label>Contraintes dimensionnelles</label>
-                    <div class="input-row">
-                        <div class="input-field">
-                            <label for="largeurMax">Largeur max (po)</label>
-                            <input type="number" id="largeurMax" step="0.25" min="0" placeholder="Aucune contrainte">
-                        </div>
-                        <div class="input-field">
-                            <label for="hauteurMax">Hauteur max (po)</label>
-                            <input type="number" id="hauteurMax" step="0.25" min="0" placeholder="Aucune contrainte">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <div class="input-row">
-                        <div class="input-field">
-                            <label for="optimisation">Optimisation</label>
-                            <select id="optimisation">
-                                <option value="plis">Favoriser moins de plis</option>
-                                <option value="hauteur">Favoriser hauteur moindre</option>
-                            </select>
-                        </div>
+                    <div id="poutreResultsVersa">
+                        <p style="text-align: center; color: #A0522D; margin-top: 50px;">
+                            Entrez les paramètres pour voir les options de poutres.
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="results-section">
-                <h2 class="section-title">Résultats de calcul</h2>
-                
-                <div class="results-grid">
-                    <div class="result-card">
-                        <div class="result-label">Charge vive répartie (Wv)</div>
-                        <div class="result-value" id="resultWv">-</div>
+            <!-- Contenu CCQ -->
+            <div id="ccq-content" class="tab-content">
+                <div class="input-section">
+                    <h2 class="section-title">Paramètres de conception - CCQ</h2>
+                    
+                    <div class="input-group">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="porteeCcq">Portée de la poutre</label>
+                                <div class="dimension-input">
+                                    <input type="number" id="porteePiedsCcq" min="6" max="30" placeholder="Pieds">
+                                    <span>pi</span>
+                                    <input type="number" id="porteePoucesCcq" min="0" max="11" step="0.5" placeholder="Pouces">
+                                    <span>po</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="result-card">
-                        <div class="result-label">Charge morte répartie (Wm)</div>
-                        <div class="result-value" id="resultWm">-</div>
+
+                    <div class="input-group">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="nbEtagesCcq">Nombre d'étages supportés</label>
+                                <select id="nbEtagesCcq" onchange="updateLargeursEtages('ccq')">
+                                    <option value="1" selected>1 étage</option>
+                                    <option value="2">2 étages</option>
+                                    <option value="3">3 étages</option>
+                                    <option value="4">4 étages</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="largeurs-container" id="largeursContainerCcq">
+                            <!-- Sera rempli dynamiquement -->
+                        </div>
                     </div>
-                    <div class="result-card">
-                        <div class="result-label">Charge totale non pondérée (Wt)</div>
-                        <div class="result-value" id="resultWt">-</div>
+
+                    <div class="input-group">
+                        <label>Charges (lb/pi.ca.)</label>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="chargeMorteCcq">Charge morte (CM)</label>
+                                <input type="number" id="chargeMorteCcq" step="1" min="0" placeholder="Valeur CM">
+                            </div>
+                            <div class="input-field">
+                                <label for="chargeViveCcq">Charge vive (CV) (occupation)</label>
+                                <input type="number" id="chargeViveCcq" step="1" min="0" placeholder="Valeur CV">
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="chargeViveNeigeCcq">Charge vive (CV) (neige)</label>
+                                <input type="number" id="chargeViveNeigeCcq" step="1" min="0" placeholder="Valeur CV neige">
+                            </div>
+                            <div class="input-field">
+                                <!-- Vide pour garder l'alignement -->
+                            </div>
+                        </div>
                     </div>
-                    <div class="result-card">
-                        <div class="result-label">Charge totale pondérée (Wf)</div>
-                        <div class="result-value" id="resultWf">-</div>
+
+                    <div class="input-group">
+                        <label>Contraintes dimensionnelles</label>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="largeurMaxCcq">Largeur max (po)</label>
+                                <input type="number" id="largeurMaxCcq" step="0.25" min="0" placeholder="Aucune contrainte">
+                            </div>
+                            <div class="input-field">
+                                <label for="hauteurMaxCcq">Hauteur max (po)</label>
+                                <input type="number" id="hauteurMaxCcq" step="0.25" min="0" placeholder="Aucune contrainte">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="optimisationCcq">Optimisation</label>
+                                <select id="optimisationCcq">
+                                    <option value="plis">Favoriser moins de plis</option>
+                                    <option value="hauteur">Favoriser hauteur moindre</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div id="poutreResults">
-                    <p style="text-align: center; color: #A0522D; margin-top: 50px;">
-                        Entrez les paramètres pour voir les options de poutres.
-                    </p>
+                <div class="results-section">
+                    <h2 class="section-title">Résultats de calcul - CCQ</h2>
+                    
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Charge vive répartie (Wv)</div>
+                            <div class="result-value" id="resultWvCcq">-</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Charge morte répartie (Wm)</div>
+                            <div class="result-value" id="resultWmCcq">-</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Charge totale non pondérée (Wt)</div>
+                            <div class="result-value" id="resultWtCcq">-</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Charge totale pondérée (Wf)</div>
+                            <div class="result-value" id="resultWfCcq">-</div>
+                        </div>
+                    </div>
+
+                    <div id="poutreResultsCcq">
+                        <p style="text-align: center; color: #A0522D; margin-top: 50px;">
+                            Entrez les paramètres pour voir les options de poutres.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
