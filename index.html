@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur Poutres Versa-Lam 2.0E</title>
+    <title>Calculateur Poutres - Versa-Lam & CCQ</title>
     <style>
         * {
             margin: 0;
@@ -42,33 +42,34 @@
 
         .tabs {
             display: flex;
-            background: #f5f5f0;
-            border-radius: 8px 8px 0 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 0;
             overflow: hidden;
-            margin: 0 auto;
-            max-width: 1200px;
         }
 
-        .tab-button {
+        .tab {
             flex: 1;
-            padding: 15px 30px;
-            background: transparent;
-            border: none;
-            color: #8B4513;
-            font-weight: 600;
-            font-size: 1.1em;
+            padding: 18px 24px;
+            text-align: center;
+            background: rgba(255,255,255,0.8);
             cursor: pointer;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
             transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
+            position: relative;
         }
 
-        .tab-button.active {
-            background: white;
-            border-bottom-color: #D2691E;
+        .tab.active {
+            background: #8B4513;
+            color: white;
+            transform: translateY(-2px);
         }
 
-        .tab-button:hover:not(.active) {
+        .tab:hover:not(.active) {
             background: rgba(139, 69, 19, 0.1);
+            transform: translateY(-1px);
         }
 
         .tab-content {
@@ -286,38 +287,34 @@
             .poutre-specs {
                 grid-template-columns: 1fr;
             }
-
-            .tabs {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Calculateur Poutres Versa-Lam® 2.0E</h1>
+            <h1>Calculateur Poutres de Plancher</h1>
         </div>
 
         <div class="tabs">
-            <button class="tab-button active" onclick="switchTab('versa-lam')">Versa-Lam</button>
-            <button class="tab-button" onclick="switchTab('ccq')">CCQ</button>
+            <button class="tab active" onclick="showTab('versa-lam')">Poutres Versa-Lam® 2.0E</button>
+            <button class="tab" onclick="showTab('ccq')">Poutres Composées CCQ</button>
         </div>
 
-        <div class="main-content">
-            <!-- Contenu Versa-Lam -->
-            <div id="versa-lam-content" class="tab-content active">
+        <!-- Onglet Versa-Lam -->
+        <div id="versa-lam" class="tab-content active">
+            <div class="main-content">
                 <div class="input-section">
-                    <h2 class="section-title">Paramètres de conception - Versa-Lam</h2>
+                    <h2 class="section-title">Paramètres de conception</h2>
                     
                     <div class="input-group">
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="porteeVersa">Portée de la poutre</label>
+                                <label for="portee">Portée de la poutre</label>
                                 <div class="dimension-input">
-                                    <input type="number" id="porteePiedsVersa" min="6" max="30" placeholder="Pieds">
+                                    <input type="number" id="porteePieds" min="6" max="30" placeholder="Pieds">
                                     <span>pi</span>
-                                    <input type="number" id="porteePoucesVersa" min="0" max="11" step="0.5" placeholder="Pouces">
+                                    <input type="number" id="porteePouces" min="0" max="11" step="0.5" placeholder="Pouces">
                                     <span>po</span>
                                 </div>
                             </div>
@@ -327,8 +324,8 @@
                     <div class="input-group">
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="nbEtagesVersa">Nombre d'étages supportés</label>
-                                <select id="nbEtagesVersa" onchange="updateLargeursEtages('versa')">
+                                <label for="nbEtages">Nombre d'étages supportés</label>
+                                <select id="nbEtages" onchange="updateLargeursEtages()">
                                     <option value="1" selected>1 étage</option>
                                     <option value="2">2 étages</option>
                                     <option value="3">3 étages</option>
@@ -336,7 +333,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="largeurs-container" id="largeursContainerVersa">
+                        <div class="largeurs-container" id="largeursContainer">
                             <!-- Sera rempli dynamiquement -->
                         </div>
                     </div>
@@ -345,18 +342,18 @@
                         <label>Charges (lb/pi.ca.)</label>
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="chargeMorteVersa">Charge morte (CM)</label>
-                                <input type="number" id="chargeMorteVersa" step="1" min="0" placeholder="Valeur CM">
+                                <label for="chargeMorte">Charge morte (CM)</label>
+                                <input type="number" id="chargeMorte" step="1" min="0" placeholder="Valeur CM">
                             </div>
                             <div class="input-field">
-                                <label for="chargeViveVersa">Charge vive (CV) (occupation)</label>
-                                <input type="number" id="chargeViveVersa" step="1" min="0" placeholder="Valeur CV">
+                                <label for="chargeVive">Charge vive (CV) (occupation)</label>
+                                <input type="number" id="chargeVive" step="1" min="0" placeholder="Valeur CV">
                             </div>
                         </div>
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="chargeViveNeigeVersa">Charge vive (CV) (neige)</label>
-                                <input type="number" id="chargeViveNeigeVersa" step="1" min="0" placeholder="Valeur CV neige">
+                                <label for="chargeViveNeige">Charge vive (CV) (neige)</label>
+                                <input type="number" id="chargeViveNeige" step="1" min="0" placeholder="Valeur CV neige">
                             </div>
                             <div class="input-field">
                                 <!-- Vide pour garder l'alignement -->
@@ -368,12 +365,12 @@
                         <label>Contraintes dimensionnelles</label>
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="largeurMaxVersa">Largeur max (po)</label>
-                                <input type="number" id="largeurMaxVersa" step="0.25" min="0" placeholder="Aucune contrainte">
+                                <label for="largeurMax">Largeur max (po)</label>
+                                <input type="number" id="largeurMax" step="0.25" min="0" placeholder="Aucune contrainte">
                             </div>
                             <div class="input-field">
-                                <label for="hauteurMaxVersa">Hauteur max (po)</label>
-                                <input type="number" id="hauteurMaxVersa" step="0.25" min="0" placeholder="Aucune contrainte">
+                                <label for="hauteurMax">Hauteur max (po)</label>
+                                <input type="number" id="hauteurMax" step="0.25" min="0" placeholder="Aucune contrainte">
                             </div>
                         </div>
                     </div>
@@ -381,8 +378,8 @@
                     <div class="input-group">
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="optimisationVersa">Optimisation</label>
-                                <select id="optimisationVersa">
+                                <label for="optimisation">Optimisation</label>
+                                <select id="optimisation">
                                     <option value="plis">Favoriser moins de plis</option>
                                     <option value="hauteur">Favoriser hauteur moindre</option>
                                 </select>
@@ -392,48 +389,50 @@
                 </div>
 
                 <div class="results-section">
-                    <h2 class="section-title">Résultats de calcul - Versa-Lam</h2>
+                    <h2 class="section-title">Résultats de calcul</h2>
                     
                     <div class="results-grid">
                         <div class="result-card">
                             <div class="result-label">Charge vive répartie (Wv)</div>
-                            <div class="result-value" id="resultWvVersa">-</div>
+                            <div class="result-value" id="resultWv">-</div>
                         </div>
                         <div class="result-card">
                             <div class="result-label">Charge morte répartie (Wm)</div>
-                            <div class="result-value" id="resultWmVersa">-</div>
+                            <div class="result-value" id="resultWm">-</div>
                         </div>
                         <div class="result-card">
                             <div class="result-label">Charge totale non pondérée (Wt)</div>
-                            <div class="result-value" id="resultWtVersa">-</div>
+                            <div class="result-value" id="resultWt">-</div>
                         </div>
                         <div class="result-card">
                             <div class="result-label">Charge totale pondérée (Wf)</div>
-                            <div class="result-value" id="resultWfVersa">-</div>
+                            <div class="result-value" id="resultWf">-</div>
                         </div>
                     </div>
 
-                    <div id="poutreResultsVersa">
+                    <div id="poutreResults">
                         <p style="text-align: center; color: #A0522D; margin-top: 50px;">
                             Entrez les paramètres pour voir les options de poutres.
                         </p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Contenu CCQ -->
-            <div id="ccq-content" class="tab-content">
+        <!-- Onglet CCQ -->
+        <div id="ccq" class="tab-content">
+            <div class="main-content">
                 <div class="input-section">
-                    <h2 class="section-title">Paramètres de conception - CCQ</h2>
+                    <h2 class="section-title">Paramètres de conception</h2>
                     
                     <div class="input-group">
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="porteeCcq">Portée de la poutre</label>
+                                <label for="portee-ccq">Portée de la poutre</label>
                                 <div class="dimension-input">
-                                    <input type="number" id="porteePiedsCcq" min="6" max="30" placeholder="Pieds">
+                                    <input type="number" id="porteePieds-ccq" min="6" max="30" placeholder="Pieds">
                                     <span>pi</span>
-                                    <input type="number" id="porteePoucesCcq" min="0" max="11" step="0.5" placeholder="Pouces">
+                                    <input type="number" id="porteePouces-ccq" min="0" max="11" step="0.5" placeholder="Pouces">
                                     <span>po</span>
                                 </div>
                             </div>
@@ -443,8 +442,31 @@
                     <div class="input-group">
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="nbEtagesCcq">Nombre d'étages supportés</label>
-                                <select id="nbEtagesCcq" onchange="updateLargeursEtages('ccq')">
+                                <label for="essence-ccq">Essence de bois</label>
+                                <select id="essence-ccq">
+                                    <option value="">Sélectionner une essence</option>
+                                    <option value="douglas">Douglas Fir - Larch</option>
+                                    <option value="hem-fir">Hem-Fir</option>
+                                    <option value="spf">Spruce-Pine-Fir (SPF)</option>
+                                    <option value="northern">Northern Species</option>
+                                </select>
+                            </div>
+                            <div class="input-field">
+                                <label for="qualite-ccq">Qualité</label>
+                                <select id="qualite-ccq">
+                                    <option value="">Sélectionner la qualité</option>
+                                    <option value="select">Select Structural</option>
+                                    <option value="no1-2">No 1 & 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="nbEtages-ccq">Nombre d'étages supportés</label>
+                                <select id="nbEtages-ccq" onchange="updateLargeursEtagesCCQ()">
                                     <option value="1" selected>1 étage</option>
                                     <option value="2">2 étages</option>
                                     <option value="3">3 étages</option>
@@ -452,7 +474,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="largeurs-container" id="largeursContainerCcq">
+                        <div class="largeurs-container" id="largeursContainer-ccq">
                             <!-- Sera rempli dynamiquement -->
                         </div>
                     </div>
@@ -461,18 +483,18 @@
                         <label>Charges (lb/pi.ca.)</label>
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="chargeMorteCcq">Charge morte (CM)</label>
-                                <input type="number" id="chargeMorteCcq" step="1" min="0" placeholder="Valeur CM">
+                                <label for="chargeMorte-ccq">Charge morte (CM)</label>
+                                <input type="number" id="chargeMorte-ccq" step="1" min="0" placeholder="Valeur CM">
                             </div>
                             <div class="input-field">
-                                <label for="chargeViveCcq">Charge vive (CV) (occupation)</label>
-                                <input type="number" id="chargeViveCcq" step="1" min="0" placeholder="Valeur CV">
+                                <label for="chargeVive-ccq">Charge vive (CV) (occupation)</label>
+                                <input type="number" id="chargeVive-ccq" step="1" min="0" placeholder="Valeur CV">
                             </div>
                         </div>
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="chargeViveNeigeCcq">Charge vive (CV) (neige)</label>
-                                <input type="number" id="chargeViveNeigeCcq" step="1" min="0" placeholder="Valeur CV neige">
+                                <label for="chargeViveNeige-ccq">Charge vive (CV) (neige)</label>
+                                <input type="number" id="chargeViveNeige-ccq" step="1" min="0" placeholder="Valeur CV neige">
                             </div>
                             <div class="input-field">
                                 <!-- Vide pour garder l'alignement -->
@@ -484,12 +506,12 @@
                         <label>Contraintes dimensionnelles</label>
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="largeurMaxCcq">Largeur max (po)</label>
-                                <input type="number" id="largeurMaxCcq" step="0.25" min="0" placeholder="Aucune contrainte">
+                                <label for="largeurMax-ccq">Largeur max (po)</label>
+                                <input type="number" id="largeurMax-ccq" step="0.25" min="0" placeholder="Aucune contrainte">
                             </div>
                             <div class="input-field">
-                                <label for="hauteurMaxCcq">Hauteur max (po)</label>
-                                <input type="number" id="hauteurMaxCcq" step="0.25" min="0" placeholder="Aucune contrainte">
+                                <label for="hauteurMax-ccq">Hauteur max (po)</label>
+                                <input type="number" id="hauteurMax-ccq" step="0.25" min="0" placeholder="Aucune contrainte">
                             </div>
                         </div>
                     </div>
@@ -497,8 +519,8 @@
                     <div class="input-group">
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="optimisationCcq">Optimisation</label>
-                                <select id="optimisationCcq">
+                                <label for="optimisation-ccq">Optimisation</label>
+                                <select id="optimisation-ccq">
                                     <option value="plis">Favoriser moins de plis</option>
                                     <option value="hauteur">Favoriser hauteur moindre</option>
                                 </select>
@@ -508,30 +530,30 @@
                 </div>
 
                 <div class="results-section">
-                    <h2 class="section-title">Résultats de calcul - CCQ</h2>
+                    <h2 class="section-title">Résultats de calcul</h2>
                     
                     <div class="results-grid">
                         <div class="result-card">
                             <div class="result-label">Charge vive répartie (Wv)</div>
-                            <div class="result-value" id="resultWvCcq">-</div>
+                            <div class="result-value" id="resultWv-ccq">-</div>
                         </div>
                         <div class="result-card">
                             <div class="result-label">Charge morte répartie (Wm)</div>
-                            <div class="result-value" id="resultWmCcq">-</div>
+                            <div class="result-value" id="resultWm-ccq">-</div>
                         </div>
                         <div class="result-card">
                             <div class="result-label">Charge totale non pondérée (Wt)</div>
-                            <div class="result-value" id="resultWtCcq">-</div>
+                            <div class="result-value" id="resultWt-ccq">-</div>
                         </div>
                         <div class="result-card">
                             <div class="result-label">Charge totale pondérée (Wf)</div>
-                            <div class="result-value" id="resultWfCcq">-</div>
+                            <div class="result-value" id="resultWf-ccq">-</div>
                         </div>
                     </div>
 
-                    <div id="poutreResultsCcq">
+                    <div id="poutreResults-ccq">
                         <p style="text-align: center; color: #A0522D; margin-top: 50px;">
-                            Entrez les paramètres pour voir les options de poutres.
+                            Entrez les paramètres pour voir les options de poutres CCQ.
                         </p>
                     </div>
                 </div>
