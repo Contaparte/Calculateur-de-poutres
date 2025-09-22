@@ -447,9 +447,9 @@
                             <div class="input-field">
                                 <label for="portee-ccq">Portée de la poutre</label>
                                 <div class="dimension-input">
-                                    <input type="number" id="porteePieds-ccq" min="6" max="35" placeholder="Pieds" onchange="calculerPoutreCCQ()">
+                                    <input type="number" id="porteePieds-ccq" min="6" max="35" placeholder="Pieds" onchange="calculerCCQ()">
                                     <span>pi</span>
-                                    <input type="number" id="porteePouces-ccq" min="0" max="11" step="0.5" placeholder="Pouces" onchange="calculerPoutreCCQ()">
+                                    <input type="number" id="porteePouces-ccq" min="0" max="11" step="0.5" placeholder="Pouces" onchange="calculerCCQ()">
                                     <span>po</span>
                                 </div>
                             </div>
@@ -459,13 +459,39 @@
                     <div class="input-group">
                         <div class="input-row">
                             <div class="input-field">
-                                <label for="longueurSupportee-ccq">Longueur supportée</label>
-                                <div class="dimension-input">
-                                    <input type="number" id="longueurSupporteePieds-ccq" min="1" max="20" placeholder="Pieds" onchange="calculerPoutreCCQ()">
-                                    <span>pi</span>
-                                    <input type="number" id="longueurSupporteePouces-ccq" min="0" max="11" step="0.5" placeholder="Pouces" onchange="calculerPoutreCCQ()">
-                                    <span>po</span>
-                                </div>
+                                <label for="nbEtages-ccq">Nombre d'étages supportés</label>
+                                <select id="nbEtages-ccq" onchange="updateLargeursEtagesCCQ()">
+                                    <option value="1">1 étage</option>
+                                    <option value="2" selected>2 étages</option>
+                                    <option value="3">3 étages</option>
+                                    <option value="4">4 étages</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="largeurs-container" id="largeursContainer-ccq">
+                            <!-- Sera rempli dynamiquement -->
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Charges de conception (psf)</label>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="chargeMorte-ccq">Charge morte (CM)</label>
+                                <input type="number" id="chargeMorte-ccq" step="1" min="0" placeholder="Valeur CM" onchange="calculerCCQ()">
+                            </div>
+                            <div class="input-field">
+                                <label for="chargeVive-ccq">Charge vive (CV) (occupation)</label>
+                                <input type="number" id="chargeVive-ccq" step="1" min="0" placeholder="Valeur CV" onchange="calculerCCQ()">
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-field">
+                                <label for="chargeViveNeige-ccq">Charge vive (CV) (neige)</label>
+                                <input type="number" id="chargeViveNeige-ccq" step="1" min="0" placeholder="Valeur CV neige" onchange="calculerCCQ()">
+                            </div>
+                            <div class="input-field">
+                                <!-- Vide pour garder l'alignement -->
                             </div>
                         </div>
                     </div>
@@ -475,7 +501,7 @@
                         <div class="input-row">
                             <div class="input-field">
                                 <label for="essence-ccq">Essence de bois</label>
-                                <select id="essence-ccq" onchange="calculerPoutreCCQ()">
+                                <select id="essence-ccq" onchange="calculerCCQ()">
                                     <option value="douglas">Douglas Fir-Larch</option>
                                     <option value="hemfir">Hem-Fir</option>
                                     <option value="spf">Spruce-Pine-Fir</option>
@@ -484,7 +510,7 @@
                             </div>
                             <div class="input-field">
                                 <label for="qualite-ccq">Qualité</label>
-                                <select id="qualite-ccq" onchange="calculerPoutreCCQ()">
+                                <select id="qualite-ccq" onchange="calculerCCQ()">
                                     <option value="select">Select Structural</option>
                                     <option value="no1et2">N°s 1 et 2</option>
                                 </select>
@@ -497,11 +523,11 @@
                         <div class="input-row">
                             <div class="input-field">
                                 <label for="largeurMax-ccq">Largeur max (po)</label>
-                                <input type="number" id="largeurMax-ccq" step="0.25" min="0" placeholder="Aucune contrainte" onchange="calculerPoutreCCQ()">
+                                <input type="number" id="largeurMax-ccq" step="0.25" min="0" placeholder="Aucune contrainte" onchange="calculerCCQ()">
                             </div>
                             <div class="input-field">
                                 <label for="hauteurMax-ccq">Hauteur max (po)</label>
-                                <input type="number" id="hauteurMax-ccq" step="0.25" min="0" placeholder="Aucune contrainte" onchange="calculerPoutreCCQ()">
+                                <input type="number" id="hauteurMax-ccq" step="0.25" min="0" placeholder="Aucune contrainte" onchange="calculerCCQ()">
                             </div>
                         </div>
                     </div>
@@ -510,7 +536,7 @@
                         <div class="input-row">
                             <div class="input-field">
                                 <label for="optimisation-ccq">Optimisation</label>
-                                <select id="optimisation-ccq" onchange="calculerPoutreCCQ()">
+                                <select id="optimisation-ccq" onchange="calculerCCQ()">
                                     <option value="economique">Solution économique</option>
                                     <option value="hauteur">Hauteur minimale</option>
                                 </select>
@@ -524,19 +550,19 @@
                     
                     <div class="results-grid">
                         <div class="result-card">
-                            <div class="result-label">Portée demandée</div>
+                            <div class="result-label">Charge vive répartie (Wv)</div>
                             <div class="result-value" id="resultWv-ccq">-</div>
                         </div>
                         <div class="result-card">
-                            <div class="result-label">Longueur supportée</div>
+                            <div class="result-label">Charge morte répartie (Wm)</div>
                             <div class="result-value" id="resultWm-ccq">-</div>
                         </div>
                         <div class="result-card">
-                            <div class="result-label">Essence sélectionnée</div>
+                            <div class="result-label">Charge totale non pondérée (Wt)</div>
                             <div class="result-value" id="resultWt-ccq">-</div>
                         </div>
                         <div class="result-card">
-                            <div class="result-label">Qualité sélectionnée</div>
+                            <div class="result-label">Charge totale pondérée (Wf)</div>
                             <div class="result-value" id="resultWf-ccq">-</div>
                         </div>
                     </div>
