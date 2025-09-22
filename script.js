@@ -87,7 +87,6 @@ const VERSA_LAM_TABLE = {
 };
 
 // Données CCQ complètes basées sur les tableaux du Code du bâtiment du Canada
-// Conversion des unités métriques vers impériales
 const CCQ_COMPOSITE_BEAM_DATA = {
     "douglas": {
         "select": {
@@ -187,23 +186,79 @@ const CCQ_COMPOSITE_BEAM_DATA = {
     }
 };
 
-// Constantes CCQ
+// Constantes
 const HAUTEURS_CCQ = ["7.25", "9.25", "11.25"]; // équivalent à 184mm, 235mm, 286mm
+const HAUTEURS_VERSA_LAM = ["7¼", "9¼", "9½", "11¼", "11⅞", "14", "16", "18"];
+
 const essenceLabels = {
     "douglas": "Douglas Fir-Larch",
     "hemfir": "Hem-Fir", 
     "spf": "Spruce-Pine-Fir",
     "northern": "Northern Species"
 };
+
 const qualiteLabels = {
     "select": "Select Structural",
     "no1et2": "N°s 1 et 2"
 };
 
-// Hauteurs disponibles pour Versa-Lam
-const HAUTEURS = ["7¼", "9¼", "9½", "11¼", "11⅞", "14", "16", "18"];
+// === FONCTIONS COMMUNES DE CALCUL ===
 
-// === FONCTIONS POUR VERSA-LAM (avec étages) ===
+function calculerCharges(suffix = '') {
+    // Récupération des valeurs de base
+    const porteePieds = parseFloat(document.getElementById(`porteePieds${suffix}`).value) || 0;
+    const porteePouces = parseFloat(document.getElementById(`porteePouces${suffix}`).value) || 0;
+    const portee = porteePieds + (porteePouces / 12);
+    
+    const nbEtages = parseInt(document.getElementById(`nbEtages${suffix}`).value);
+    const chargeMorte = parseFloat(document.getElementById(`chargeMorte${suffix}`).value) || 0;
+    const chargeVive = parseFloat(document.getElementById(`chargeVive${suffix}`).value) || 0;
+    const chargeViveNeige = parseFloat(document.getElementById(`chargeViveNeige${suffix}`).value) || 0;
+
+    // Calcul des largeurs tributaires totales
+    let ltTotal = 0;
+    for (let i = 1; i <= nbEtages; i++) {
+        const pieds = parseFloat(document.getElementById(`ltEtage${i}Pieds${suffix}`).value) || 0;
+        const pouces = parseFloat(document.getElementById(`ltEtage${i}Pouces${suffix}`).value) || 0;
+        const largeur = pieds + (pouces / 12);
+        ltTotal += largeur;
+    }
+
+    // Validation des entrées
+    if (!portee || portee < 6 || (suffix === '' && portee > 30) || (suffix === '-ccq' && portee > 35)) {
+        return { erreur: `Veuillez entrer une portée valide entre 6 et ${suffix === '' ? '30' : '35'} pieds.` };
+    }
+
+    if (!ltTotal || ltTotal <= 0 || !chargeMorte || chargeMorte <= 0 || !chargeVive || chargeVive <= 0) {
+        return { erreur: 'Veuillez remplir tous les champs obligatoires avec des valeurs valides.' };
+    }
+
+    // Calculs selon la méthodologie (étapes 4-7)
+    
+    // Étape 4: Charge vive uniformément répartie
+    const chargeViveTotale = chargeVive + chargeViveNeige;
+    const wvTotal = chargeViveTotale * ltTotal;
+
+    // Étape 5: Charge morte uniformément répartie
+    const wmTotal = chargeMorte * ltTotal;
+
+    // Étape 6: Charge totale non pondérée
+    const wtTotal = wvTotal + wmTotal;
+
+    // Étape 7: Charge totale pondérée
+    const wfTotal = wvTotal * 1.5 + wmTotal * 1.25;
+
+    return {
+        portee: portee,
+        ltTotal: ltTotal,
+        wvTotal: wvTotal,
+        wmTotal: wmTotal,
+        wtTotal: wtTotal,
+        wfTotal: wfTotal
+    };
+}
+
+// === FONCTIONS POUR VERSA-LAM ===
 
 function updateLargeursEtages() {
     const nbEtages = parseInt(document.getElementById('nbEtages').value);
@@ -235,78 +290,35 @@ function updateLargeursEtages() {
 }
 
 function calculer() {
-    // Récupération des valeurs d'entrée
-    const porteePieds = parseFloat(document.getElementById('porteePieds').value) || 0;
-    const porteePouces = parseFloat(document.getElementById('porteePouces').value) || 0;
-    const portee = porteePieds + (porteePouces / 12);
+    const resultat = calculerCharges('');
     
-    const nbEtages = parseInt(document.getElementById('nbEtages').value);
-    const chargeMorte = parseFloat(document.getElementById('chargeMorte').value) || 0;
-    const chargeVive = parseFloat(document.getElementById('chargeVive').value) || 0;
-    const chargeViveNeige = parseFloat(document.getElementById('chargeViveNeige').value) || 0;
+    if (resultat.erreur) {
+        document.getElementById('poutreResults').innerHTML = `
+            <p style="text-align: center; color: #A0522D; margin-top: 50px;">
+                ${resultat.erreur}
+            </p>
+        `;
+        return;
+    }
+
+    // Affichage des résultats de calcul
+    document.getElementById('resultWv').textContent = `${resultat.wvTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWm').textContent = `${resultat.wmTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWt').textContent = `${resultat.wtTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWf').textContent = `${resultat.wfTotal.toFixed(1)} lb/pi`;
+
+    // Récupération des paramètres additionnels pour Versa-Lam
     const largeurMax = parseFloat(document.getElementById('largeurMax').value) || null;
     const hauteurMax = parseFloat(document.getElementById('hauteurMax').value) || null;
     const optimisation = document.getElementById('optimisation').value;
 
-    // Validation des entrées
-    if (!portee || portee < 6 || portee > 30) {
-        document.getElementById('poutreResults').innerHTML = `
-            <p style="text-align: center; color: #A0522D; margin-top: 50px;">
-                Veuillez entrer une portée valide entre 6 et 30 pieds.
-            </p>
-        `;
-        return;
-    }
-
-    // Calcul des largeurs tributaires totales
-    let ltTotal = 0;
-    const largeurs = [];
+    // Recherche des poutres viables
+    const poutresViables = trouverPoutresViablesVersaLam(resultat.portee, resultat.wvTotal, resultat.wtTotal, resultat.wfTotal, largeurMax, hauteurMax, optimisation);
     
-    for (let i = 1; i <= nbEtages; i++) {
-        const pieds = parseFloat(document.getElementById(`ltEtage${i}Pieds`).value) || 0;
-        const pouces = parseFloat(document.getElementById(`ltEtage${i}Pouces`).value) || 0;
-        const largeur = pieds + (pouces / 12);
-        largeurs.push(largeur);
-        ltTotal += largeur;
-    }
-
-    if (!ltTotal || ltTotal <= 0 || !chargeMorte || chargeMorte <= 0 || !chargeVive || chargeVive <= 0) {
-        document.getElementById('poutreResults').innerHTML = `
-            <p style="text-align: center; color: #A0522D; margin-top: 50px;">
-                Veuillez remplir tous les champs obligatoires avec des valeurs valides.
-            </p>
-        `;
-        return;
-    }
-
-    // Calculs selon la méthodologie (étapes 4-7)
-    
-    // Étape 4: Charge vive uniformément répartie
-    const chargeViveTotale = chargeVive + chargeViveNeige;
-    const wvTotal = chargeViveTotale * ltTotal;
-
-    // Étape 5: Charge morte uniformément répartie
-    const wmTotal = chargeMorte * ltTotal;
-
-    // Étape 6: Charge totale non pondérée
-    const wtTotal = wvTotal + wmTotal;
-
-    // Étape 7: Charge totale pondérée
-    const wfTotal = wvTotal * 1.5 + wmTotal * 1.25;
-
-    // Affichage des résultats de calcul
-    document.getElementById('resultWv').textContent = `${wvTotal.toFixed(1)} lb/pi`;
-    document.getElementById('resultWm').textContent = `${wmTotal.toFixed(1)} lb/pi`;
-    document.getElementById('resultWt').textContent = `${wtTotal.toFixed(1)} lb/pi`;
-    document.getElementById('resultWf').textContent = `${wfTotal.toFixed(1)} lb/pi`;
-
-    // Étape 8: Recherche des poutres viables
-    const poutresViables = trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, hauteurMax, optimisation);
-    
-    afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal);
+    afficherResultatsPoutresVersaLam(poutresViables, resultat.wvTotal, resultat.wtTotal, resultat.wfTotal);
 }
 
-function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, hauteurMax, optimisation) {
+function trouverPoutresViablesVersaLam(portee, wvTotal, wtTotal, wfTotal, largeurMax, hauteurMax, optimisation) {
     const poutresViables = [];
     
     // Trouver la portée dans la table (ou la plus proche supérieure)
@@ -339,7 +351,7 @@ function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, ha
         const wfParPli = wfTotal / nbPlis;
         
         // Vérifier chaque hauteur disponible
-        for (let hauteur of HAUTEURS) {
+        for (let hauteur of HAUTEURS_VERSA_LAM) {
             const hauteurNum = parseFloat(hauteur.replace('¼', '.25').replace('½', '.5').replace('⅞', '.875'));
             
             // Vérifier contrainte de hauteur
@@ -376,10 +388,7 @@ function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, ha
                         porteeTable: porteeTable,
                         wvMax: spec.wv || 'N/A',
                         wtMax: spec.wt || 'N/A',
-                        wfMax: spec.wf || 'N/A',
-                        critere1: critere1,
-                        critere2: critere2,
-                        critere3: critere3
+                        wfMax: spec.wf || 'N/A'
                     });
                 }
             }
@@ -402,7 +411,7 @@ function trouverPoutresViables(portee, wvTotal, wtTotal, wfTotal, largeurMax, ha
     return poutresViables;
 }
 
-function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
+function afficherResultatsPoutresVersaLam(poutresViables, wvTotal, wtTotal, wfTotal) {
     const container = document.getElementById('poutreResults');
     
     if (poutresViables.length === 0) {
@@ -462,54 +471,69 @@ function afficherResultatsPoutres(poutresViables, wvTotal, wtTotal, wfTotal) {
     container.innerHTML = html;
 }
 
-// === FONCTIONS POUR CCQ (inchangées) ===
+// === FONCTIONS POUR CCQ ===
 
-function calculerPoutreCCQ() {
-    // Récupération des valeurs d'entrée
-    const porteePieds = parseFloat(document.getElementById('porteePieds-ccq').value) || 0;
-    const porteePouces = parseFloat(document.getElementById('porteePouces-ccq').value) || 0;
-    const portee = porteePieds + (porteePouces / 12); // Portée en pieds
-
-    const longueurSupporteePieds = parseFloat(document.getElementById('longueurSupporteePieds-ccq').value) || 0;
-    const longueurSupporteePouces = parseFloat(document.getElementById('longueurSupporteePouces-ccq').value) || 0;
-    const longueurSupportee = longueurSupporteePieds + (longueurSupporteePouces / 12); // en pieds
-    const longueurSupporteeMetres = longueurSupportee * 0.3048; // Conversion en mètres pour les tables CCQ
-
-    const essence = document.getElementById('essence-ccq').value;
-    const qualite = document.getElementById('qualite-ccq').value;
-    const largeurMax = parseFloat(document.getElementById('largeurMax-ccq').value) || null;
-    const hauteurMax = parseFloat(document.getElementById('hauteurMax-ccq').value) || null;
-    const optimisation = document.getElementById('optimisation-ccq').value;
-
-    // Validation des entrées
-    if (!portee || portee < 6 || portee > 35) {
-        document.getElementById('poutreResults-ccq').innerHTML = `
-            <p style="text-align: center; color: #A0522D; margin-top: 50px;">
-                Veuillez entrer une portée valide entre 6 et 35 pieds.
-            </p>
+function updateLargeursEtagesCCQ() {
+    const nbEtages = parseInt(document.getElementById('nbEtages-ccq').value);
+    const container = document.getElementById('largeursContainer-ccq');
+    
+    let html = '<label>Largeurs tributaires par étage (longueur supportée)</label>';
+    
+    for (let i = 1; i <= nbEtages; i++) {
+        const etageLabel = `Étage ${i}`;
+        
+        html += `
+            <div class="largeur-etage">
+                <div class="input-row">
+                    <div class="input-field">
+                        <label for="ltEtage${i}-ccq">L.T. ${etageLabel}</label>
+                        <div class="dimension-input">
+                            <input type="number" id="ltEtage${i}Pieds-ccq" step="0.1" min="0" onchange="calculerCCQ()">
+                            <span>pi</span>
+                            <input type="number" id="ltEtage${i}Pouces-ccq" step="0.1" min="0" max="11.9" onchange="calculerCCQ()">
+                            <span>po</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         `;
-        return;
     }
+    
+    container.innerHTML = html;
+}
 
-    if (!longueurSupportee || longueurSupportee <= 0) {
+function calculerCCQ() {
+    const resultat = calculerCharges('-ccq');
+    
+    if (resultat.erreur) {
         document.getElementById('poutreResults-ccq').innerHTML = `
             <p style="text-align: center; color: #A0522D; margin-top: 50px;">
-                Veuillez entrer une longueur supportée valide.
+                ${resultat.erreur}
             </p>
         `;
         return;
     }
 
     // Affichage des résultats de calcul
-    document.getElementById('resultWv-ccq').textContent = `${portee.toFixed(1)}'`;
-    document.getElementById('resultWm-ccq').textContent = `${longueurSupportee.toFixed(1)}'`;
-    document.getElementById('resultWt-ccq').textContent = `${essence}`;
-    document.getElementById('resultWf-ccq').textContent = `${qualite}`;
+    document.getElementById('resultWv-ccq').textContent = `${resultat.wvTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWm-ccq').textContent = `${resultat.wmTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWt-ccq').textContent = `${resultat.wtTotal.toFixed(1)} lb/pi`;
+    document.getElementById('resultWf-ccq').textContent = `${resultat.wfTotal.toFixed(1)} lb/pi`;
+
+    // Récupération des paramètres additionnels pour CCQ
+    const essence = document.getElementById('essence-ccq').value;
+    const qualite = document.getElementById('qualite-ccq').value;
+    const largeurMax = parseFloat(document.getElementById('largeurMax-ccq').value) || null;
+    const hauteurMax = parseFloat(document.getElementById('hauteurMax-ccq').value) || null;
+    const optimisation = document.getElementById('optimisation-ccq').value;
+
+    // Conversion de la largeur tributaire totale en mètres pour les tables CCQ
+    const longueurSupporteeMetres = resultat.ltTotal * 0.3048;
 
     // Recherche des poutres viables selon CCQ
-    const poutresViables = trouverPoutresViablesCCQ(portee, longueurSupporteeMetres, essence, qualite, largeurMax, hauteurMax, optimisation);
+    const poutresViables = trouverPoutresViablesCCQ(resultat.portee, longueurSupporteeMetres, essence, qualite, largeurMax, hauteurMax, optimisation);
     
-    afficherResultatsPoutresCCQ(poutresViables, portee, longueurSupportee, essence, qualite);
+    afficherResultatsPoutresCCQ(poutresViables, resultat.portee, resultat.ltTotal, essence, qualite);
 }
 
 function trouverPoutresViablesCCQ(portee, longueurSupporteeMetres, essence, qualite, largeurMax, hauteurMax, optimisation) {
@@ -655,7 +679,8 @@ function afficherResultatsPoutresCCQ(poutresViables, portee, longueurSupportee, 
             Portée demandée: ${portee.toFixed(1)}' | 
             Longueur supportée: ${longueurSupportee.toFixed(1)}'<br>
             <strong>Spécifications:</strong> ${essenceLabels[essence]} - ${qualiteLabels[qualite]}<br>
-            <em>Les portées indiquées sont les portées maximales selon les tableaux CCQ.</em>
+            <em>Les portées indiquées sont les portées maximales selon les tableaux CCQ.<br>
+            Note CCQ: La longueur supportée correspond à la moitié de la somme des portées des solives de part et d'autre de la poutre.</em>
         </div>
     `;
 
@@ -697,20 +722,32 @@ function showTab(tabName) {
     }
 }
 
-// Initialisation par défaut - afficher l'onglet Versa-Lam et les largeurs par étage
+// Initialisation
 document.addEventListener('DOMContentLoaded', function() {
     showTab('versalam');
     updateLargeursEtages();
+    updateLargeursEtagesCCQ();
     
-    // Calculer automatiquement lors des changements de valeurs (pour les champs déjà existants)
-    const inputs = ['porteePieds', 'porteePouces', 'nbEtages', 'chargeMorte', 'chargeVive', 'chargeViveNeige', 'largeurMax', 'hauteurMax', 'optimisation'];
-    inputs.forEach(inputId => {
+    // Auto-calcul pour Versa-Lam
+    const inputsVersaLam = ['porteePieds', 'porteePouces', 'nbEtages', 'chargeMorte', 'chargeVive', 'chargeViveNeige', 'largeurMax', 'hauteurMax', 'optimisation'];
+    inputsVersaLam.forEach(inputId => {
         const element = document.getElementById(inputId);
         if (element) {
             element.addEventListener('input', function() {
-                // Auto-calcul avec un délai pour éviter trop de calculs
                 clearTimeout(this.timer);
                 this.timer = setTimeout(calculer, 500);
+            });
+        }
+    });
+    
+    // Auto-calcul pour CCQ
+    const inputsCCQ = ['porteePieds-ccq', 'porteePouces-ccq', 'nbEtages-ccq', 'chargeMorte-ccq', 'chargeVive-ccq', 'chargeViveNeige-ccq', 'essence-ccq', 'qualite-ccq', 'largeurMax-ccq', 'hauteurMax-ccq', 'optimisation-ccq'];
+    inputsCCQ.forEach(inputId => {
+        const element = document.getElementById(inputId);
+        if (element) {
+            element.addEventListener('input', function() {
+                clearTimeout(this.timer);
+                this.timer = setTimeout(calculerCCQ, 500);
             });
         }
     });
@@ -720,6 +757,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.tagName === 'INPUT') {
             clearTimeout(this.timer);
             this.timer = setTimeout(calculer, 500);
+        }
+    });
+    
+    document.getElementById('largeursContainer-ccq').addEventListener('input', function(e) {
+        if (e.target.tagName === 'INPUT') {
+            clearTimeout(this.timer);
+            this.timer = setTimeout(calculerCCQ, 500);
         }
     });
 });
