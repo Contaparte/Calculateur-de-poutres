@@ -86,7 +86,7 @@ const VERSA_LAM_TABLE = {
     }
 };
 
-// Données CCQ complètes basées sur les tableaux du Code du bâtiment du Canada
+// Données CCQ complètes
 const CCQ_COMPOSITE_BEAM_DATA = {
     "douglas": {
         "select": {
@@ -232,14 +232,12 @@ function updateLargeursEtages() {
 }
 
 function calculer() {
-    // Récupération des paramètres
     const porteePieds = parseInt(document.getElementById('porteePieds').value) || 0;
     const porteePouces = parseInt(document.getElementById('porteePouces').value) || 0;
     const portee = porteePieds + (porteePouces / 12);
     
     const nbEtages = parseInt(document.getElementById('nbEtages').value) || 1;
     
-    // Calcul de la largeur tributaire totale
     let largeurTributaireTotale = 0;
     for (let i = 1; i <= nbEtages; i++) {
         const ltPieds = parseFloat(document.getElementById(`largeur${i}Pieds`).value) || 0;
@@ -251,7 +249,6 @@ function calculer() {
     const chargeVive = parseFloat(document.getElementById('chargeVive').value) || 0;
     const chargeViveNeige = parseFloat(document.getElementById('chargeViveNeige').value) || 0;
     
-    // Validation des entrées
     if (!portee || portee < 6 || portee > 30) {
         document.getElementById('resultWv').textContent = '-';
         document.getElementById('resultWm').textContent = '-';
@@ -265,32 +262,30 @@ function calculer() {
         return;
     }
     
-    // Calcul des charges réparties
     const Wv = (chargeVive + chargeViveNeige) * largeurTributaireTotale;
     const Wm = chargeMorte * largeurTributaireTotale;
     const Wt = Wv + Wm;
     const Wf = (Wv * 1.5) + (Wm * 1.25);
     
-    // Affichage des résultats de calcul
     document.getElementById('resultWv').textContent = `${Wv.toFixed(1)} lb/pi`;
     document.getElementById('resultWm').textContent = `${Wm.toFixed(1)} lb/pi`;
     document.getElementById('resultWt').textContent = `${Wt.toFixed(1)} lb/pi`;
     document.getElementById('resultWf').textContent = `${Wf.toFixed(1)} lb/pi`;
     
-    // Trouver les poutres viables
     const largeurMax = parseFloat(document.getElementById('largeurMax').value) || null;
     const hauteurMax = parseFloat(document.getElementById('hauteurMax').value) || null;
     const optimisation = document.getElementById('optimisation').value;
     
     const poutresViables = trouverPoutresViables(portee, Wv, Wt, Wf, largeurMax, hauteurMax, optimisation);
-    
-    // Afficher les résultats
     afficherResultatsPoutres(poutresViables, portee, Wv, Wm, Wt, Wf);
 }
 
 function trouverPoutresViables(portee, Wv, Wt, Wf, largeurMax, hauteurMax, optimisation) {
     const poutresViables = [];
-    const porteeArrondie = Math.floor(portee);
+    
+    let porteeArrondie = Math.round(portee / 2) * 2;
+    if (porteeArrondie < 10) porteeArrondie = 10;
+    if (porteeArrondie > 30) porteeArrondie = 30;
     
     if (!VERSA_LAM_TABLE[porteeArrondie]) {
         return poutresViables;
@@ -300,21 +295,17 @@ function trouverPoutresViables(portee, Wv, Wt, Wf, largeurMax, hauteurMax, optim
         const capacites = VERSA_LAM_TABLE[porteeArrondie][hauteur];
         if (!capacites) continue;
         
-        // Vérifier contrainte de hauteur
         const hauteurNum = parseFloat(hauteur.replace('¼', '.25').replace('½', '.5').replace('⅞', '.875'));
         if (hauteurMax && hauteurNum > hauteurMax) continue;
         
-        // Calculer le nombre minimum de plis nécessaires
         let nbPlisMin = Math.max(
             Math.ceil(Wv / capacites.wv),
             Math.ceil(Wt / capacites.wt),
             Math.ceil(Wf / capacites.wf)
         );
         
-        // Limiter à 5 plis maximum
         if (nbPlisMin > 5) continue;
         
-        // Vérifier contrainte de largeur
         const largeurPoutre = 1.75 * nbPlisMin;
         if (largeurMax && largeurPoutre > largeurMax) continue;
         
@@ -329,7 +320,6 @@ function trouverPoutresViables(portee, Wv, Wt, Wf, largeurMax, hauteurMax, optim
         });
     }
     
-    // Trier selon l'optimisation choisie
     if (optimisation === 'plis') {
         poutresViables.sort((a, b) => {
             if (a.nbPlis !== b.nbPlis) return a.nbPlis - b.nbPlis;
@@ -377,7 +367,6 @@ function afficherResultatsPoutres(poutresViables, portee, Wv, Wm, Wt, Wf) {
         const dimension = `${epaisseur} × ${poutre.hauteur}"`;
         const largeurImperiale = `${Math.floor(poutre.largeurPoutre)}" ${poutre.largeurPoutre % 1 !== 0 ? '¾"' : ''}`.trim();
         
-        // CORRECTION: Multiplier les capacités par le nombre de plis
         const capaciteWvTotale = (poutre.capaciteWv * poutre.nbPlis).toFixed(0);
         const capaciteWtTotale = (poutre.capaciteWt * poutre.nbPlis).toFixed(0);
         const capaciteWfTotale = (poutre.capaciteWf * poutre.nbPlis).toFixed(0);
@@ -458,7 +447,6 @@ function updateLargeursEtagesCCQ() {
 }
 
 function calculerCCQ() {
-    // Récupération des paramètres
     const porteePieds = parseInt(document.getElementById('porteePieds-ccq').value) || 0;
     const porteePouces = parseInt(document.getElementById('porteePouces-ccq').value) || 0;
     const portee = porteePieds + (porteePouces / 12);
@@ -466,7 +454,6 @@ function calculerCCQ() {
     
     const nbEtages = parseInt(document.getElementById('nbEtages-ccq').value) || 1;
     
-    // Calcul de la largeur tributaire totale
     let largeurTributaireTotale = 0;
     for (let i = 1; i <= nbEtages; i++) {
         const ltPieds = parseFloat(document.getElementById(`largeur${i}Pieds-ccq`).value) || 0;
@@ -482,7 +469,6 @@ function calculerCCQ() {
     const essence = document.getElementById('essence-ccq').value;
     const qualite = document.getElementById('qualite-ccq').value;
     
-    // Validation
     if (!portee || portee < 6 || portee > 30) {
         document.getElementById('resultWv-ccq').textContent = '-';
         document.getElementById('resultWm-ccq').textContent = '-';
@@ -496,19 +482,16 @@ function calculerCCQ() {
         return;
     }
     
-    // Calcul des charges réparties
     const Wv = (chargeVive + chargeViveNeige) * largeurTributaireTotale;
     const Wm = chargeMorte * largeurTributaireTotale;
     const Wt = Wv + Wm;
     const Wf = (Wv * 1.5) + (Wm * 1.25);
     
-    // Affichage des résultats
     document.getElementById('resultWv-ccq').textContent = `${Wv.toFixed(1)} lb/pi`;
     document.getElementById('resultWm-ccq').textContent = `${Wm.toFixed(1)} lb/pi`;
     document.getElementById('resultWt-ccq').textContent = `${Wt.toFixed(1)} lb/pi`;
     document.getElementById('resultWf-ccq').textContent = `${Wf.toFixed(1)} lb/pi`;
     
-    // Trouver les poutres viables
     const largeurMax = parseFloat(document.getElementById('largeurMax-ccq').value) || null;
     const hauteurMax = parseFloat(document.getElementById('hauteurMax-ccq').value) || null;
     const optimisation = document.getElementById('optimisation-ccq').value;
@@ -523,7 +506,6 @@ function calculerCCQ() {
         optimisation
     );
     
-    // Afficher les résultats
     afficherResultatsPoutresCCQ(poutresViables, portee, largeurTributaireTotale, essence, qualite);
 }
 
@@ -536,7 +518,6 @@ function trouverPoutresViablesCCQ(porteeMetres, longueurSupporteeMetres, essence
     
     const tableauPoutres = CCQ_COMPOSITE_BEAM_DATA[essence][qualite];
     
-    // Arrondir la longueur supportée au 0.6m le plus proche (2.4, 3.0, 3.6, 4.2, 4.8, 5.4, 6.0)
     const longueursSupportees = [2.4, 3.0, 3.6, 4.2, 4.8, 5.4, 6.0];
     let longueurArrondie = longueursSupportees[0];
     
@@ -557,20 +538,16 @@ function trouverPoutresViablesCCQ(porteeMetres, longueurSupporteeMetres, essence
         const largeurMm = parseInt(largeurStr);
         const hauteurMm = parseInt(hauteurStr);
         
-        // Conversion en pouces
         const largeurPouces = (largeurMm / 25.4) * nbPlis;
         const hauteurPouces = hauteurMm / 25.4;
         
-        // Vérifier les contraintes dimensionnelles
         if (largeurMax && largeurPouces > largeurMax) continue;
         if (hauteurMax && hauteurPouces > hauteurMax) continue;
         
-        // Vérifier si la portée maximale est disponible pour cette longueur supportée
         if (!portees[longueurArrondie]) continue;
         
         const porteeMaximale = portees[longueurArrondie];
         
-        // Vérifier si la poutre peut supporter la portée demandée
         if (porteeMaximale >= porteeMetres) {
             poutresViables.push({
                 nbPlis: nbPlis,
@@ -584,7 +561,6 @@ function trouverPoutresViablesCCQ(porteeMetres, longueurSupporteeMetres, essence
         }
     }
     
-    // Trier selon l'optimisation
     if (optimisation === 'plis') {
         poutresViables.sort((a, b) => {
             if (a.nbPlis !== b.nbPlis) return a.nbPlis - b.nbPlis;
@@ -630,9 +606,9 @@ function afficherResultatsPoutresCCQ(poutresViables, portee, longueurSupportee, 
 
     poutresViables.forEach((poutre, index) => {
         const epaisseur = `${poutre.nbPlis} × 1½"`;
-        const porteeStr = `${poutre.porteeMaximale.toFixed(1)}'`;
+        const porteeStr = `${(poutre.porteeMaximale * 3.28084).toFixed(1)}'`;
         const longueurSupporteeStr = `${(poutre.longueurSupportee * 3.28084).toFixed(1)}'`;
-        const utilizationPercent = ((portee / poutre.porteeMaximale) * 100).toFixed(0);
+        const utilizationPercent = ((portee / (poutre.porteeMaximale * 3.28084)) * 100).toFixed(0);
         
         html += `
             <div class="poutre-option" onclick="selectionnerPoutre(${index})">
@@ -642,7 +618,7 @@ function afficherResultatsPoutresCCQ(poutresViables, portee, longueurSupportee, 
                 <div class="poutre-specs">
                     <div><strong>Portée max:</strong> ${porteeStr}</div>
                     <div><strong>Nombre de plis:</strong> ${poutre.nbPlis}</div>
-                    <div><strong>Largeur:</strong> ${poutre.largeurPoutre}"</div>
+                    <div><strong>Largeur:</strong> ${poutre.largeurPoutre.toFixed(1)}"</div>
                     <div><strong>Hauteur:</strong> ${poutre.hauteur}"</div>
                     <div><strong>Long. supportée:</strong> ${longueurSupporteeStr}</div>
                     <div><strong>Utilisation:</strong> ${utilizationPercent}%</div>
@@ -669,29 +645,22 @@ function afficherResultatsPoutresCCQ(poutresViables, portee, longueurSupportee, 
 // === FONCTIONS UTILITAIRES ===
 
 function selectionnerPoutre(index) {
-    // Retirer la sélection précédente
     document.querySelectorAll('.poutre-option').forEach(option => {
         option.classList.remove('selected');
     });
     
-    // Ajouter la sélection à l'option cliquée
     document.querySelectorAll('.poutre-option')[index].classList.add('selected');
 }
 
-// Fonctions pour les onglets
 function showTab(tabName) {
-    // Masquer tous les contenus d'onglets
     const contents = document.querySelectorAll('.tab-content');
     contents.forEach(content => content.classList.remove('active'));
     
-    // Retirer la classe active de tous les onglets
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(tab => tab.classList.remove('active'));
     
-    // Afficher le contenu de l'onglet sélectionné
     document.getElementById(tabName).classList.add('active');
     
-    // Ajouter la classe active à l'onglet correspondant
     const activeTab = Array.from(tabs).find(tab => 
         tab.getAttribute('onclick').includes(tabName)
     );
@@ -706,7 +675,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateLargeursEtages();
     updateLargeursEtagesCCQ();
     
-    // Auto-calcul pour Versa-Lam
     const inputsVersaLam = ['porteePieds', 'porteePouces', 'nbEtages', 'chargeMorte', 'chargeVive', 'chargeViveNeige', 'largeurMax', 'hauteurMax', 'optimisation'];
     inputsVersaLam.forEach(inputId => {
         const element = document.getElementById(inputId);
@@ -718,7 +686,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Auto-calcul pour CCQ
     const inputsCCQ = ['porteePieds-ccq', 'porteePouces-ccq', 'nbEtages-ccq', 'chargeMorte-ccq', 'chargeVive-ccq', 'chargeViveNeige-ccq', 'essence-ccq', 'qualite-ccq', 'largeurMax-ccq', 'hauteurMax-ccq', 'optimisation-ccq'];
     inputsCCQ.forEach(inputId => {
         const element = document.getElementById(inputId);
@@ -730,7 +697,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Ajouter des événements pour les largeurs tributaires dynamiques
     document.getElementById('largeursContainer').addEventListener('input', function(e) {
         if (e.target.tagName === 'INPUT') {
             clearTimeout(this.timer);
